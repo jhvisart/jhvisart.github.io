@@ -684,7 +684,8 @@
           </p>
         </div>
 
-        <div class="projects">
+        <div class="projects" 
+          id="projects-container">
           <article class="project">
             <div class="thumb">
               <div class="thumb-bg"></div>
@@ -1537,6 +1538,38 @@
       <span>Hecho para visart.dev .</span>
     </div>
   </footer>
+        <script>
+fetch('proyectos.json')
+  .then(res => res.json())
+  .then(proyectos => {
+    const container = document.getElementById("projects-container");
+
+    proyectos.forEach(p => {
+      const card = document.createElement("article");
+      card.className = "project";
+
+      card.innerHTML = `
+        <div class="thumb">
+          <div class="thumb-bg"></div>
+          <div class="thumb-lines"></div>
+          <div class="thumb-center"></div>
+        </div>
+        <div class="project-body">
+          <span class="tag">${p.tag}</span>
+          <h3>${p.titulo}</h3>
+          <p>${p.descripcion}</p>
+          <div class="project-actions">
+            <a href="${p.demo}" target="_blank">Ver demo</a>
+            <a href="${p.page}" target="_blank">Mi Page</a>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+  })
+  .catch(err => console.error("Error cargando JSON:", err));
+</script>    
 </body>
 </html>
 
