@@ -1,9 +1,11 @@
 [
   {
+    "id": "ente-azul",
     "tag": "Visual",
     "titulo": "Ente Fantasia Azul",
     "descripcion": "Visualizer reactivo futurista.",
+    "img": "assets/ente.jpg",
     "demo": "https://visart.dev/ente-fantasia-azul",
-    "page": "https://visart.dev/"
+    "fecha": "2026-04-20"
   }
 ]
