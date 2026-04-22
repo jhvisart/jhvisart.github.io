@@ -913,6 +913,8 @@ fetch('proyectos.json')
   .then(res => res.json())
   .then(proyectos => {
 
+    proyectos.sort((a,b)=> new Date(b.fecha) - new Date(a.fecha));
+
     const container = document.getElementById("projects-container");
 
     proyectos.forEach(p => {
@@ -935,7 +937,7 @@ fetch('proyectos.json')
           <p>${p.descripcion}</p>
 
           <div class="project-actions">
-            <a class="btn btn-primary" href="${p.demo}" target="_blank">Ver demo</a>
+            <a class="btn btn-primary" href="${p.manifestación }" target="_blank">Ver demo</a>
           </div>
         </div>
       `;
