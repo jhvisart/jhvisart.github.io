@@ -30,7 +30,7 @@
     "categoria": "fantasia_surreal",
     "tipo": "manifestacion",
     "labelTipo": "manifestación",
-    "preview": "assets/img/portal-organico.jpg",
+    "img": "assets/img/portal-organico.jpg",
     "manifestacion": "https://visart.dev/portal-organico/",
     "estado": "proceso",
     "fecha": "2026-04-18"
