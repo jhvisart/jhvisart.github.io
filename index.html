@@ -711,6 +711,54 @@
       .hero-mini-stats{
         grid-template-columns:1fr;
       }
+      /* === VISART CARD PRO UPGRADE === */
+
+.project-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 220, 0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.025)
+  );
+  box-shadow:
+    0 0 20px rgba(0,0,0,0.55),
+    inset 0 0 18px rgba(255,255,255,0.035);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(0,255,220,0.45),
+    rgba(120,80,255,0.35),
+    rgba(255,40,220,0.35),
+    transparent
+  );
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.35s ease;
+}
+
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: rgba(3, 5, 12, 0.72);
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.project-card > *
     }
   </style>
 </head>
