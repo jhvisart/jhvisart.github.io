@@ -1,3 +1,4 @@
+{"marca": "VisArt", "descripcion": "VisArt es una marca de arte visual que se especializa en la creación de experiencias visuales únicas y envolventes. Nuestra misión es fusionar la creatividad artística con la tecnología para ofrecer manifestaciones visuales que inspiren,emocionen y desafíen las percepciones tradicionales del arte. A través de nuestras obras,buscamos explorar nuevas formas de expresión visual y conectar con audiencias de todo el mundo.", "proyectos":
 [
   {
     "id": "ente-fantasia-azul",
@@ -34,5 +35,18 @@
     "manifestacion": "https://visart.dev/axiom/",
     "estado": "proceso",
     "fecha": "2026-04-18"
+  },
+  {
+    "id": "espectro-luminoso",
+    "titulo": "Espectro Luminoso",
+    "descripcion": "Obra visual con colores vibrantes y formas dinámicas.",
+    "categoria": "arte_digital",
+    "tipo": "demo",
+    "labelTipo": "demo",
+    "img": "assets/anima-criatura-tinta-viva.png",
+    "manifestacion": "https://visart.dev/anima-criatura-tinta-viva/",
+    "estado": "activo",
+    "fecha": "2026-04-15"
   }
 ]
+}
