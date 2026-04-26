@@ -244,15 +244,8 @@ h1 span { background: linear-gradient(135deg, #ffffff, #9fdcff 45%, #66b2ff 100%
 /* contenedor */
 .v-particles {
   position: absolute;
-   width: 70%;
-  height: 70%;
-
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   inset: 0;
   pointer-events: none;
-  overflow: hidden;
 }
 
 /* partícula base */
@@ -261,21 +254,17 @@ h1 span { background: linear-gradient(135deg, #ffffff, #9fdcff 45%, #66b2ff 100%
   width: 4px;
   height: 4px;
   border-radius: 50%;
-
-  background: #00eaff;
-  box-shadow: 0 0 6px #00eaff;
-
-  animation: particleFly 2s linear infinite;
+  animation: particleFly 1.5s linear;
   opacity: 0;
 }
 
 @keyframes particleFly {
   0% {
-    transform: translate(0,0) scale(1);
+    transform: translate(0,0);
     opacity: 1;
   }
   100% {
-    transform: translate(var(--x), var(--y)) scale(0.3);
+    transform: translate(var(--x), var(--y));
     opacity: 0;
   }
 }
