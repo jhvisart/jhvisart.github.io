@@ -242,3 +242,41 @@ setInterval(createParticle, 120);
 
   setInterval(createParticle, 120);
 })();
+
+(function(){
+  const path = document.querySelector('.v-nav path');
+  const container = document.querySelector('.v-particles');
+  if(!path || !container) return;
+
+  const length = path.getTotalLength();
+
+  function createParticle() {
+    const p = document.createElement('span');
+
+    // color VISART
+    const colors = ['#00eaff', '#3b82f6', '#7b61ff'];
+    const color = colors[Math.floor(Math.random()*colors.length)];
+
+    p.style.background = color;
+    p.style.boxShadow = `0 0 8px ${color}`;
+
+    // 🔥 punto EXACTO en la V
+    const point = path.getPointAtLength(Math.random() * length);
+
+    p.style.left = point.x + 'px';
+    p.style.top = point.y + 'px';
+
+    // movimiento
+    const x = (Math.random() - 0.5) * 40 + 'px';
+    const y = (Math.random() - 0.5) * 40 + 'px';
+
+    p.style.setProperty('--x', x);
+    p.style.setProperty('--y', y);
+
+    container.appendChild(p);
+
+    setTimeout(() => p.remove(), 1500);
+  }
+
+  setInterval(createParticle, 120);
+})();
