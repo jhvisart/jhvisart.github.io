@@ -353,3 +353,43 @@ h1 span { background: linear-gradient(135deg, #ffffff, #9fdcff 45%, #66b2ff 100%
     0 0 12px rgba(80,160,255,0.4),
     inset 0 0 6px rgba(255,255,255,0.05);
 }
+/* ===== HEADER COMPACTO SOLO EN MÓVIL ===== */
+@media (max-width: 768px) {
+
+  header {
+    padding: 6px 12px !important;
+  }
+
+  .nav {
+    min-height: 48px !important;
+    display: flex;
+    align-items: center;
+  }
+
+  /* logo más pequeño */
+  .brand-mark {
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+  }
+
+  .brand-text {
+    font-size: 15px;
+  }
+
+  /* enlaces más compactos */
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    padding: 4px 6px;
+  }
+
+  /* botón más pequeño */
+  .btn {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+}
