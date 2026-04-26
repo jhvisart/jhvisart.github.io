@@ -277,3 +277,52 @@ h1 span { background: linear-gradient(135deg, #ffffff, #9fdcff 45%, #66b2ff 100%
   z-index: 3;
   text-align: center;
 }
+.brand-v{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-right: 4px;
+}
+
+.v-logo{
+  width: clamp(40px, 5vw, 80px);
+  height: auto;
+}
+
+.v-logo path{
+  fill: none;
+  stroke: #4ca5ff;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  filter: drop-shadow(0 0 6px #4ca5ff)
+          drop-shadow(0 0 20px #4ca5ff)
+          drop-shadow(0 0 40px #4ca5ff);
+
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+
+  animation:
+    drawV 1.5s ease-out forwards,
+    glowPulse 2.5s ease-in-out infinite;
+}
+
+/* dibujo inicial */
+@keyframes drawV{
+  to{
+    stroke-dashoffset: 0;
+  }
+}
+
+/* energía continua */
+@keyframes glowPulse{
+  0%,100%{
+    filter: drop-shadow(0 0 6px #4ca5ff)
+            drop-shadow(0 0 20px #4ca5ff);
+  }
+  50%{
+    filter: drop-shadow(0 0 12px #7b61ff)
+            drop-shadow(0 0 35px #7b61ff);
+  }
+}
