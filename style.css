@@ -283,7 +283,7 @@ h1 span { background: linear-gradient(135deg, #ffffff, #9fdcff 45%, #66b2ff 100%
 .v-nav path{
   fill:none;
   stroke:currentColor;
-  stroke-width:11;
+  stroke-width:13;
   stroke-linecap:round;
   stroke-linejoin:round;
 
