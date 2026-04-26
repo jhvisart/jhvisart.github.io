@@ -268,6 +268,7 @@ h1 span { background: linear-gradient(135deg, #ffffff, #9fdcff 45%, #66b2ff 100%
   display:flex;
   align-items:center;
   gap:6px;
+  color:red;
 }
 .brand-text span{
   font-weight: 600; /* opcional si tu texto es fuerte */
