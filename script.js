@@ -26,7 +26,7 @@ if (path.includes("interactivos")) {
   tipo = "interactivo";
 }
     // 2. Carga de Proyectos desde JSON
-    fetch('proyectos.json')
+    fetch('data/proyectos.json')
         .then(res => res.json())
         .then(data => {
             // Asumimos estructura { "proyectos": [...] }
