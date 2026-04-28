@@ -133,15 +133,56 @@ a {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  overflow: visible;
 }
 
-.v-particles span {
+.vp {
   position: absolute;
   width: 4px;
   height: 4px;
   border-radius: 50%;
+  background: #00eaff;
+  box-shadow: 0 0 8px #00eaff;
   opacity: 0;
-  animation: particleFly 1.5s linear;
+  animation: vSpark 1.4s infinite ease-out;
+}
+
+.vp1 {
+  left: 10%;
+  top: 10%;
+  animation-delay: 0s;
+}
+
+.vp2 {
+  left: 30%;
+  top: 42%;
+  animation-delay: .2s;
+  background: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6;
+}
+
+.vp3 {
+  left: 50%;
+  top: 82%;
+  animation-delay: .4s;
+  background: #7b61ff;
+  box-shadow: 0 0 8px #7b61ff;
+}
+
+.vp4 {
+  left: 70%;
+  top: 42%;
+  animation-delay: .6s;
+  background: #00eaff;
+  box-shadow: 0 0 8px #00eaff;
+}
+
+.vp5 {
+  left: 90%;
+  top: 10%;
+  animation-delay: .8s;
+  background: #ff00c8;
+  box-shadow: 0 0 8px #ff00c8;
 }
 
 .brand-text span {
@@ -551,18 +592,22 @@ footer {
 }
 
 /* ANIMACIONES */
-@keyframes particleFly {
+
+@keyframes vSpark {
   0% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scale(.7);
+    opacity: 0;
+  }
+
+  20% {
     opacity: 1;
   }
 
   100% {
-    transform: translate(var(--x), var(--y));
+    transform: translate(0, -10px) scale(0);
     opacity: 0;
   }
 }
-
 @keyframes drawV {
   from {
     stroke-dashoffset: 200;
