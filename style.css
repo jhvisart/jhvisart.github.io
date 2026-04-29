@@ -87,34 +87,38 @@ a {
 
 .brand-mark {
   position: relative;
-  width: 22px;
-  height: 22px;
-  min-width: 22px;
-  max-width: 22px;
-  flex: 0 0 22px;
-  border-radius: 7px;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  max-width: 20px;
+  flex: 0 0 20px;
+
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
+
   overflow: visible;
+
   background: linear-gradient(135deg, rgba(10, 20, 40, 0.9), rgba(20, 40, 80, 0.8));
+
   box-shadow:
-    0 0 10px rgba(80, 160, 255, 0.35),
-    inset 0 0 5px rgba(255, 255, 255, 0.05);
+    0 0 8px rgba(80, 160, 255, 0.3),
+    inset 0 0 4px rgba(255, 255, 255, 0.05);
 }
 
 .v-nav {
   position: relative;
   z-index: 2;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 86%;
+  height: 86%;
 }
 
 .v-nav path {
   fill: none;
   stroke: url(#vGradient);
-  stroke-width: 8;
+  stroke-width: 7;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 200;
@@ -583,11 +587,11 @@ footer {
   }
 
   .brand-mark {
-    width: 21px;
-    height: 21px;
-    min-width: 21px;
-    max-width: 21px;
-    flex: 0 0 21px;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    max-width: 20px;
+    flex: 0 0 20px;
   }
 
   .brand-text span {
