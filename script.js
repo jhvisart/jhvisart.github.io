@@ -86,13 +86,13 @@ function iniciarParticulasV() {
     const dy = y - centerY;
     const len = Math.hypot(dx, dy) || 1;
 
-    const force = 0.25 + Math.random() * 0.75;
+    const force = 0.18 + Math.random() * 0.65;
 
     particles.push({
       x,
       y,
-      vx: (dx / len) * force + (Math.random() - 0.5) * 0.45,
-      vy: (dy / len) * force - Math.random() * 0.45,
+      vx: (dx / len) * force + (Math.random() - 0.5) * 1.1,
+      vy: (dy / len) * force - Math.random() * 0.55,
       life: 1,
       decay: 0.015 + Math.random() * 0.018,
       size: 0.45 + Math.random() * 1.1,
@@ -121,7 +121,7 @@ function iniciarParticulasV() {
 
     ctx.clearRect(0, 0, rect.width, rect.height);
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       crearParticula();
     }
 
