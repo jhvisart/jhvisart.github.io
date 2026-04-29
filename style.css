@@ -155,8 +155,8 @@ a {
 
 .vp {
   position: absolute;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   opacity: 1;
   background: #00eaff;
