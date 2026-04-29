@@ -133,12 +133,11 @@ a {
 
 .v-canvas {
   position: absolute;
-  inset: -10px;
-  width: calc(100% + 20px);
-  height: calc(100% + 20px);
+  inset: -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
   pointer-events: none;
   z-index: 4;
-  overflow: visible;
 }
 
 .brand-text span {
