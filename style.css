@@ -133,9 +133,10 @@ a {
 
 .v-canvas {
   position: absolute;
-  inset: -3px;
-  width: calc(100% + 6px);
-  height: calc(100% + 6px);
+  left: -28px;
+  top: -24px;
+  width: calc(100% + 56px);
+  height: calc(100% + 48px);
   pointer-events: none;
   z-index: 4;
 }
