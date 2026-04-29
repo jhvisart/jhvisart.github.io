@@ -127,63 +127,90 @@ a {
     drawV 2s ease-out forwards,
     glowV 3s infinite ease-in-out;
 }
-
-/* PARTÍCULAS DE LA V */
+/* PARTÍCULAS DE ENERGÍA EN LA V */
 .v-particles {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  overflow: visible;
+  z-index: 5;
 }
 
 .vp {
   position: absolute;
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
+  opacity: 0;
   background: #00eaff;
   box-shadow: 0 0 8px #00eaff;
-  opacity: 0;
-  animation: vSpark 1.4s infinite ease-out;
+  animation: vParticlePop 1.6s infinite ease-out;
 }
 
+/* puntos siguiendo la forma real de la V */
 .vp1 {
-  left: 10%;
+  left: 9%;
   top: 10%;
   animation-delay: 0s;
+  background: #00eaff;
+  box-shadow: 0 0 8px #00eaff;
 }
 
 .vp2 {
-  left: 30%;
-  top: 42%;
-  animation-delay: .2s;
+  left: 25%;
+  top: 38%;
+  animation-delay: .18s;
   background: #3b82f6;
   box-shadow: 0 0 8px #3b82f6;
 }
 
 .vp3 {
-  left: 50%;
-  top: 82%;
-  animation-delay: .4s;
+  left: 42%;
+  top: 68%;
+  animation-delay: .36s;
   background: #7b61ff;
   box-shadow: 0 0 8px #7b61ff;
 }
 
 .vp4 {
-  left: 70%;
-  top: 42%;
-  animation-delay: .6s;
+  left: 50%;
+  top: 86%;
+  animation-delay: .54s;
+  background: #ff00c8;
+  box-shadow: 0 0 8px #ff00c8;
+}
+
+.vp5 {
+  left: 66%;
+  top: 48%;
+  animation-delay: .72s;
+  background: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6;
+}
+
+.vp6 {
+  left: 88%;
+  top: 10%;
+  animation-delay: .9s;
   background: #00eaff;
   box-shadow: 0 0 8px #00eaff;
 }
 
-.vp5 {
-  left: 90%;
-  top: 10%;
-  animation-delay: .8s;
-  background: #ff00c8;
-  box-shadow: 0 0 8px #ff00c8;
+@keyframes vParticlePop {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(.5);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, -8px) scale(0);
+  }
 }
+
 
 .brand-text span {
   display: block;
