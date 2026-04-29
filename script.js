@@ -45,14 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. CARGAR PROYECTOS DESDE JSON
   // =====================================================
   if (projectsContainer) {
-    fetch('/data/proyectos.json')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`No se pudo cargar el JSON. Estado: ${res.status}`);
-        }
-
-        return res.json();
-      })
+    cargarJSON('/data/proyectos.json')
+      .catch(() => cargarJSON('data/proyectos.json'))
       .then(data => {
         const listaProyectos = data.proyectos || [];
 
@@ -60,10 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
           return new Date(b.fecha) - new Date(a.fecha);
         });
 
+        let proyectosMostrados = 0;
+
         listaProyectos.forEach(p => {
-          // Si estamos en una página específica, filtra por tipo.
-          // Si tipoPagina es null, muestra todos los proyectos.
           if (tipoPagina && p.tipo !== tipoPagina) return;
+
+          proyectosMostrados++;
 
           const card = document.createElement("article");
           card.className = "project-card";
@@ -97,6 +93,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
           aplicarColorDominante(img, badge);
         });
+
+        if (proyectosMostrados === 0) {
+          projectsContainer.innerHTML = `
+            <article class="project-card">
+              <div class="project-body">
+                <h3>No hay proyectos para esta sección</h3>
+                <p>Revisa que el campo <strong>tipo</strong> del JSON coincida con esta página.</p>
+              </div>
+            </article>
+          `;
+        }
       })
       .catch(err => {
         console.error("Error cargando JSON:", err);
@@ -122,6 +129,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // =====================================================
   iniciarFondoCanvas();
 });
+
+
+// =====================================================
+// CARGAR JSON
+// =====================================================
+function cargarJSON(url) {
+  return fetch(url).then(res => {
+    if (!res.ok) {
+      throw new Error(`No se pudo cargar el JSON. Estado: ${res.status}`);
+    }
+
+    return res.json();
+  });
+}
 
 
 // =====================================================
@@ -283,4 +304,3 @@ function iniciarFondoCanvas() {
 
   loop();
 }
-
