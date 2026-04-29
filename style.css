@@ -113,12 +113,13 @@ a {
   display: block;
   width: 86%;
   height: 86%;
+  transform: translateY(-2px);
 }
 
 .v-nav path {
   fill: none;
   stroke: url(#vGradient);
-  stroke-width: 7;
+  stroke-width: 9;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 200;
