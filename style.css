@@ -80,7 +80,7 @@ a {
 .brand {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
   flex-shrink: 0;
   min-width: max-content;
 }
