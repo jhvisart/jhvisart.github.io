@@ -123,8 +123,8 @@ a {
   stroke-dasharray: 200;
   stroke-dashoffset: 200;
   filter:
-    drop-shadow(0 0 8px #00d4ff)
-    drop-shadow(0 0 18px #3b82f6);
+  drop-shadow(0 0 8px var(--accent1))
+  drop-shadow(0 0 18px var(--accent2));
   animation:
     drawV 2s ease-out forwards,
     glowV 3s infinite ease-in-out;
@@ -657,20 +657,26 @@ footer {
     min-height: 300px;
   }
 }
-/* ===== VISUALES ===== */
+/* ===== VISUALES (AZUL / VIOLETA) ===== */
 .page-visuales {
   --blue1: #00eaff;
   --blue2: #7b61ff;
+  --accent1: #00eaff;
+  --accent2: #7b61ff;
 }
 
-/* ===== VISUALIZERS ===== */
+/* ===== VISUALIZERS (VERDE / CYAN) ===== */
 .page-visualizers {
   --blue1: #00ff88;
   --blue2: #00c2ff;
+  --accent1: #00ff88;
+  --accent2: #00c2ff;
 }
 
-/* ===== INTERACTIVOS ===== */
+/* ===== INTERACTIVOS (MAGENTA / NARANJA) ===== */
 .page-interactivos {
   --blue1: #ff00c8;
   --blue2: #ff7a00;
+  --accent1: #ff00c8;
+  --accent2: #ff7a00;
 }
