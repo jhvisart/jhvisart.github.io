@@ -161,6 +161,19 @@ function iniciarParticulasV() {
 // =====================================================
 // 3. PROYECTOS DESDE JSON
 // =====================================================
+function resolverRuta(ruta) {
+  if (!ruta) return "";
+
+  if (
+    ruta.startsWith("http://") ||
+    ruta.startsWith("https://") ||
+    ruta.startsWith("/")
+  ) {
+    return ruta;
+  }
+
+  return "/" + ruta;
+}
 function iniciarProyectos(projectsContainer) {
   if (!projectsContainer) return;
 
@@ -193,7 +206,7 @@ function iniciarProyectos(projectsContainer) {
 
         card.innerHTML = `
           <div class="project-thumb">
-            <img src="${p.img}" alt="${p.titulo}" crossorigin="anonymous" loading="lazy">
+           <img src="${resolverRuta(p.img)}" alt="${p.titulo}" crossorigin="anonymous" loading="lazy">
             <span class="project-badge">${p.labelTipo || 'Demo en vivo'}</span>
           </div>
 
