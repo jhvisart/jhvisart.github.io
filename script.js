@@ -96,7 +96,7 @@ function iniciarParticulasV() {
       life: 1,
       decay: 0.015 + Math.random() * 0.018,
       size: 0.45 + Math.random() * 1.1,
-      color: randomColor(),
+      color: getParticleColor(1),
       glow: 4 + Math.random() * 7
     });
   }
@@ -109,9 +109,9 @@ function iniciarParticulasV() {
 
     const color = `${p.color}${alpha})`;
 
-    ctx.fillStyle = color;
+    ctx.fillStyle = getParticleColor(p.life);
     ctx.shadowBlur = p.glow;
-    ctx.shadowColor = color;
+    ctx.shadowColor = getParticleColor(p.life);
     ctx.fill();
     ctx.shadowBlur = 0;
   }
