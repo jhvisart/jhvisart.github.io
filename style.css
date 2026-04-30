@@ -657,3 +657,20 @@ footer {
     min-height: 300px;
   }
 }
+/* ===== VISUALES ===== */
+.page-visuales {
+  --blue1: #00eaff;
+  --blue2: #7b61ff;
+}
+
+/* ===== VISUALIZERS ===== */
+.page-visualizers {
+  --blue1: #00ff88;
+  --blue2: #00c2ff;
+}
+
+/* ===== INTERACTIVOS ===== */
+.page-interactivos {
+  --blue1: #ff00c8;
+  --blue2: #ff7a00;
+}
