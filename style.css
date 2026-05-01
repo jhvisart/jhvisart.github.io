@@ -680,3 +680,9 @@ footer {
   --accent1: #ff00c8;
   --accent2: #ff7a00;
 }
+body.page-home {
+  --accent1: #00eaff;
+  --accent2: #3b82f6;
+  --blue1: #7ad7ff;
+  --blue2: #4ca5ff;
+}
