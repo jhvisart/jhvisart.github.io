@@ -734,4 +734,38 @@ body .v-nav path {
   filter:
     drop-shadow(0 0 8px var(--accent1))
     drop-shadow(0 0 18px var(--accent2)) !important;
+/* ===== FONDO HOME ===== */
+body.page-home {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(60, 120, 255, .15), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(0, 200, 255, .10), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(100, 80, 255, .12), transparent 35%),
+    linear-gradient(180deg, #050816, #0b1224);
+}
+
+/* ===== VISUALES (AZUL/VIOLETA) ===== */
+body.page-visuales {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0, 234, 255, .18), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(123, 97, 255, .15), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(80, 60, 255, .18), transparent 35%),
+    linear-gradient(180deg, #040816, #0a1022);
+}
+
+/* ===== VISUALIZERS (VERDE/CYAN) ===== */
+body.page-visualizers {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0, 255, 136, .18), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(0, 194, 255, .15), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(0, 255, 180, .12), transparent 35%),
+    linear-gradient(180deg, #041610, #0a221c);
+}
+
+/* ===== INTERACTIVOS (NARANJA/MAGENTA) ===== */
+body.page-interactivos {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 122, 0, .18), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(255, 0, 200, .15), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(255, 80, 0, .12), transparent 35%),
+    linear-gradient(180deg, #160805, #22100a);
 }
