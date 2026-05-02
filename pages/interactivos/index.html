@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>VISART | Interactivos</title>
+
+  <meta name="google" content="notranslate">
+  <meta name="description" content="Proyectos interactivos de VISART." />
+
+  <link rel="stylesheet" href="../../style.css">
+</head>
+
+<body class="page-interactivos" data-tipo="interactivo" data-json="../../data/proyectos.json" data-assets="../../">
+  <div class="bg-grid"></div>
+
+  <header class="header">
+    <div class="container header-inner">
+
+      <a href="../../index.html" class="brand" aria-label="Ir al inicio de VISART">
+        <div class="brand-mark">
+          <svg viewBox="0 0 100 100" class="v-nav" aria-hidden="true">
+            <defs>
+              <linearGradient id="vGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="var(--accent1)" />
+                <stop offset="100%" stop-color="var(--accent2)" />
+              </linearGradient>
+            </defs>
+            <path d="M10 10 L50 90 L90 10" />
+          </svg>
+
+          <canvas class="v-canvas" aria-hidden="true"></canvas>
+        </div>
+
+        <div class="brand-text">
+          <span>ISART</span>
+          <small>Interactivos</small>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a href="../../index.html">Inicio</a>
+        <a href="../visuales/index.html">Visuales</a>
+        <a href="../visualizers/index.html">Visualizers</a>
+        <a href="../interactivos/index.html">Interactivos</a>
+        <a class="nav-cta" href="#proyectos">Ver interactivos</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+
+        <div class="hero-content">
+          <div class="eyebrow">Experiencias interactivas</div>
+
+          <h1>
+            Proyectos <span>interactivos</span> de VISART.
+          </h1>
+
+          <p>
+            Esta sección muestra solamente proyectos marcados en el JSON como <strong>tipo interactivo</strong>.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#proyectos">Explorar interactivos</a>
+            <a class="btn btn-secondary" href="../../index.html">Volver al inicio</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-visual">
+            <video autoplay muted loop playsinline class="bg-video">
+              <source src="../../assets/hero-card.mp4" type="video/mp4">
+            </video>
+            <canvas id="bgFX"></canvas>
+          </div>
+
+          <div class="hero-mini-stats">
+            <div class="mini">
+              <strong>VISART</strong>
+              <small>Interactive Art</small>
+            </div>
+            <div class="mini">
+              <strong>COLOR</strong>
+              <small>Orange / Pink</small>
+            </div>
+            <div class="mini">
+              <strong>FILTER</strong>
+              <small>interactivo</small>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section" id="proyectos">
+      <div class="container">
+        <div class="section-head">
+          <h2>Interactivos</h2>
+          <p>Proyectos filtrados automáticamente desde <strong>data/proyectos.json</strong>.</p>
+        </div>
+
+        <div class="projects-grid" id="projects-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-line">
+      <div>© 2026 <strong>VISART</strong>.</div>
+      <div>Sección interactivos.</div>
+    </div>
+  </footer>
+
+  <script src="../../script.js"></script>
+</body>
+</html>
