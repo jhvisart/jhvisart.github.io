@@ -182,13 +182,16 @@ function iniciarParticulasV() {
     const dy = y - cy;
     const len = Math.sqrt(dx * dx + dy * dy) || 1;
 
-    const colores = [
-      getCssVar("--accent1"),
-      getCssVar("--accent2"),
-      "#ffffff",
-      "#7dd3fc",
-      "#c084fc"
-    ];
+    const accent1 = getCssVar("--accent1");
+const accent2 = getCssVar("--accent2");
+
+const colores = [
+  accent1,
+  accent2,
+  mezclarColor(accent1, accent2, 0.5),
+  mezclarColor(accent1, "#ffffff", 0.3),
+  mezclarColor(accent2, "#ffffff", 0.3)
+];
 
     particles.push({
       x,
@@ -245,6 +248,25 @@ function getCssVar(nombre) {
   return getComputedStyle(document.documentElement).getPropertyValue(nombre).trim()
     || getComputedStyle(document.body).getPropertyValue(nombre).trim()
     || "#00eaff";
+  function mezclarColor(c1, c2, factor) {
+  const parse = (c) => {
+    const ctx = document.createElement("canvas").getContext("2d");
+    ctx.fillStyle = c;
+    const color = ctx.fillStyle;
+
+    const rgb = color.match(/\d+/g).map(Number);
+    return rgb;
+  };
+
+  const [r1, g1, b1] = parse(c1);
+  const [r2, g2, b2] = parse(c2);
+
+  const r = Math.round(r1 + (r2 - r1) * factor);
+  const g = Math.round(g1 + (g2 - g1) * factor);
+  const b = Math.round(b1 + (b2 - b1) * factor);
+
+  return `rgb(${r}, ${g}, ${b})`;
+}
 }
 
 function iniciarFondoCanvas() {
