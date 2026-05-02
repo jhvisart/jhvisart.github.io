@@ -244,16 +244,17 @@ const colores = [
   animar();
 }
 
-function getCssVar(nombre) {
-  return getComputedStyle(document.document.body).getPropertyValue(nombre).trim()
-    || getComputedStyle(documentElement).getPropertyValue(nombre).trim()
+ function getCssVar(nombre) {
+  return getComputedStyle(document.body).getPropertyValue(nombre).trim()
+    || getComputedStyle(document.documentElement).getPropertyValue(nombre).trim()
     || "#00eaff";
-  function mezclarColor(c1, c2, factor) {
+}
+
+function mezclarColor(c1, c2, factor) {
   const parse = (c) => {
     const ctx = document.createElement("canvas").getContext("2d");
     ctx.fillStyle = c;
     const color = ctx.fillStyle;
-
     const rgb = color.match(/\d+/g).map(Number);
     return rgb;
   };
@@ -266,7 +267,6 @@ function getCssVar(nombre) {
   const b = Math.round(b1 + (b2 - b1) * factor);
 
   return `rgb(${r}, ${g}, ${b})`;
-}
 }
 
 function iniciarFondoCanvas() {
