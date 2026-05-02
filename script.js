@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const heroCard = document.querySelector('.hero-card');
+document.addEventListener("DOMContentLoaded", () => {
+  const heroCard = document.querySelector(".hero-card");
   const projectsContainer = document.getElementById("projects-container");
 
   iniciarHeroTilt(heroCard);
@@ -9,14 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarFondoCanvas();
 });
 
-
 // =====================================================
 // 1. ANIMACIÓN DEL HERO
 // =====================================================
+
 function iniciarHeroTilt(heroCard) {
   if (!heroCard) return;
 
-  window.addEventListener('mousemove', (e) => {
+  window.addEventListener("mousemove", (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 10;
     const y = (e.clientY / window.innerHeight - 0.5) * 10;
 
@@ -24,16 +24,16 @@ function iniciarHeroTilt(heroCard) {
       `perspective(900px) rotateY(${x * 0.35}deg) rotateX(${y * -0.25}deg)`;
   });
 
-  window.addEventListener('mouseleave', () => {
+  window.addEventListener("mouseleave", () => {
     heroCard.style.transform =
-      'perspective(900px) rotateY(0deg) rotateX(0deg)';
+      "perspective(900px) rotateY(0deg) rotateX(0deg)";
   });
 }
 
+// =====================================================
+// 2. PARTÍCULAS EN LA V
+// =====================================================
 
-// =====================================================
-// 2. PARTICULAS PRO EN LA V
-// =====================================================
 function iniciarParticulasV() {
   const canvas = document.querySelector(".v-canvas");
   const svg = document.querySelector(".v-nav");
@@ -58,22 +58,10 @@ function iniciarParticulasV() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  function randomColor() {
-    const colors = [
-      "rgba(0, 234, 255, 1)",
-      "rgba(59, 130, 246, 1)",
-      "rgba(123, 97, 255, 1)",
-      "rgba(255, 0, 200, 1)"
-    ];
-
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
-
   function crearParticula() {
     const canvasRect = canvas.getBoundingClientRect();
     const t = Math.random() * pathLength;
     const point = path.getPointAtLength(t);
-
     const viewBox = svg.viewBox.baseVal;
 
     const x = ((point.x - viewBox.x) / viewBox.width) * canvasRect.width;
@@ -96,22 +84,19 @@ function iniciarParticulasV() {
       life: 1,
       decay: 0.015 + Math.random() * 0.018,
       size: 0.45 + Math.random() * 1.1,
-      color: getParticleColor(1),
       glow: 4 + Math.random() * 7
     });
   }
 
   function pintarParticula(p) {
     const alpha = Math.max(0, p.life);
+    const color = getParticleColor(alpha);
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.size * (0.6 + alpha), 0, Math.PI * 2);
-
-   const color = p.color.replace("1)", `${alpha})`);
-
-    ctx.fillStyle = getParticleColor(p.life);
+    ctx.fillStyle = color;
     ctx.shadowBlur = p.glow;
-    ctx.shadowColor = getParticleColor(p.life);
+    ctx.shadowColor = color;
     ctx.fill();
     ctx.shadowBlur = 0;
   }
@@ -121,7 +106,7 @@ function iniciarParticulasV() {
 
     ctx.clearRect(0, 0, rect.width, rect.height);
 
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 2; i++) {
       crearParticula();
     }
 
@@ -145,8 +130,8 @@ function iniciarParticulasV() {
       pintarParticula(p);
     }
 
-    if (particles.length > 70) {
-      particles.splice(0, particles.length - 70);
+    if (particles.length > 90) {
+      particles.splice(0, particles.length - 90);
     }
 
     requestAnimationFrame(loop);
@@ -157,69 +142,66 @@ function iniciarParticulasV() {
   loop();
 }
 
-
 // =====================================================
 // 3. PROYECTOS DESDE JSON
 // =====================================================
-function resolverRuta(ruta) {
-  if (!ruta) return "";
 
-  if (
-    ruta.startsWith("http://") ||
-    ruta.startsWith("https://") ||
-    ruta.startsWith("/")
-  ) {
-    return ruta;
-  }
-
-  return "/" + ruta;
-}
 function iniciarProyectos(projectsContainer) {
   if (!projectsContainer) return;
 
-  const path = window.location.pathname.toLowerCase();
+  const tipoPagina = document.body.dataset.tipo || "destacado";
 
-  let tipoPagina = null;
-
-  if (path.includes("visualizers")) tipoPagina = "visualizer";
-  if (path.includes("interactivos")) tipoPagina = "interactivo";
-  if (path.includes("visuales")) tipoPagina = "visual";
-
-  cargarJSON('/data/proyectos.json')
-    .catch(() => cargarJSON('data/proyectos.json'))
+  cargarJSON("/data/proyectos.json")
+    .catch(() => cargarJSON("data/proyectos.json"))
     .then(data => {
       const listaProyectos = data.proyectos || [];
 
-      listaProyectos.sort((a, b) => {
-        return new Date(b.fecha) - new Date(a.fecha);
-      });
+      const proyectosFiltrados = listaProyectos
+        .filter(p => {
+          if (tipoPagina === "destacado") {
+            return p.destacado === true || p.estado === "destacado";
+          }
 
-      let proyectosMostrados = 0;
+          return p.tipo === tipoPagina;
+        })
+        .sort((a, b) => new Date(b.fecha || 0) - new Date(a.fecha || 0));
 
-      listaProyectos.forEach(p => {
-        if (tipoPagina && p.tipo !== tipoPagina) return;
+      if (proyectosFiltrados.length === 0) {
+        projectsContainer.innerHTML = `
+          <article class="project-card">
+            <div class="project-body">
+              <h3>No hay proyectos para esta sección</h3>
+              <p>Revisa que el campo <strong>tipo</strong> o <strong>destacado</strong> del JSON coincida con esta página.</p>
+            </div>
+          </article>
+        `;
+        return;
+      }
 
-        proyectosMostrados++;
+      projectsContainer.innerHTML = "";
+
+      proyectosFiltrados.forEach(p => {
+        const demoURL = p.manifestacion || p.demo || p.link || "#";
 
         const card = document.createElement("article");
         card.className = "project-card";
 
         card.innerHTML = `
           <div class="project-thumb">
-           <img src="${resolverRuta(p.img)}" alt="${p.titulo}" crossorigin="anonymous" loading="lazy">
-            <span class="project-badge">${p.labelTipo || 'Demo en vivo'}</span>
+            <img src="${resolverRuta(p.img)}" alt="${escaparHTML(p.titulo || "Proyecto VisArt")}" loading="lazy">
+            <span class="project-badge">${escaparHTML(p.labelTipo || "Demo en vivo")}</span>
           </div>
 
           <div class="project-body">
             <div class="project-top">
-              <h3>${p.titulo}</h3>
-              <span class="project-tag">${p.categoria || 'Proyecto'}</span>
+              <h3>${escaparHTML(p.titulo || "Proyecto sin título")}</h3>
+              <span class="project-tag">${escaparHTML(p.categoria || "Proyecto")}</span>
             </div>
 
-            <p>${p.descripcion || ''}</p>
+            <p>${escaparHTML(p.descripcion || "")}</p>
 
             <div class="project-actions">
-              <a class="btn btn-primary" href="${p.manifestacion}" target="_blank" rel="noopener noreferrer">
+              <a class="btn btn-primary" href="${demoURL}" target="_blank" rel="noopener noreferrer">
                 Ver demo
               </a>
             </div>
@@ -233,17 +215,6 @@ function iniciarProyectos(projectsContainer) {
 
         aplicarColorDominante(img, badge);
       });
-
-      if (proyectosMostrados === 0) {
-        projectsContainer.innerHTML = `
-          <article class="project-card">
-            <div class="project-body">
-              <h3>No hay proyectos para esta sección</h3>
-              <p>Revisa que el campo <strong>tipo</strong> del JSON coincida con esta página.</p>
-            </div>
-          </article>
-        `;
-      }
     })
     .catch(err => {
       console.error("Error cargando JSON:", err);
@@ -259,10 +230,6 @@ function iniciarProyectos(projectsContainer) {
     });
 }
 
-
-// =====================================================
-// CARGAR JSON
-// =====================================================
 function cargarJSON(url) {
   return fetch(url).then(res => {
     if (!res.ok) {
@@ -273,10 +240,33 @@ function cargarJSON(url) {
   });
 }
 
+function resolverRuta(ruta) {
+  if (!ruta) return "";
+
+  if (
+    ruta.startsWith("http://") ||
+    ruta.startsWith("https://") ||
+    ruta.startsWith("/")
+  ) {
+    return ruta;
+  }
+
+  return "/" + ruta;
+}
+
+function escaparHTML(texto) {
+  return String(texto)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 // =====================================================
-// COLOR DOMINANTE PARA EL BADGE
+// 4. COLOR DOMINANTE PARA BADGE
 // =====================================================
+
 function aplicarColorDominante(img, badge) {
   if (!img || !badge) return;
 
@@ -314,8 +304,8 @@ function aplicarColorDominante(img, badge) {
         badge.style.boxShadow = `0 0 14px ${color}`;
       }
     } catch (e) {
-      badge.style.borderColor = "#00ffe0";
-      badge.style.boxShadow = "0 0 14px rgba(0,255,224,0.55)";
+      badge.style.borderColor = "var(--accent1)";
+      badge.style.boxShadow = "0 0 14px var(--accent1)";
     }
   };
 
@@ -324,13 +314,12 @@ function aplicarColorDominante(img, badge) {
   }
 }
 
-
 // =====================================================
-// VIDEO DE FONDO
+// 5. VIDEO HERO
 // =====================================================
 
 function iniciarVideoFondo() {
-  const video = document.querySelector('.bg-video');
+  const video = document.querySelector(".bg-video");
 
   if (!video) return;
 
@@ -345,10 +334,10 @@ function iniciarVideoFondo() {
     }
   };
 
-  video.addEventListener('loadeddata', playSafe);
-  video.addEventListener('canplay', playSafe);
+  video.addEventListener("loadeddata", playSafe);
+  video.addEventListener("canplay", playSafe);
 
-  document.addEventListener('visibilitychange', () => {
+  document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
       playSafe();
     }
@@ -358,38 +347,42 @@ function iniciarVideoFondo() {
 }
 
 // =====================================================
-// FONDO CANVAS HERO
+// 6. CANVAS HERO
 // =====================================================
+
 function iniciarFondoCanvas() {
-  const c = document.getElementById('bgFX');
+  const c = document.getElementById("bgFX");
 
   if (!c) return;
 
-  const ctx = c.getContext('2d');
+  const ctx = c.getContext("2d");
+  const particulas = [];
 
   function resize() {
     c.width = c.offsetWidth;
     c.height = c.offsetHeight;
+
+    particulas.length = 0;
+
+    for (let i = 0; i < 100; i++) {
+      particulas.push({
+        x: Math.random() * c.width,
+        y: Math.random() * c.height,
+        r: Math.random() * 1.5 + 0.5,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        a: Math.random() * Math.PI * 2
+      });
+    }
   }
 
   resize();
-  window.addEventListener('resize', resize);
-
-  const particulas = [];
-
-  for (let i = 0; i < 100; i++) {
-    particulas.push({
-      x: Math.random() * c.width,
-      y: Math.random() * c.height,
-      r: Math.random() * 1.5 + 0.5,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      a: Math.random() * Math.PI * 2
-    });
-  }
+  window.addEventListener("resize", resize);
 
   function loop() {
     ctx.clearRect(0, 0, c.width, c.height);
+
+    const [accent1, accent2] = getAccentColors();
 
     const glow = ctx.createRadialGradient(
       c.width / 2,
@@ -400,7 +393,7 @@ function iniciarFondoCanvas() {
       c.width * 0.6
     );
 
-    glow.addColorStop(0, "rgba(40,120,255,0.15)");
+    glow.addColorStop(0, hexToRgba(accent2, 0.18));
     glow.addColorStop(1, "rgba(0,0,0,0)");
 
     ctx.fillStyle = glow;
@@ -415,12 +408,13 @@ function iniciarFondoCanvas() {
       if (p.y < 0 || p.y > c.height) p.vy *= -1;
 
       const pulse = Math.sin(p.a) * 0.7 + 1;
+      const color = Math.random() > 0.5 ? accent1 : accent2;
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r * pulse, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(120,180,255,${0.5 * pulse})`;
+      ctx.fillStyle = hexToRgba(color, 0.45 * pulse);
       ctx.shadowBlur = 8;
-      ctx.shadowColor = "#5aa0ff";
+      ctx.shadowColor = color;
       ctx.fill();
       ctx.shadowBlur = 0;
     });
@@ -430,22 +424,37 @@ function iniciarFondoCanvas() {
 
   loop();
 }
+
+// =====================================================
+// 7. COLORES CSS PARA JS
+// =====================================================
+
 function getAccentColors() {
   const style = getComputedStyle(document.body);
 
-  const c1 = style.getPropertyValue("--accent1").trim();
-  const c2 = style.getPropertyValue("--accent2").trim();
+  const c1 = style.getPropertyValue("--accent1").trim() || "#00eaff";
+  const c2 = style.getPropertyValue("--accent2").trim() || "#3b82f6";
 
   return [c1, c2];
 }
+
 function getParticleColor(alpha = 1) {
   const colors = getAccentColors();
   const color = colors[Math.floor(Math.random() * colors.length)];
 
-  // convierte hex → rgba
-  const r = parseInt(color.slice(1, 3), 16);
-  const g = parseInt(color.slice(3, 5), 16);
-  const b = parseInt(color.slice(5, 7), 16);
+  return hexToRgba(color, alpha);
+}
+
+function hexToRgba(hex, alpha = 1) {
+  if (!hex || !hex.startsWith("#")) {
+    return `rgba(255,255,255,${alpha})`;
+  }
+
+  const clean = hex.replace("#", "");
+
+  const r = parseInt(clean.slice(0, 2), 16);
+  const g = parseInt(clean.slice(2, 4), 16);
+  const b = parseInt(clean.slice(4, 6), 16);
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
