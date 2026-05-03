@@ -61,9 +61,11 @@ function iniciarProyectos() {
         return;
       }
 
-      filtrados.forEach((p) => {
+      filtrados.forEach((p, index) => {
         const card = document.createElement("article");
-        card.className = "project-card";
+        card.className = index === 0 && tipoPagina === "landing"
+         ? "project-card project-featured"
+         : "project-card";
 
         const img = resolverRuta(p.img || "");
         const demo = p.manifestacion || p.demo || p.url || "#";
@@ -350,3 +352,14 @@ function iniciarFondoCanvas() {
   window.addEventListener("resize", resize);
   animar();
 }
+document.addEventListener("pointermove", (e) => {
+  document.querySelectorAll(".project-card").forEach((card) => {
+    const rect = card.getBoundingClientRect();
+
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    card.style.setProperty("--mx", `${x}%`);
+    card.style.setProperty("--my", `${y}%`);
+  });
+});
