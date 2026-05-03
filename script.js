@@ -65,6 +65,36 @@ function iniciarProyectos() {
 
       filtrados.forEach((p, index) => {
         const card = document.createElement("article");
+        /* --- TILT 3D + LUZ DINÁMICA --- */
+card.addEventListener("mousemove", (e) => {
+  const rect = card.getBoundingClientRect();
+
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const px = x / rect.width;
+  const py = y / rect.height;
+
+  const rotateY = (px - 0.5) * 10;   // derecha/izquierda
+  const rotateX = (0.5 - py) * 10;   // arriba/abajo
+
+  // aplica tilt SIN romper tu hover (sumamos translate/scale)
+  card.style.transform = `
+    translateY(-10px)
+    scale(1.03)
+    rotateX(${rotateX}deg)
+    rotateY(${rotateY}deg)
+  `;
+
+  // mueve la luz del glass (ya usas --mx/--my en tu CSS)
+  card.style.setProperty('--mx', `${px * 100}%`);
+  card.style.setProperty('--my', `${py * 100}%`);
+});
+
+card.addEventListener("mouseleave", () => {
+  // vuelve al estado normal (tu CSS hover se encargará)
+  card.style.transform = "";
+});
         card.addEventListener("mouseenter", () => {
           document.body.style.setProperty('--accent1', p.color || "#00eaff");
         });
