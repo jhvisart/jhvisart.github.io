@@ -223,7 +223,7 @@ function iniciarParticulasV() {
 
       ctx.save();
       ctx.globalAlpha = Math.max(p.life, 0);
-      ctx.shadowBlur = 14;
+      ctx.shadowBlur = 9;
       ctx.shadowColor = p.color;
       ctx.fillStyle = p.color;
       ctx.beginPath();
@@ -333,7 +333,7 @@ function iniciarFondoCanvas() {
 
       ctx.save();
       ctx.globalAlpha = p.alpha;
-      ctx.shadowBlur = 9;
+      ctx.shadowBlur = 14;
       ctx.shadowColor = index % 2 === 0 ? accent1 : accent2;
       ctx.fillStyle = index % 2 === 0 ? accent1 : accent2;
       ctx.beginPath();
