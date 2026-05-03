@@ -482,6 +482,14 @@ h1 span {
   -webkit-backdrop-filter: blur(22px) saturate(120%);
 }
 
+.project-card * {
+  pointer-events: none;
+}
+
+.project-card {
+  pointer-events: auto;
+}
+
 
 .project-card:hover {
   transform:
