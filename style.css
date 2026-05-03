@@ -175,10 +175,10 @@ a {
 
 .v-canvas {
   position: absolute;
-  left: -28px;
-  top: -24px;
-  width: calc(100% + 56px);
-  height: calc(100% + 48px);
+  left: -7px;
+  top: -7px;
+  width: calc(100% + 14px);
+  height: calc(100% + 14px);
   pointer-events: none;
   z-index: 4;
 }
