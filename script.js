@@ -65,6 +65,9 @@ function iniciarProyectos() {
 
       filtrados.forEach((p, index) => {
         const card = document.createElement("article");
+        card.addEventListener("mouseenter", () => {
+          document.body.style.setProperty('--accent1', p.color || "#00eaff");
+        });
         card.className = index === 0 && tipoPagina === "landing"
          ? "project-card project-featured"
          : "project-card";
