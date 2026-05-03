@@ -44,7 +44,7 @@
       "descripcion": "Obra visual con colores vibrantes y formas dinámicas.",
       "categoria": "arte_digital",
       "tipo": "visual",
-      "landing": true
+      "landing": true,
       "labelTipo": "Visual",
       "img": "assets/anima-criatura-tinta-viva.png",
       "manifestacion": "https://visart.dev/anima-criatura-tinta-viva/",
