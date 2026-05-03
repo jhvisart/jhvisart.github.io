@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  iniciarTransicionPaginas();
+  iniciarScrollReveal();
   iniciarHeroTilt();
   iniciarParticulasV();
   iniciarProyectos();
@@ -363,3 +365,55 @@ document.addEventListener("pointermove", (e) => {
     card.style.setProperty("--my", `${y}%`);
   });
 });
+function iniciarTransicionPaginas() {
+  const links = document.querySelectorAll("a[href]");
+
+  links.forEach((link) => {
+    const href = link.getAttribute("href");
+
+    if (
+      !href ||
+      href.startsWith("#") ||
+      href.startsWith("http") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("tel:") ||
+      link.target === "_blank"
+    ) {
+      return;
+    }
+
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      document.body.classList.add("is-leaving");
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 280);
+    });
+  });
+}
+
+function iniciarScrollReveal() {
+  const elementos = document.querySelectorAll(
+    ".hero-content, .hero-card, .section-head, .project-card, .glass"
+  );
+
+  elementos.forEach((el) => el.classList.add("reveal"));
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.15
+    }
+  );
+
+  elementos.forEach((el) => observer.observe(el));
+}
