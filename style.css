@@ -465,11 +465,16 @@ h1 span {
   border: 1px solid color-mix(in srgb, var(--accent1) 25%, transparent);
   background: rgba(3, 5, 12, 0.72);
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  backdrop-filter: blur(18px);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .project-card:hover {
-  transform: translateY(-10px) scale(1.025);
-  box-shadow: 0 0 40px var(--accent1);
+  transform: translateY(-12px) scale(1.03);
+  box-shadow:  0 20px 60px rgba(0, 0, 0, 0.55),
+    0 0 40px var(--accent1);
+   border-color: var(--accent1);
 }
 
 .project-thumb {
@@ -719,37 +724,72 @@ footer {
 /* VISART PREMIUM CARDS */
 /* ============================= */
 
+/* ============================= */
+/* VISART APPLE CARDS FINAL */
+/* ============================= */
+
 .project-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+
+  border: 1px solid color-mix(in srgb, var(--accent1) 25%, transparent);
+  background: rgba(3, 5, 12, 0.72);
+
+  backdrop-filter: blur(18px);
+
+  transition:
+    transform 0.45s cubic-bezier(.2,.8,.2,1),
+    box-shadow 0.45s ease,
+    border-color 0.3s ease;
+
+  transform-style: preserve-3d;
+  will-change: transform;
+  perspective: 1000px;
+
   isolation: isolate;
-  transform: translateY(18px);
+
   opacity: 0;
   animation: cardReveal .75s ease forwards;
 }
 
+/* delays */
 .project-card:nth-child(1) { animation-delay: .05s; }
 .project-card:nth-child(2) { animation-delay: .14s; }
 .project-card:nth-child(3) { animation-delay: .23s; }
 .project-card:nth-child(4) { animation-delay: .32s; }
 
+.project-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:
+    0 25px 70px rgba(0,0,0,0.65),
+    0 0 25px var(--accent1),
+    0 0 80px var(--accent2);
+
+  border-color: var(--accent1);
+}
+
 .project-card::before {
   content: "";
   position: absolute;
   inset: 0;
+
   background:
     radial-gradient(
       circle at var(--mx, 50%) var(--my, 30%),
-      color-mix(in srgb, var(--accent1) 35%, transparent),
-      transparent 34%
+      color-mix(in srgb, var(--accent1) 40%, transparent),
+      transparent 40%
     ),
     linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-  opacity: 0;
+
+  opacity: 0.35;
   transition: opacity .35s ease;
   pointer-events: none;
   z-index: 1;
 }
 
 .project-card:hover::before {
-  opacity: 1;
+  opacity: 0.9;
 }
 
 .project-card::after {
@@ -757,38 +797,47 @@ footer {
   position: absolute;
   inset: -1px;
   border-radius: 28px;
+
   background: linear-gradient(
     135deg,
     var(--accent1),
     transparent 35%,
     var(--accent2)
   );
+
   opacity: .18;
   pointer-events: none;
   z-index: -1;
 }
 
-.project-card:hover {
-  transform: translateY(-12px) scale(1.025);
-  box-shadow:
-    0 0 26px color-mix(in srgb, var(--accent1) 32%, transparent),
-    0 0 70px color-mix(in srgb, var(--accent2) 22%, transparent);
+.project-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s ease;
+}
+
+.project-card:hover .project-thumb img {
+  transform: scale(1.08);
 }
 
 .project-thumb::after {
   content: "";
   position: absolute;
   inset: 0;
+
   background:
     linear-gradient(to top, rgba(0,0,0,.72), transparent 58%),
     radial-gradient(circle at 50% 0%, rgba(255,255,255,.18), transparent 42%);
+
   opacity: .75;
   transition: .35s ease;
-  pointer-events: none;
-}
-
-.project-card:hover .project-thumb::after {
-  opacity: .95;
 }
 
 .project-featured {
