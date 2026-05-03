@@ -194,15 +194,15 @@ function iniciarParticulasV() {
     ];
 
     particles.push({
-      x,
-      y,
-      vx: (dx / len) * (0.05 + Math.random() * 0.15) + (Math.random() - 0.5) * 0.1,
-      vy: (dy / len) * (0.05 + Math.random() * 0.15) + (Math.random() - 0.5) * 0.1,
-      size: 0.45 + Math.random() * 0.9,
-      life: 1,
-      decay: 0.012 + Math.random() * 0.018,
-      color: colores[Math.floor(Math.random() * colores.length)]
-    });
+  x: x + (Math.random() - 0.5) * 1.6,
+  y: y + (Math.random() - 0.5) * 1.6,
+  vx: (Math.random() - 0.5) * 0.18,
+  vy: (Math.random() - 0.5) * 0.18,
+  size: 0.35 + Math.random() * 0.75,
+  life: 1,
+  decay: 0.006 + Math.random() * 0.01,
+  color: colores[Math.floor(Math.random() * colores.length)]
+});
   }
 
   function animar() {
@@ -223,7 +223,7 @@ function iniciarParticulasV() {
 
       ctx.save();
       ctx.globalAlpha = Math.max(p.life, 0);
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = 9;
       ctx.shadowColor = p.color;
       ctx.fillStyle = p.color;
       ctx.beginPath();
