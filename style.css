@@ -468,6 +468,11 @@ h1 span {
   backdrop-filter: blur(18px);
   transform-style: preserve-3d;
   will-change: transform;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03)),
+    rgba(3, 5, 12, 0.65);
+  backdrop-filter: blur(22px) saturate(120%);
+  -webkit-backdrop-filter: blur(22px) saturate(120%);
 }
 
 .project-card:hover {
@@ -782,14 +787,14 @@ footer {
     ),
     linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
 
-  opacity: 0.35;
-  transition: opacity .35s ease;
+  opacity: 0.45;
+  transition: opacity .35s ease, transform .35s ease;
   pointer-events: none;
   z-index: 1;
 }
 
 .project-card:hover::before {
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .project-card::after {
@@ -804,6 +809,9 @@ footer {
     transparent 35%,
     var(--accent2)
   );
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    0 0 0 1px rgba(255,255,255,.04);
 
   opacity: .18;
   pointer-events: none;
