@@ -83,8 +83,8 @@ card.addEventListener("pointermove", (e) => {
   const px = x / rect.width;
   const py = y / rect.height;
 
-  targetY = (px - 0.5) * 20;
-  targetX = (0.5 - py) * 20;
+  targetY = (px - 0.5) * 22;
+  targetX = (0.5 - py) * 22;
 
   // luz sigue el mouse (esto lo mantienes)
   card.style.setProperty('--mx', `${px * 100}%`);
@@ -92,8 +92,8 @@ card.addEventListener("pointermove", (e) => {
 });
 
 function animateTilt() {
-  currentX += (targetX - currentX) * 0.08;
-  currentY += (targetY - currentY) * 0.08;
+  currentX += (targetX - currentX) * 0.12;
+  currentY += (targetY - currentY) * 0.12;
 
   card.style.setProperty('--tiltX', currentX + 'deg');
   card.style.setProperty('--tiltY', currentY + 'deg');
