@@ -193,16 +193,16 @@ function iniciarParticulasV() {
       mezclarColor(accent2, "#ffffff", 0.28)
     ];
 
-    particles.push({
-      x,
-      y,
-      vx: (dx / len) * (0.25 + Math.random() * 0.8) + (Math.random() - 0.5) * 0.7,
-      vy: (dy / len) * (0.25 + Math.random() * 0.8) + (Math.random() - 0.5) * 0.7,
-      size: 1.2 + Math.random() * 2.4,
-      life: 1,
-      decay: 0.012 + Math.random() * 0.018,
-      color: colores[Math.floor(Math.random() * colores.length)]
-    });
+   particles.push({
+  x: x + (Math.random() - 0.5) * 1.6,
+  y: y + (Math.random() - 0.5) * 1.6,
+  vx: (Math.random() - 0.5) * 0.18,
+  vy: (Math.random() - 0.5) * 0.18,
+  size: 0.35 + Math.random() * 0.75,
+  life: 1,
+  decay: 0.006 + Math.random() * 0.01,
+  color: colores[Math.floor(Math.random() * colores.length)]
+ });
   }
 
   function animar() {
@@ -210,7 +210,7 @@ function iniciarParticulasV() {
 
     ctx.clearRect(0, 0, rect.width, rect.height);
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 2; i++) {
       crearParticula();
     }
 
@@ -251,12 +251,29 @@ function getCssVar(nombre) {
 }
 
 function mezclarColor(c1, c2, factor) {
-  const parse = (c) => {
-    const ctx = document.createElement("canvas").getContext("2d");
-    ctx.fillStyle = c;
-    const color = ctx.fillStyle;
-    const rgb = color.match(/\d+/g);
-    return rgb ? rgb.map(Number) : [0, 234, 255];
+  const parse = (color) => {
+    color = String(color).trim();
+
+    if (color.startsWith("#")) {
+      let hex = color.slice(1);
+
+      if (hex.length === 3) {
+        hex = hex.split("").map(x => x + x).join("");
+      }
+
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+
+      return [r, g, b];
+    }
+
+    const nums = color.match(/\d+/g);
+    if (nums && nums.length >= 3) {
+      return nums.slice(0, 3).map(Number);
+    }
+
+    return [0, 234, 255];
   };
 
   const [r1, g1, b1] = parse(c1);
@@ -316,7 +333,7 @@ function iniciarFondoCanvas() {
 
       ctx.save();
       ctx.globalAlpha = p.alpha;
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = 9;
       ctx.shadowColor = index % 2 === 0 ? accent1 : accent2;
       ctx.fillStyle = index % 2 === 0 ? accent1 : accent2;
       ctx.beginPath();
