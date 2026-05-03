@@ -1108,3 +1108,20 @@ body.is-leaving {
     rotateX(var(--tiltX, 0deg))
     rotateY(var(--tiltY, 0deg)) !important;
 }
+/* ===== FIX TILT FORZADO ===== */
+
+.project-card {
+  transform:
+    translateY(0)
+    scale(1)
+    rotateX(var(--tiltX, 0deg))
+    rotateY(var(--tiltY, 0deg)) !important;
+}
+
+.project-card:hover {
+  transform:
+    translateY(-10px)
+    scale(1.03)
+    rotateX(var(--tiltX, 0deg))
+    rotateY(var(--tiltY, 0deg)) !important;
+}
