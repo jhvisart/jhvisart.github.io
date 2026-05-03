@@ -716,3 +716,108 @@ footer {
     min-height: 300px;
   }
 }
+/* ===== LAYOUT PRO ===== */
+.featured {
+  padding: 80px 20px;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* ===== CARD PRO ===== */
+.project-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all .4s ease;
+  transform: translateY(40px);
+  opacity: 0;
+
+  /* glow dinámico */
+  box-shadow: 0 0 0 transparent;
+}
+
+/* entrada animada */
+.project-card.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* hover PRO */
+.project-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0,0,0,.5),
+              0 0 30px var(--accent, #4ca5ff);
+}
+
+/* imagen */
+.project-thumb {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s ease;
+}
+
+.project-card:hover img {
+  transform: scale(1.08);
+}
+
+/* overlay glow */
+.project-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--accent, #4ca5ff), transparent 70%);
+  opacity: 0.15;
+}
+
+/* contenido */
+.project-body {
+  padding: 20px;
+}
+
+.project-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-tag {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* botón dinámico */
+.btn-primary {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent, #4ca5ff), #000);
+  color: white;
+  text-decoration: none;
+  transition: all .3s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.2);
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
