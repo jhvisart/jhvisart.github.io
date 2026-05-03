@@ -468,9 +468,7 @@ h1 span {
 }
 
 .project-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  border-color: color-mix(in srgb, var(--accent1) 70%, transparent);
-  box-shadow: 0 0 28px color-mix(in srgb, var(--accent1) 35%, transparent);
+  background: red !important;
 }
 
 .project-thumb {
