@@ -42,6 +42,7 @@ function iniciarProyectos() {
       const filtrados = proyectos
         .filter((p) => {
           if (tipoPagina === "todos") return true;
+          if (tipoPagina === "landing") return p.landing === true;
           return p.tipo === tipoPagina;
         })
         .sort((a, b) => new Date(b.fecha || 0) - new Date(a.fecha || 0));
