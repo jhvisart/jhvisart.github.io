@@ -459,8 +459,7 @@ h1 span {
 }
 
 .project-card {
-  transform: rotateY(10deg) !important;
-
+   perspective: 1000px;
   position: relative;
   overflow: hidden;
   border-radius: 28px;
