@@ -65,7 +65,15 @@ function iniciarProyectos() {
 
       filtrados.forEach((p, index) => {
         const card = document.createElement("article");
-        /* --- TILT 3D + LUZ DINÁMICA --- */
+/* TILT PRO SUAVE */
+/* ========================= */
+
+let currentX = 0;
+let currentY = 0;
+
+let targetX = 0;
+let targetY = 0;
+
 card.addEventListener("mousemove", (e) => {
   const rect = card.getBoundingClientRect();
 
@@ -75,23 +83,29 @@ card.addEventListener("mousemove", (e) => {
   const px = x / rect.width;
   const py = y / rect.height;
 
-  const rotateY = (px - 0.5) * 10;   // derecha/izquierda
-  const rotateX = (0.5 - py) * 10;   // arriba/abajo
+  targetY = (px - 0.5) * 10;
+  targetX = (0.5 - py) * 10;
 
-  // aplica tilt SIN romper tu hover (sumamos translate/scale)
-  
- card.style.setProperty('--tiltX', rotateX + 'deg');
-  card.style.setProperty('--tiltY', rotateY + 'deg');
-  // mueve la luz del glass (ya usas --mx/--my en tu CSS)
+  // luz sigue el mouse (esto lo mantienes)
   card.style.setProperty('--mx', `${px * 100}%`);
   card.style.setProperty('--my', `${py * 100}%`);
 });
 
+function animateTilt() {
+  currentX += (targetX - currentX) * 0.08;
+  currentY += (targetY - currentY) * 0.08;
+
+  card.style.setProperty('--tiltX', currentX + 'deg');
+  card.style.setProperty('--tiltY', currentY + 'deg');
+
+  requestAnimationFrame(animateTilt);
+}
+
+animateTilt();
+
 card.addEventListener("mouseleave", () => {
-   card.style.setProperty('--tiltX', '0deg');
-  card.style.setProperty('--tiltY', '0deg');
-  // vuelve al estado normal (tu CSS hover se encargará)
-  card.style.transform = "";
+  targetX = 0;
+  targetY = 0;
 });
         card.addEventListener("mouseenter", () => {
           card.style.transform = "";
