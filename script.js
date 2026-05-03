@@ -198,7 +198,7 @@ function iniciarParticulasV() {
   y: y + (Math.random() - 0.5) * 1.6,
   vx: (Math.random() - 0.5) * 0.18,
   vy: (Math.random() - 0.5) * 0.18,
-  size: 0.35 + Math.random() * 0.75,
+  size: 0.45 + Math.random() * 0.9,
   life: 1,
   decay: 0.006 + Math.random() * 0.01,
   color: colores[Math.floor(Math.random() * colores.length)]
