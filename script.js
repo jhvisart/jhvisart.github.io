@@ -83,8 +83,8 @@ card.addEventListener("pointermove", (e) => {
   const px = x / rect.width;
   const py = y / rect.height;
 
-  targetY = (px - 0.5) * 10;
-  targetX = (0.5 - py) * 10;
+  targetY = (px - 0.5) * 20;
+  targetX = (0.5 - py) * 20;
 
   // luz sigue el mouse (esto lo mantienes)
   card.style.setProperty('--mx', `${px * 100}%`);
@@ -103,7 +103,7 @@ function animateTilt() {
 
 animateTilt();
 
-card.addEventListener("mouseleave", () => {
+card.addEventListener("pointerleave", () => {
   targetX = 0;
   targetY = 0;
 });
