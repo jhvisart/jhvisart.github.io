@@ -148,6 +148,10 @@ updateAtmosphere() {
 
   this.cards.forEach(card => {
 
+     /* =========================
+   SPATIAL ANALYSIS
+========================= */
+
  const rect = card.el.getBoundingClientRect();
 
 const centerX = rect.left + rect.width * 0.5;
@@ -246,6 +250,10 @@ card.proximity += ambientBleed;
     card.priority =
   Math.pow(card.proximity, 2.1);
 
+     /* =========================
+   MAGNETIC FIELD
+========================= */
+
    const magneticStrength =
 
 (card.hover ? (
@@ -332,6 +340,10 @@ const ambientFloat =
   ambientStillness;
 
 card.currentY += ambientFloat;
+
+     /* =========================
+   PHYSICS SYNTHESIS
+========================= */
     
  const adaptiveSpeed =
   card.speed +
@@ -359,6 +371,10 @@ card.velocityY *= adaptiveDamping;
     
 card.velocityX *= 0.985;
 card.velocityY *= 0.985;
+
+     /* =========================
+   MOTION COMPRESSION
+========================= */
 
 const residualEnergy =
 
