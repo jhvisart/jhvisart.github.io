@@ -65,37 +65,46 @@ pointer: {
 
   update() {
 
-     this.atmosphere.target =
+     const pointer =
+  this.pointer;
 
-  this.pointer.velocity > 0.04
+const atmosphere =
+  this.atmosphere;
 
-    ? this.pointer.energy
+const energy =
+  pointer.energy;
+
+     atmosphere.target =
+
+  pointer.velocity > 0.04
+
+    ? energy
 
     : 0;
 
-this.atmosphere.current +=
+atmosphere.current +=
   (
-    this.atmosphere.target -
-    this.atmosphere.current
+    atmosphere.target -
+    atmosphere.current
   ) * 0.022;
 
-this.atmosphere.pulse =
+atmosphere.pulse =
 
   Math.sin(
     performance.now() * 0.00032
   ) * 0.5 + 0.5;
 
-this.atmosphere.breathing =
+atmosphere.breathing =
 
   (
-    this.atmosphere.pulse * 0.12
+    atmosphere.pulse * 0.12
   ) *
 
-  this.atmosphere.current;
+  atmosphere.current;
 
    document.body.style.setProperty(
   "--globalAtmosphere",
-  this.atmosphere.current.toFixed(3)
+  atmosphere.current.toFixed(3)
 );
 
     /* =========================
@@ -103,26 +112,30 @@ this.atmosphere.breathing =
     ========================= */
   const targetEnergy =
 
-  this.pointer.velocity *
+  pointer.velocity *
 
   (
-    this.pointer.velocity > 0.08
+    pointer.velocity > 0.08
       ? 1
       : 0.35
   );
 
-this.pointer.energy +=
+pointer.energy +=
   (
     targetEnergy -
-    this.pointer.energy
+    pointer.energy
   ) * 0.018;
      
-   this.pointer.x +=
-  (this.pointer.targetX - this.pointer.x) * 0.11;
+   pointer.x +=
+  (pointer.targetX - pointer.x) * 0.11;
 
-this.pointer.y +=
-  (this.pointer.targetY - this.pointer.y) * 0.11;
+pointer.y +=
+  (pointer.targetY - this.pointer.y) * 0.11;
     
+/* =========================
+   CARD PHYSICS LOOP
+========================= */
+     
  this.cards.forEach(card => {
 
  const rect = card.el.getBoundingClientRect();
@@ -339,10 +352,10 @@ card.velocityY *= 0.985;
 
 const residualEnergy =
 
-  VISART_ENGINE.pointer.energy > 0.085
+  energy > 0.085
 
     ? (
-        VISART_ENGINE.pointer.energy - 0.085
+        energy - 0.085
       )
 
     : 0;
@@ -461,7 +474,10 @@ card.el.style.setProperty(
     ========================= */
      const hero =
      this.hero;
-    
+
+     /* =========================
+   HERO ATMOSPHERIC LOOP
+========================= */
      
      if (this.hero) {
 
@@ -473,13 +489,13 @@ card.el.style.setProperty(
 
       hero.el.style.setProperty(
       "--atmosphere",
-      this.atmosphere.breathing.toFixed(3)
+      atmosphere.breathing.toFixed(3)
       );
        
        hero.el.style.transform = `
         perspective(900px)
-       rotateY(${this.hero.currentX * 0.9}deg)
-       rotateX(${this.hero.currentY * 0.9}deg)
+       rotateY(${hero.currentX * 0.9}deg)
+       rotateX(${hero.currentY * 0.9}deg)
       `;
 
     }
