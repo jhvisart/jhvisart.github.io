@@ -138,27 +138,15 @@ updateAtmosphere() {
 
 },
 
-  update() {
+   updateCards() {
 
-     this.updatePointer();
+  const pointer =
+    this.pointer;
 
-     const pointer =
-  this.pointer;
+  const energy =
+    pointer.energy;
 
-this.updateAtmosphere();
-
-const atmosphere =
-  this.atmosphere;
-
-const energy =
-  pointer.energy;
-
- 
-/* =========================
-   CARD PHYSICS LOOP
-========================= */
-     
- this.cards.forEach(card => {
+  this.cards.forEach(card => {
 
  const rect = card.el.getBoundingClientRect();
 
@@ -490,6 +478,25 @@ card.el.style.setProperty(
       );
 
     });
+   },
+
+  update() {
+
+     this.updatePointer();
+
+     const pointer =
+  this.pointer;
+
+this.updateAtmosphere();
+
+const atmosphere =
+  this.atmosphere;
+
+const energy =
+  pointer.energy;
+
+ this.updateCards();
+
 
     /* =========================
        HERO
