@@ -92,6 +92,52 @@ pointer: {
 
 },
 
+updateAtmosphere() {
+
+  const pointer =
+    this.pointer;
+
+  const atmosphere =
+    this.atmosphere;
+
+  const energy =
+    pointer.energy;
+
+  atmosphere.target =
+
+    pointer.velocity > 0.04
+
+      ? energy
+
+      : 0;
+
+  atmosphere.current +=
+    (
+      atmosphere.target -
+      atmosphere.current
+    ) * 0.022;
+
+  atmosphere.pulse =
+
+    Math.sin(
+      performance.now() * 0.00032
+    ) * 0.5 + 0.5;
+
+  atmosphere.breathing =
+
+    (
+      atmosphere.pulse * 0.12
+    ) *
+
+    atmosphere.current;
+
+  document.body.style.setProperty(
+    "--globalAtmosphere",
+    atmosphere.current.toFixed(3)
+  );
+
+},
+
   update() {
 
      this.updatePointer();
@@ -99,44 +145,13 @@ pointer: {
      const pointer =
   this.pointer;
 
+this.updateAtmosphere();
+
 const atmosphere =
   this.atmosphere;
 
 const energy =
   pointer.energy;
-
-     atmosphere.target =
-
-  pointer.velocity > 0.04
-
-    ? energy
-
-    : 0;
-
-atmosphere.current +=
-  (
-    atmosphere.target -
-    atmosphere.current
-  ) * 0.022;
-
-atmosphere.pulse =
-
-  Math.sin(
-    performance.now() * 0.00032
-  ) * 0.5 + 0.5;
-
-atmosphere.breathing =
-
-  (
-    atmosphere.pulse * 0.12
-  ) *
-
-  atmosphere.current;
-
-   document.body.style.setProperty(
-  "--globalAtmosphere",
-  atmosphere.current.toFixed(3)
-);
 
  
 /* =========================
