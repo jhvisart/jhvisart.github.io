@@ -399,6 +399,15 @@ card.currentX +=
 card.currentY +=
   card.velocityY + (microMotion * 0.7);
 
+     
+
+    });
+   },
+
+  renderCards() {
+
+  this.cards.forEach(card => {
+
       card.el.style.setProperty(
         "--tiltX",
         `${card.currentX}deg`
@@ -476,11 +485,10 @@ card.el.style.setProperty(
         "--magneticY",
         `${card.magneticCurrentY}px`
       );
-
     });
-   },
-
-  update() {
+  },
+   
+   update() {
 
      this.updatePointer();
 
@@ -496,6 +504,8 @@ const energy =
   pointer.energy;
 
  this.updateCards();
+
+ this.renderCards();
 
 
     /* =========================
