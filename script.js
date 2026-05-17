@@ -131,16 +131,16 @@ const centerX = rect.left + rect.width * 0.5;
 const centerY = rect.top + rect.height * 0.5;
 
 const dx =
-  VISART_ENGINE.pointer.x - centerX;
+  pointer.x - centerX;
 
 const dy =
-  VISART_ENGINE.pointer.y - centerY;
+  pointer.y - centerY;
 
  const localX =
-  VISART_ENGINE.pointer.x - rect.left;
+  pointer.x - rect.left;
 
 const localY =
-  VISART_ENGINE.pointer.y - rect.top;
+  pointer.y - rect.top;
 
 const percentX =
   localX / rect.width;
