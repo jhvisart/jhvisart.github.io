@@ -459,21 +459,24 @@ card.el.style.setProperty(
     /* =========================
        HERO
     ========================= */
+     const hero =
+     this.hero;
+    
+     
+     if (this.hero) {
 
-    if (this.hero) {
+        hero.currentX +=
+        (hero.targetX - hero.currentX) * 0.032;
 
-      this.hero.currentX +=
-        (this.hero.targetX - this.hero.currentX) * 0.032;
+        hero.currentY +=
+        (hero.targetY - hero.currentY) * 0.032;
 
-      this.hero.currentY +=
-        (this.hero.targetY - this.hero.currentY) * 0.032;
-
-      this.hero.el.style.setProperty(
+      hero.el.style.setProperty(
       "--atmosphere",
       this.atmosphere.breathing.toFixed(3)
       );
        
-       this.hero.el.style.transform = `
+       hero.el.style.transform = `
         perspective(900px)
        rotateY(${this.hero.currentX * 0.9}deg)
        rotateX(${this.hero.currentY * 0.9}deg)
