@@ -63,7 +63,38 @@ pointer: {
 
   },
 
+   updatePointer() {
+
+  const pointer =
+    this.pointer;
+
+  const targetEnergy =
+
+    pointer.velocity *
+
+    (
+      pointer.velocity > 0.08
+        ? 1
+        : 0.35
+    );
+
+  pointer.energy +=
+    (
+      targetEnergy -
+      pointer.energy
+    ) * 0.018;
+
+  pointer.x +=
+    (pointer.targetX - pointer.x) * 0.11;
+
+  pointer.y +=
+    (pointer.targetY - pointer.y) * 0.11;
+
+},
+
   update() {
+
+     this.updatePointer();
 
      const pointer =
   this.pointer;
@@ -107,31 +138,7 @@ atmosphere.breathing =
   atmosphere.current.toFixed(3)
 );
 
-    /* =========================
-       CARDS
-    ========================= */
-  const targetEnergy =
-
-  pointer.velocity *
-
-  (
-    pointer.velocity > 0.08
-      ? 1
-      : 0.35
-  );
-
-pointer.energy +=
-  (
-    targetEnergy -
-    pointer.energy
-  ) * 0.018;
-     
-   pointer.x +=
-  (pointer.targetX - pointer.x) * 0.11;
-
-pointer.y +=
-  (pointer.targetY - this.pointer.y) * 0.11;
-    
+ 
 /* =========================
    CARD PHYSICS LOOP
 ========================= */
