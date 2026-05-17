@@ -393,7 +393,7 @@ card.currentY +=
 
        card.el.style.setProperty(
          "--energy",
-    VISART_ENGINE.pointer.energy.toFixed(3)
+    energy.toFixed(3)
       );
 
     card.el.style.setProperty(
@@ -408,9 +408,9 @@ card.currentY +=
 
 const restEnergy =
 
-  VISART_ENGINE.pointer.energy > 0.025
+  energy > 0.025
 
-    ? VISART_ENGINE.pointer.energy * 0.52
+    ? energy * 0.52
 
     : 0;
 
