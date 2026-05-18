@@ -514,6 +514,35 @@ style.setProperty(
       );
     });
   },
+
+   updateHero() {
+
+  const hero =
+    this.hero;
+
+  const atmosphere =
+    this.atmosphere;
+
+  if (!hero) return;
+
+  hero.currentX +=
+    (hero.targetX - hero.currentX) * 0.032;
+
+  hero.currentY +=
+    (hero.targetY - hero.currentY) * 0.032;
+
+  hero.el.style.setProperty(
+    "--atmosphere",
+    atmosphere.breathing.toFixed(3)
+  );
+
+  hero.el.style.transform = `
+    perspective(900px)
+    rotateY(${hero.currentX * 0.9}deg)
+    rotateX(${hero.currentY * 0.9}deg)
+  `;
+
+},
    
    update() {
 
@@ -538,36 +567,7 @@ const energy =
  this.renderCards();
 
 
-    /* =========================
-       HERO
-    ========================= */
-     const hero =
-     this.hero;
-
-     /* =========================
-   HERO ATMOSPHERIC LOOP
-========================= */
-     
-     if (this.hero) {
-
-        hero.currentX +=
-        (hero.targetX - hero.currentX) * 0.032;
-
-        hero.currentY +=
-        (hero.targetY - hero.currentY) * 0.032;
-
-      hero.el.style.setProperty(
-      "--atmosphere",
-      atmosphere.breathing.toFixed(3)
-      );
-       
-       hero.el.style.transform = `
-        perspective(900px)
-       rotateY(${hero.currentX * 0.9}deg)
-       rotateX(${hero.currentY * 0.9}deg)
-      `;
-
-    }
+   this.updateHero();
 
   }
 
