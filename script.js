@@ -92,7 +92,7 @@ pointer: {
 
 },
 
-updateAtmosphere() {
+updateAtmosphere(time) {
 
   const pointer =
     this.pointer;
@@ -120,7 +120,7 @@ updateAtmosphere() {
   atmosphere.pulse =
 
     Math.sin(
-      performance.now() * 0.00032
+      time * 0.00032
     ) * 0.5 + 0.5;
 
   atmosphere.breathing =
@@ -506,12 +506,15 @@ card.el.style.setProperty(
    
    update() {
 
+   const time =
+  performance.now();
+
      this.updatePointer();
 
      const pointer =
   this.pointer;
 
-this.updateAtmosphere();
+this.updateAtmosphere(time);
 
 const atmosphere =
   this.atmosphere;
