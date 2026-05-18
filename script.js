@@ -199,7 +199,7 @@ const maxDistance = 420;
 
 const fieldInfluence =
 
-  VISART_ENGINE.pointer.energy *
+  pointer.energy *
 
   (
     0.08 +
@@ -219,7 +219,7 @@ card.proximity =
 
 const ambientBleed =
 
-  VISART_ENGINE.cards.reduce(
+  this.cards.reduce(
 
     (acc, otherCard) => {
 
@@ -319,7 +319,7 @@ card.currentY +=
 
   Math.max(
     0.08,
-    VISART_ENGINE.pointer.energy
+    pointer.energy
   );
 
 const ambientStillness =
@@ -355,7 +355,7 @@ card.currentY += ambientFloat;
     
  const adaptiveSpeed =
   card.speed +
-  (VISART_ENGINE.pointer.energy * 0.12);
+  (pointer.energy * 0.12);
 
 const forceX =
   (card.targetX - card.currentX) * adaptiveSpeed;
@@ -372,7 +372,7 @@ const adaptiveDamping =
 
   (card.proximity * 0.018) -
 
-  (VISART_ENGINE.pointer.energy * 0.012);
+  (pointer.energy * 0.012);
 
 card.velocityX *= adaptiveDamping;
 card.velocityY *= adaptiveDamping;
