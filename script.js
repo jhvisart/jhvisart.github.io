@@ -424,32 +424,35 @@ card.currentY +=
 
   this.cards.forEach(card => {
 
-      card.el.style.setProperty(
+     const style =
+  card.el.style;
+
+      style.setProperty(
         "--tiltX",
         `${card.currentX}deg`
       );
 
-      card.el.style.setProperty(
+      style.setProperty(
         "--tiltY",
         `${card.currentY}deg`
       );
 
-       card.el.style.setProperty(
+       style.setProperty(
          "--proximity",
        card.proximity.toFixed(3)
       );
 
-       card.el.style.setProperty(
+       style.setProperty(
          "--energy",
     energy.toFixed(3)
       );
 
-    card.el.style.setProperty(
+    style.setProperty(
       "--mx",
       `${card.lightCurrentX}%`
      );
 
-   card.el.style.setProperty(
+   style.setProperty(
      "--my",
     `${card.lightCurrentY}%`
     );
@@ -487,17 +490,17 @@ const lightBreath =
 
   idleField * 0.018;
 
-card.el.style.setProperty(
+style.setProperty(
   "--breath",
   lightBreath.toFixed(3)
 );
 
-      card.el.style.setProperty(
+      style.setProperty(
         "--magneticX",
         `${card.magneticCurrentX}px`
       );
 
-      card.el.style.setProperty(
+      style.setProperty(
         "--magneticY",
         `${card.magneticCurrentY}px`
       );
