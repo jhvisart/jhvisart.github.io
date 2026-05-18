@@ -138,7 +138,7 @@ updateAtmosphere(time) {
 
 },
 
-   updateCards() {
+   updateCards(time) {
 
   const pointer =
     this.pointer;
@@ -297,13 +297,13 @@ card.magneticCurrentY +=
 
  card.currentX +=
   Math.sin(
-    performance.now() * 0.0015 +
+    time * 0.0015 +
     distance * 0.01
   ) * fieldInfluence * 0.015;
 
 card.currentY +=
   Math.cos(
-    performance.now() * 0.0012 +
+    time * 0.0012 +
     distance * 0.008
   ) * fieldInfluence * 0.015;
 
@@ -325,7 +325,7 @@ const ambientFloat =
 
   Math.sin(
 
-    performance.now() * 0.00018 +
+    time * 0.00018 +
 
     card.floatSeed +
 
@@ -397,7 +397,7 @@ const microMotion =
 
   Math.sin(
 
-    performance.now() * 0.00032 +
+    time * 0.00032 +
 
     card.floatSeed
 
@@ -465,7 +465,7 @@ const restEnergy =
 const idleField =
 
   Math.sin(
-    performance.now() * 0.00022 +
+    time * 0.00022 +
     card.floatSeed
   ) *
 
@@ -477,7 +477,7 @@ const lightBreath =
 
   (
     Math.sin(
-      performance.now() * 0.00045
+      time * 0.00045
     ) * 0.5 + 0.5
   ) *
 
@@ -522,7 +522,7 @@ const atmosphere =
 const energy =
   pointer.energy;
 
- this.updateCards();
+ this.updateCards(time);
 
  this.renderCards();
 
