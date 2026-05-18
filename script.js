@@ -21,7 +21,9 @@ pointer: {
 
   velocity: 0,
 
-  energy: 0
+  energy: 0,
+
+   smoothedVelocity: 0
 },
 
   running: false,
@@ -68,9 +70,15 @@ pointer: {
   const pointer =
     this.pointer;
 
+   pointer.smoothedVelocity +=
+  (
+    pointer.velocity -
+    pointer.smoothedVelocity
+  ) * 0.12;
+
   const targetEnergy =
 
-    pointer.velocity *
+    pointer.smoothedVelocity *
 
     (
       pointer.velocity > 0.08
