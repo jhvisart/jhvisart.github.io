@@ -163,8 +163,15 @@ updateAtmosphere(time) {
    SPATIAL ANALYSIS
 ========================= */
 
- const rect = 
+if (!card.rect) {
+
+  card.rect =
     card.el.getBoundingClientRect();
+
+}
+
+const rect =
+  card.rect;
 
 const centerX = 
    rect.left + rect.width * 0.5;
@@ -851,6 +858,8 @@ function iniciarTiltCard(card) {
   const engineCard = {
 
   el: card,
+
+   rect: null,
 
   currentX,
   currentY,
