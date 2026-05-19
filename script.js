@@ -160,10 +160,14 @@ updateAtmosphere(time) {
    SPATIAL ANALYSIS
 ========================= */
 
- const rect = card.el.getBoundingClientRect();
+ const rect = 
+    card.el.getBoundingClientRect();
 
-const centerX = rect.left + rect.width * 0.5;
-const centerY = rect.top + rect.height * 0.5;
+const centerX = 
+   rect.left + rect.width * 0.5;
+     
+const centerY = 
+   rect.top + rect.height * 0.5;
 
 const dx =
   pointer.x - centerX;
@@ -183,8 +187,11 @@ const percentX =
 const percentY =
   localY / rect.height;
 
-card.lightX = percentX * 100;
-card.lightY = percentY * 100;
+card.lightX = 
+   percentX * 100;
+     
+card.lightY = 
+   percentY * 100;
 
 card.lightCurrentX +=
   (card.lightX - card.lightCurrentX) * 0.08;
@@ -195,7 +202,8 @@ card.lightCurrentY +=
 const distance =
   Math.sqrt(dx * dx + dy * dy);
 
-const maxDistance = 420;
+const maxDistance = 
+   420;
 
 const fieldInfluence =
 
@@ -208,7 +216,10 @@ const fieldInfluence =
   );
 
 const normalizedDistance =
-  Math.max(0, 1 - distance / maxDistance);
+  Math.max(
+     0, 
+     1 - distance / maxDistance
+  );
 
 card.proximity =
 
@@ -234,15 +245,21 @@ const ambientBleed =
       const oy =
         otherRect.top + otherRect.height * 0.5;
 
-      const ddx = centerX - ox;
-      const ddy = centerY - oy;
+      const ddx = 
+         centerX - ox;
+       
+      const ddy = 
+         centerY - oy;
 
       const dist =
-        Math.sqrt(ddx * ddx + ddy * ddy);
+        Math.sqrt(
+           ddx * ddx + ddy * ddy);
 
       return (
         acc +
-        Math.max(0, 1 - dist / 420) *
+        Math.max(
+           0,
+           1 - dist / 420) *
         otherCard.proximity *
         0.018
       );
@@ -253,10 +270,13 @@ const ambientBleed =
 
   );
 
-card.proximity += ambientBleed;
+card.proximity += 
+   ambientBleed;
 
     card.priority =
-  Math.pow(card.proximity, 2.1);
+  Math.pow(
+     card.proximity,
+     2.1);
 
      /* =========================
    MAGNETIC FIELD
@@ -430,6 +450,9 @@ card.currentY +=
 
   renderCards() {
 
+     const energy =
+  this.pointer.energy;
+
   this.cards.forEach(card => {
 
      const style =
@@ -443,6 +466,16 @@ card.currentY +=
       style.setProperty(
         "--tiltY",
         `${card.currentY}deg`
+      );
+
+        style.setProperty(
+        "--magneticX",
+        `${card.magneticCurrentX}px`
+      );
+
+      style.setProperty(
+        "--magneticY",
+        `${card.magneticCurrentY}px`
       );
 
        style.setProperty(
@@ -503,15 +536,7 @@ style.setProperty(
   lightBreath.toFixed(3)
 );
 
-      style.setProperty(
-        "--magneticX",
-        `${card.magneticCurrentX}px`
-      );
-
-      style.setProperty(
-        "--magneticY",
-        `${card.magneticCurrentY}px`
-      );
+   
     });
   },
 
