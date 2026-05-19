@@ -154,6 +154,9 @@ updateAtmosphere(time) {
   const energy =
     pointer.energy;
 
+      card.energy =
+  energy;
+
   this.cards.forEach(card => {
 
      /* =========================
@@ -450,8 +453,7 @@ card.currentY +=
 
   renderCards() {
 
-     const energy =
-  this.pointer.energy;
+    
 
   this.cards.forEach(card => {
 
@@ -485,7 +487,7 @@ card.currentY +=
 
        style.setProperty(
          "--energy",
-    energy.toFixed(3)
+    card.energy.toFixed(3)
       );
 
     style.setProperty(
