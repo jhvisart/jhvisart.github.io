@@ -179,6 +179,9 @@ const centerX =
 const centerY = 
    rect.top + rect.height * 0.5;
 
+card.centerX = centerX;
+card.centerY = centerY;
+
 const dx =
   pointer.x - centerX;
 
@@ -246,14 +249,11 @@ const ambientBleed =
 
       if (otherCard === card) return acc;
 
-      const otherRect =
-        otherCard.el.getBoundingClientRect();
-
       const ox =
-        otherRect.left + otherRect.width * 0.5;
+  otherCard.centerX || 0;
 
-      const oy =
-        otherRect.top + otherRect.height * 0.5;
+const oy =
+  otherCard.centerY || 0;
 
       const ddx = 
          centerX - ox;
