@@ -92,6 +92,20 @@ pointer: {
       pointer.energy
     ) * 0.018;
 
+      pointer.heroAuthority =
+
+  Math.max(
+    0,
+    1 - (pointer.energy * 1.8)
+  );
+
+pointer.cardsAuthority =
+
+  Math.min(
+    1,
+    0.35 + (pointer.energy * 1.4)
+  );
+
   pointer.x +=
     (pointer.targetX - pointer.x) * 0.11;
 
@@ -218,9 +232,12 @@ const distance =
 const maxDistance = 
    420;
 
+const authority =
+  pointer.cardsAuthority;
+
 const fieldInfluence =
 
-  pointer.energy *
+  (pointer.energy * authority) *
 
   (
     0.08 +
@@ -534,11 +551,20 @@ style.setProperty(
 
   if (!hero) return;
 
-  hero.currentX +=
-    (hero.targetX - hero.currentX) * 0.032;
+ const authority =
+  this.pointer.heroAuthority;
 
-  hero.currentY +=
-    (hero.targetY - hero.currentY) * 0.032;
+hero.currentX +=
+  (
+    (hero.targetX * authority) -
+    hero.currentX
+  ) * 0.032;
+
+hero.currentY +=
+  (
+    (hero.targetY * authority) -
+    hero.currentY
+  ) * 0.032;
 
   hero.el.style.setProperty(
     "--atmosphere",
