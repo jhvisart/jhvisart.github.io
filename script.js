@@ -906,11 +906,14 @@ VISART_ENGINE.addCard(engineCard);
 
     const point = visartGetPoint(e);
 
+     const pointer =
+  VISART_ENGINE.pointer;
+
    const px =
-  (VISART_ENGINE.pointer.x - rect.left) / rect.width;
+  (pointer.x - rect.left) / rect.width;
 
 const py =
-  (VISART_ENGINE.pointer.y - rect.top) / rect.height;
+  (pointer.y - rect.top) / rect.height;
 
 const centeredX = (px - 0.5);
 const centeredY = (py - 0.5);
