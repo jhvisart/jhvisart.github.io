@@ -468,45 +468,19 @@ card.currentY +=
      const style =
   card.el.style;
 
-      style.setProperty(
-        "--tiltX",
-        `${card.currentX}deg`
-      );
+     style.cssText += `
+  --tiltX:${card.currentX}deg;
+  --tiltY:${card.currentY}deg;
 
-      style.setProperty(
-        "--tiltY",
-        `${card.currentY}deg`
-      );
+  --magneticX:${card.magneticCurrentX}px;
+  --magneticY:${card.magneticCurrentY}px;
 
-        style.setProperty(
-        "--magneticX",
-        `${card.magneticCurrentX}px`
-      );
+  --proximity:${card.proximity.toFixed(3)};
+  --energy:${card.energy.toFixed(3)};
 
-      style.setProperty(
-        "--magneticY",
-        `${card.magneticCurrentY}px`
-      );
-
-       style.setProperty(
-         "--proximity",
-       card.proximity.toFixed(3)
-      );
-
-       style.setProperty(
-         "--energy",
-    card.energy.toFixed(3)
-      );
-
-    style.setProperty(
-      "--mx",
-      `${card.lightCurrentX}%`
-     );
-
-   style.setProperty(
-     "--my",
-    `${card.lightCurrentY}%`
-    );
+  --mx:${card.lightCurrentX}%;
+  --my:${card.lightCurrentY}%;
+`;
 
 const restEnergy =
 
