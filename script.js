@@ -352,15 +352,15 @@ card.magneticCurrentY +=
 
  card.currentX +=
   Math.sin(
-    time * 0.0015 +
-    distance * 0.01
-  ) * fieldInfluence * 0.015;
+    time * 0.0011 +
+    distance * 0.006
+  ) * fieldInfluence * 0.008;
 
 card.currentY +=
   Math.cos(
-    time * 0.0012 +
-    distance * 0.008
-  ) * fieldInfluence * 0.015;
+    time * 0.0010 +
+    distance * 0.005
+  ) * fieldInfluence * 0.008;
 
   const restDecay =
 
@@ -380,15 +380,15 @@ const ambientFloat =
 
   Math.sin(
 
-    time * 0.00018 +
+    time * 0.00016 +
 
     card.floatSeed +
 
-    distance * 0.0002
+    distance * 0.00016
 
   ) *
 
-  0.0022 *
+  0.0012 *
 
   card.floatIntensity *
 
@@ -433,10 +433,10 @@ card.velocityY *= 0.985;
 
 const residualEnergy =
 
-  energy > 0.085
+  energy > 0.11
 
     ? (
-        energy - 0.085
+        energy - 0.11
       )
 
     : 0;
