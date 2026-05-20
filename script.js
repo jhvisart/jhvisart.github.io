@@ -1346,4 +1346,25 @@ function getCssVar(nombre) {
   );
 }
 
+window.addEventListener("resize", () => {
+
+  VISART_ENGINE.cards.forEach(card => {
+
+    card.rect = null;
+
+  });
+
+});
+
+window.addEventListener("orientationchange", () => {
+
+  VISART_ENGINE.cards.forEach(card => {
+
+    card.rect = null;
+
+  });
+
+});
+
+
 VISART_ENGINE.start();
