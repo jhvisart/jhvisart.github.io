@@ -976,7 +976,7 @@ engineCard.targetX =
     passive: true
   });
 
-  card.addEventListener("pointerleave", () => {
+ function handlePointerLeave() {
 
   engineCard.hover = false;
 
@@ -996,7 +996,12 @@ engineCard.targetX =
 
   }, 120);
 
-});
+}
+
+   card.addEventListener(
+  "pointerleave",
+  handlePointerLeave
+   );
 }
 
 
