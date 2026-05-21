@@ -58,6 +58,24 @@ pointer: {
 
    modulation: {
 
+   audioEngine: {
+
+  enabled: false,
+
+  initialized: false,
+
+  energy: 0,
+
+  bass: 0,
+
+  mids: 0,
+
+  highs: 0,
+
+  cinematicWeight: 0
+
+},
+
   audio: 0,
 
   cinematic: 0,
@@ -170,19 +188,31 @@ updateAtmosphere(time) {
   const energy =
     pointer.energy;
 
+   const audioEnergy =
+
+  this.audioEngine.energy;
+
   atmosphere.target =
 
+  (
     pointer.velocity > 0.04
 
       ? energy
 
-      : 0;
+      : 0
 
-  atmosphere.current +=
-    (
-      atmosphere.target -
-      atmosphere.current
-    ) * 0.022;
+  ) +
+
+  (audioEnergy * 0.42);
+
+ atmosphere.current +=
+(
+  Math.min(
+    atmosphere.target,
+    1
+  ) -
+  atmosphere.current
+) * 0.022;
 
   atmosphere.pulse =
 
