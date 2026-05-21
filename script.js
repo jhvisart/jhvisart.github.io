@@ -4,6 +4,20 @@
 
 const VISART_ENGINE = {
 
+   settings: {
+
+  maxEnergy: 1,
+
+  maxTilt: 22,
+
+  cinematicSilence: 0.11,
+
+  atmosphereCompression: 0.022,
+
+  magneticCompression: 0.034
+
+},
+
   cards: [],
 
   hero: null,
@@ -28,9 +42,31 @@ pointer: {
 
   running: false,
 
+   state: {
+
+  mode: "stable",
+
+  scene: "default",
+
+  interaction: "idle"
+
+},
+
    isVisible: true,
 
    atmosphere: {
+
+   modulation: {
+
+  audio: 0,
+
+  cinematic: 0,
+
+  tension: 0,
+
+  ambience: 0
+
+},
 
   current: 0,
   target: 0,
