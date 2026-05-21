@@ -60,6 +60,16 @@ pointer: {
 
    audioEngine: {
 
+   context: null,
+
+analyser: null,
+
+source: null,
+
+dataArray: null,
+
+fftSize: 512,
+
   enabled: false,
 
   initialized: false,
@@ -177,7 +187,82 @@ pointer.cardsAuthority =
 
 },
 
-updateAtmosphere(time) {
+ updateAudio() {
+
+  const audio =
+    this.audioEngine;
+
+  if (
+    !audio.enabled ||
+    !audio.analyser ||
+    !audio.dataArray
+  ) {
+    return;
+  }
+
+  audio.analyser.getByteFrequencyData(
+    audio.dataArray
+  );
+
+  let bass = 0;
+  let mids = 0;
+  let highs = 0;
+
+  const buffer =
+    audio.dataArray;
+
+  const length =
+    buffer.length;
+
+  for (let i = 0; i < length; i++) {
+
+    const value =
+      buffer[i] / 255;
+
+    if (i < length * 0.12) {
+      bass += value;
+    }
+
+    else if (i < length * 0.45) {
+      mids += value;
+    }
+
+    else {
+      highs += value;
+    }
+
+  }
+
+  bass /= length * 0.12;
+  mids /= length * 0.33;
+  highs /= length * 0.55;
+
+  audio.bass +=
+    (bass - audio.bass) * 0.12;
+
+  audio.mids +=
+    (mids - audio.mids) * 0.08;
+
+  audio.highs +=
+    (highs - audio.highs) * 0.06;
+
+  const totalEnergy =
+
+    (
+      audio.bass * 0.52 +
+      audio.mids * 0.32 +
+      audio.highs * 0.16
+    );
+
+  audio.energy +=
+    (
+      totalEnergy -
+      audio.energy
+    ) * 0.08;
+
+}
+   
+   updateAtmosphere(time) {
 
   const pointer =
     this.pointer;
@@ -693,6 +778,8 @@ hero.currentY +=
 }
 
      this.updatePointer();
+
+      this.updateAudio();
 
      const pointer =
   this.pointer;
