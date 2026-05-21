@@ -662,6 +662,11 @@ window.addEventListener(
 
     VISART_ENGINE.isVisible = true;
 
+    VISART_ENGINE.pointer.velocity = 0;
+    VISART_ENGINE.pointer.energy = 0;
+
+    VISART_ENGINE.pointer.smoothedVelocity = 0;
+
   }
 );
 
@@ -747,12 +752,18 @@ const y =
 
 }, { passive: true });
 
-window.addEventListener("pointerleave", () => {
+window.addEventListener(
+  "pointerleave",
+  () => {
 
-  heroData.targetX = 0;
-  heroData.targetY = 0;
+    heroData.targetX = 0;
+    heroData.targetY = 0;
 
-});
+    VISART_ENGINE.pointer.velocity *= 0.4;
+    VISART_ENGINE.pointer.energy *= 0.6;
+
+  }
+);
   
 }
 
@@ -956,10 +967,22 @@ VISART_ENGINE.addCard(engineCard);
   VISART_ENGINE.pointer;
 
    const px =
-  (pointer.x - rect.left) / rect.width;
+  Math.min(
+    1,
+    Math.max(
+      0,
+      (pointer.x - rect.left) / rect.width
+    )
+  );
 
 const py =
-  (pointer.y - rect.top) / rect.height;
+  Math.min(
+    1,
+    Math.max(
+      0,
+      (pointer.y - rect.top) / rect.height
+    )
+  );
 
 const centeredX = (px - 0.5);
 const centeredY = (py - 0.5);
