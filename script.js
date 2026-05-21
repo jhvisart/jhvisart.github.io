@@ -28,6 +28,8 @@ pointer: {
 
   running: false,
 
+   isVisible: true,
+
    atmosphere: {
 
   current: 0,
@@ -589,6 +591,14 @@ hero.currentY +=
    const time =
   performance.now();
 
+   if (!this.isVisible) {
+
+  this.pointer.energy *= 0.92;
+
+  return;
+
+}
+
      this.updatePointer();
 
      const pointer =
@@ -626,6 +636,34 @@ function visartGetPoint(e) {
     y: touch ? touch.clientY : e.clientY
   };
 }
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    VISART_ENGINE.isVisible =
+      !document.hidden;
+
+  }
+);
+
+window.addEventListener(
+  "blur",
+  () => {
+
+    VISART_ENGINE.isVisible = false;
+
+  }
+);
+
+window.addEventListener(
+  "focus",
+  () => {
+
+    VISART_ENGINE.isVisible = true;
+
+  }
+);
 
 document.addEventListener("DOMContentLoaded", () => {
 
