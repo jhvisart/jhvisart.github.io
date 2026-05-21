@@ -177,10 +177,15 @@ this.cards.forEach(card => {
    SPATIAL ANALYSIS
 ========================= */
 
-if (!card.rect) {
+if (
+  !card.rect ||
+  card.needsRectUpdate
+) {
 
   card.rect =
     card.el.getBoundingClientRect();
+
+  card.needsRectUpdate = false;
 
 }
 
@@ -860,6 +865,8 @@ function iniciarTiltCard(card) {
 
   el: card,
 
+   needsRectUpdate: true,
+
    rect: null,
 
   currentX,
@@ -1230,7 +1237,36 @@ function iniciarParticulasV() {
   }
 
   resize();
-  window.addEventListener("resize", resize, { passive: true });
+  window.addEventListener(
+     "resize", 
+     resize, 
+     { passive: true }
+  );
+
+ window.addEventListener(
+  "resize",
+  () => {
+
+    VISART_ENGINE.cards.forEach(card => {
+      card.needsRectUpdate = true;
+    });
+
+  },
+  { passive: true }
+);
+
+window.addEventListener(
+  "orientationchange",
+  () => {
+
+    VISART_ENGINE.cards.forEach(card => {
+      card.needsRectUpdate = true;
+    });
+
+  },
+  { passive: true }
+);
+   
   animar();
 }
 
