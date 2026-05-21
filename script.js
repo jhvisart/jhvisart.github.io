@@ -94,6 +94,13 @@ pointer: {
       pointer.energy
     ) * 0.018;
 
+      pointer.energy =
+
+  Math.min(
+    pointer.energy,
+    1
+  );
+
       pointer.heroAuthority =
 
   Math.max(
@@ -307,10 +314,18 @@ const oy =
 card.proximity += 
    ambientBleed;
 
-    card.priority =
-  Math.pow(
-     card.proximity,
-     2.1);
+   card.priority =
+
+  Math.min(
+
+    1,
+
+    Math.pow(
+      card.proximity,
+      2.1
+    )
+
+  );
 
      /* =========================
    MAGNETIC FIELD
@@ -472,10 +487,22 @@ const microMotion =
   residualEnergy;
 
 card.currentX +=
-  card.velocityX + microMotion;
+  Math.max(
+    -22,
+    Math.min(
+      22,
+      card.velocityX + microMotion
+    )
+  );
 
 card.currentY +=
-  card.velocityY + (microMotion * 0.7);
+  Math.max(
+    -22,
+    Math.min(
+      22,
+      card.velocityY + (microMotion * 0.7)
+    )
+  );
 
      
 
