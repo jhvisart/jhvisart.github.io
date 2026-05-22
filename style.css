@@ -758,10 +758,7 @@ filter:
 
 .project-card {
   position: relative;
-  overflow: hidden;
-
-  contain:
-  layout paint;
+  overflow: visible;
 
 backface-visibility: hidden;
 
@@ -872,7 +869,7 @@ background:
   preserve-3d;
 
 contain:
-  layout paint style;
+  layout style;
 
   isolation: isolate;
 opacity:
