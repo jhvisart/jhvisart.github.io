@@ -54,21 +54,29 @@ pointer: {
 
    isVisible: true,
 
-   atmosphere: {
-
    modulation: {
 
-   audioEngine: {
+  audio: 0,
 
-   context: null,
+  cinematic: 0,
 
-analyser: null,
+  tension: 0,
 
-source: null,
+  ambience: 0
 
-dataArray: null,
+},
 
-fftSize: 512,
+audioEngine: {
+
+  context: null,
+
+  analyser: null,
+
+  source: null,
+
+  dataArray: null,
+
+  fftSize: 512,
 
   enabled: false,
 
@@ -86,17 +94,10 @@ fftSize: 512,
 
 },
 
-  audio: 0,
-
-  cinematic: 0,
-
-  tension: 0,
-
-  ambience: 0
-
-},
+atmosphere: {
 
   current: 0,
+
   target: 0,
 
   pulse: 0,
@@ -260,7 +261,7 @@ pointer.cardsAuthority =
       audio.energy
     ) * 0.08;
 
-}
+},
    
    updateAtmosphere(time) {
 
