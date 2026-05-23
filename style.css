@@ -835,9 +835,15 @@ background:
 
   scale(1)
 
-  rotateX(var(--tiltX, 0deg))
+ rotateX(var(--tiltX, 0deg))
 
-  rotateY(var(--tiltY, 0deg));
+rotateY(var(--tiltY, 0deg))
+
+rotateZ(
+  calc(
+    var(--tiltY, 0deg) * 0.018
+  )
+);
 
   transition:
     transform 0.72s cubic-bezier(.22,.61,.36,1),
@@ -1448,7 +1454,7 @@ opacity:
 isolation: isolate;
 
 transform:
-  translateZ(0);
+  translateZ(8px);
 
 will-change:
   transform;
