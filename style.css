@@ -1665,14 +1665,16 @@ blur(
     );
 
   opacity:
-  calc(
+calc(
 
-    0.42 +
+  0.34 +
 
-    (var(--proximity) * 0.18) +
+  (var(--proximity) * 0.22) +
 
-    (var(--energy) * 0.04)
-  );
+  (var(--energy) * 0.05) +
+
+  (var(--foregroundAuthority, 0) * 0.16)
+);
 
   transition:
     opacity .55s ease,
@@ -1681,10 +1683,24 @@ blur(
   mix-blend-mode: normal;
 
   transform:
+
     translate3d(
-      calc(var(--magneticX, 0px) * -0.04),
-      calc(var(--magneticY, 0px) * -0.04),
+      calc(var(--magneticX, 0px) * -0.08),
+      calc(var(--magneticY, 0px) * -0.08),
       0
+    )
+
+    translateZ(
+      calc(
+        var(--foregroundAuthority, 0) * 16px
+      )
+    )
+
+    scale(
+      calc(
+        1 +
+        (var(--foregroundAuthority, 0) * 0.012)
+      )
     );
 
   will-change:
