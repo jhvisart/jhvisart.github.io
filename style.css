@@ -1366,9 +1366,9 @@ backface-visibility: hidden;
 
   position: absolute;
 
-  inset: -42px;
+  inset: -24px;
 
-  border-radius: 64px;
+  border-radius: 42px;
   mix-blend-mode: plus-lighter;
   clip-path:
   inset(
@@ -1408,7 +1408,7 @@ opacity:
   filter:
   blur(
     calc(
-      58px +
+      34px +
       (var(--energy) * 18px)
     )
   );
