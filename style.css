@@ -886,9 +886,20 @@ opacity:
   position: absolute;
 
   transform:
-    translateZ(92px)
-    translateX(calc(var(--tiltY, 0deg) * 0.016))
-    translateY(calc(var(--tiltX, 0deg) * -0.016));
+
+  translateZ(92px)
+
+  translateX(
+    calc(var(--tiltY, 0deg) * 0.16)
+  )
+
+  translateY(
+    calc(var(--tiltX, 0deg) * -0.16)
+  )
+
+  rotateZ(
+    calc(var(--tiltY, 0deg) * 0.024)
+  );
   top: 12px;
   left: 12px;
   padding: 6px 11px;
@@ -908,18 +919,25 @@ opacity:
   z-index: 2;
 
   transform:
-    translateZ(
-  calc(
-    58px +
-    (var(--proximity) * 24px)
-  )
-)
-    translateX(
-      calc(var(--tiltY, 0deg) * 0.09)
+
+  translateZ(
+    calc(
+      58px +
+      (var(--proximity) * 24px)
     )
-    translateY(
-      calc(var(--tiltX, 0deg) * -0.09)
-    );
+  )
+
+  translateX(
+    calc(var(--tiltY, 0deg) * 0.09)
+  )
+
+  translateY(
+    calc(var(--tiltX, 0deg) * -0.09)
+  )
+
+  rotateZ(
+    calc(var(--tiltY, 0deg) * 0.012)
+  );
 
   padding: 22px 20px;
 
