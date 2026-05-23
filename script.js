@@ -683,7 +683,15 @@ card.currentY +=
 
   --mx:${card.lightCurrentX}%;
   --my:${card.lightCurrentY}%;
-`;
+
+  --depthShiftX:${(
+  card.currentY * 0.045
+  ).toFixed(2)}px;
+
+  --depthShiftY:${(
+  card.currentX * -0.045
+  ).toFixed(2)}px;
+  `;
 
 const restEnergy =
 
