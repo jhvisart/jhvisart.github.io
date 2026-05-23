@@ -1339,10 +1339,10 @@ background:
 
   radial-gradient(
 
-    circle at
+   circle at
 
-    calc(var(--mx, 50%) + 6%)
-    calc(var(--my, 30%) - 4%),
+calc(var(--haloX, 50%) + 4%)
+calc(var(--haloY, 30%) - 3%),
 
     color-mix(
       in srgb,
@@ -1457,7 +1457,9 @@ backface-visibility: hidden;
 
   background:
     radial-gradient(
-      circle at var(--mx, 50%) var(--my, 50%),
+      circle at
+   var(--haloX, 50%)
+   var(--haloY, 50%),
 
       color-mix(
         in srgb,
