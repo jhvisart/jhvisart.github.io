@@ -1370,17 +1370,17 @@ calc(var(--haloY, 30%) - 3%),
     rgba(0,0,0,.08)
   );
 
- opacity:
-  calc(
+opacity:
+calc(
 
-    0.015 +
+  0.045 +
 
-    (var(--proximity) * 0.34) +
+  (var(--proximity) * 0.24) +
 
-    (var(--energy) * 0.08) +
+  (var(--energy) * 0.06) +
 
-    (var(--breath) * 0.05)
-  );
+  (var(--foregroundAuthority, 0) * 0.08)
+);
 transition:
 
   opacity .9s ease,
@@ -1393,15 +1393,29 @@ transition:
  mix-blend-mode: plus-lighter;
   filter:
 
-  blur(
-    calc(
-      42px +
-      (var(--energy) * 18px) +
-      (var(--breath) * 12px)
-    )
+blur(
+  calc(
+    22px +
+    (var(--energy) * 10px) +
+    (var(--breath) * 6px)
   )
+)
 
-  saturate(1.12);
+brightness(
+  calc(
+    1.02 +
+    (var(--foregroundAuthority, 0) * 0.12)
+  )
+)
+
+contrast(
+  calc(
+    1.08 +
+    (var(--depthPresence, 0) * 0.08)
+  )
+)
+
+saturate(1.18);
 
   will-change: transform, opacity;
 transform:
@@ -1487,12 +1501,20 @@ opacity:
   );
 
   filter:
-  blur(
-    calc(
-      34px +
-      (var(--energy) * 18px)
-    )
-  );
+
+blur(
+  calc(
+    18px +
+    (var(--energy) * 10px)
+  )
+)
+
+brightness(
+  calc(
+    1 +
+    (var(--foregroundAuthority, 0) * 0.08)
+  )
+);
   transform:
 
     translate3d(
