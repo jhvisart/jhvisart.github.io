@@ -701,6 +701,12 @@ card.currentY +=
   0.72 +
   (card.priority * 0.28)
 ).toFixed(3)};
+
+--atmosphericDepth:${(
+  card.proximity * 0.6 +
+  card.energy * 0.18 +
+  card.priority * 0.22
+).toFixed(3)};
 `;
 
 const restEnergy =
