@@ -821,27 +821,15 @@ background:
   );
 
  transform:
-
  translate3d(
-
   calc(var(--magneticX, 0px) * 1.08),
-
   calc(var(--magneticY, 0px) * 1.08),
-
-   calc(
-  (var(--breath, 0) - 0.5) * 1.2px
-   )
+   calc((var(--breath, 0) - 0.5) * 1.2px)
   )
-
   scale(1)
-
  rotateX(var(--tiltX, 0deg))
-
 rotateY(var(--tiltY, 0deg))
-
-rotateZ(
-  calc(
-    var(--tiltY, 0deg) * 0.018
+rotateZ(calc(var(--tiltY, 0deg) * 0.018
   )
 );
 
