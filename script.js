@@ -779,6 +779,12 @@ card.currentY +=
   card.priority * 0.72 +
   card.proximity * 0.28
 ).toFixed(3)};
+
+--fieldPresence:${(
+  card.priority * 0.58 +
+  card.energy * 0.16 +
+  card.proximity * 0.22
+).toFixed(3)};
 `;
 
 const restEnergy =
