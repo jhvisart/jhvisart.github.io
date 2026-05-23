@@ -777,7 +777,7 @@ brightness(
 .project-card {
   position: relative;
 
-  overflow: hidden;
+ overflow: visible;
 
 backface-visibility: hidden;
 
@@ -1329,11 +1329,13 @@ touch-action: manipulation;
   position: absolute;
   inset: 0;
   border-radius: inherit;
+  /*
   clip-path:
   inset(
     0 round
     30px 27px 31px 28px
   );
+  */
 
 background:
 
@@ -1463,11 +1465,13 @@ backface-visibility: hidden;
 
   border-radius: 42px;
  mix-blend-mode: screen;
+  /*
   clip-path:
   inset(
     0 round
     46px 50px 47px 49px
   );
+  */
 
   background:
     radial-gradient(
@@ -1552,6 +1556,8 @@ brightness(
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
+
+  border-radius: 22px;
 
   background:
 
