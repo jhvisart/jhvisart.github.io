@@ -909,7 +909,7 @@ opacity:
   border: 1px solid var(--accent1);
   font-size: 12px;
   transition:
-  transform .34s cubic-bezier(.22,.61,.36,1);
+  transform .26s cubic-bezier(.22,.61,.36,1);
 }
 
 .project-body {
@@ -944,7 +944,7 @@ opacity:
   will-change: transform;
 
   transition:
-  transform 0.42s cubic-bezier(.22,.61,.36,1);
+  transform 0.52s cubic-bezier(.22,.61,.36,1);
 
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -990,7 +990,7 @@ transform:
   translateX(calc(var(--tiltY, 0deg) * 0.12))
   translateY(calc(var(--tiltX, 0deg) * -0.12));
   transition:
-  transform .28s cubic-bezier(.22,.61,.36,1);
+  transform .22s cubic-bezier(.22,.61,.36,1);
 }
 
 /* ABOUT / CONTACTO */
