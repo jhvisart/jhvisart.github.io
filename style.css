@@ -826,7 +826,12 @@ background:
   calc(var(--magneticY, 0px) * 1.08),
    calc((var(--breath, 0) - 0.5) * 1.2px)
   )
-  scale(1)
+scale(
+  calc(
+    1 +
+    (var(--proximity) * 0.018)
+  )
+)
  rotateX(var(--tiltX, 0deg))
 rotateY(var(--tiltY, 0deg))
 rotateZ(calc(var(--tiltY, 0deg) * 0.018
