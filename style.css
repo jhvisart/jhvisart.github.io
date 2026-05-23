@@ -1564,26 +1564,34 @@ will-change:
 
   filter:
 
-    brightness(
-      calc(
-        0.88 +
-        (var(--proximity) * 0.08)
-      )
-    )
+brightness(
+  calc(
+    0.82 +
+    (var(--proximity) * 0.12) +
+    (var(--depthPresence, 0) * 0.06)
+  )
+)
 
-    saturate(
-      calc(
-        0.92 +
-        (var(--proximity) * 0.06)
-      )
-    )
+saturate(
+  calc(
+    0.88 +
+    (var(--proximity) * 0.08)
+  )
+)
 
-    contrast(
-      calc(
-        1.08 +
-        (var(--proximity) * 0.04)
-      )
-    );
+contrast(
+  calc(
+    1.06 +
+    (var(--proximity) * 0.06) +
+    (var(--depthPresence, 0) * 0.04)
+  )
+)
+
+blur(
+  calc(
+    (1 - var(--focusDepth, 1)) * 0.45px
+  )
+);
 
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
