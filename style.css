@@ -702,6 +702,9 @@ border:
 
   display: grid;
 
+  perspective: 1600px;
+transform-style: preserve-3d;
+
   grid-template-columns:
     repeat(
       auto-fit,
@@ -758,7 +761,8 @@ filter:
 
 .project-card {
   position: relative;
-  overflow: visible;
+
+  overflow: hidden;
 
 backface-visibility: hidden;
 
@@ -831,9 +835,6 @@ background:
   saturate(108%)
 
   brightness(0.96);
-
-  perspective: 1000px;
-  transform-style: preserve-3d;
 
  transform:
 
