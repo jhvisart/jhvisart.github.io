@@ -1497,7 +1497,7 @@ backface-visibility: hidden;
 opacity:
   calc(
 
-    0.0015 +
+    0.008 +
 
     (var(--proximity) * 0.095) +
 
