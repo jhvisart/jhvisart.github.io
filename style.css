@@ -1388,16 +1388,24 @@ transition:
 
   will-change: transform, opacity;
 transform:
+
   translate3d(
-    calc(var(--magneticX, 0px) * -0.12),
-    calc(var(--magneticY, 0px) * -0.12),
+    calc(var(--magneticX, 0px) * -0.18),
+    calc(var(--magneticY, 0px) * -0.18),
     0
   )
 
   scale(
     calc(
-      1.02 +
-      (var(--energy) * 0.01)
+      1.012 +
+      (var(--energy) * 0.004) +
+      (var(--atmosphericDepth, 0) * 0.008)
+    )
+  )
+
+  translateZ(
+    calc(
+      var(--depthPresence, 0) * -6px
     )
   );
 
@@ -1467,10 +1475,17 @@ opacity:
     )
   );
   transform:
+
     translate3d(
-      calc(var(--magneticX, 0px) * -0.16),
-      calc(var(--magneticY, 0px) * -0.16),
+      calc(var(--magneticX, 0px) * -0.24),
+      calc(var(--magneticY, 0px) * -0.24),
       0
+    )
+
+    translateZ(
+      calc(
+        var(--atmosphericDepth, 0) * -18px
+      )
     )
     scale(
   calc(
