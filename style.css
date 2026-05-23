@@ -520,7 +520,7 @@ h1 span {
 
 .hero-card {
   position: relative;
-  contain: layout paint style;
+ contain: layout style;
 
 isolation: isolate;
 
@@ -593,7 +593,7 @@ box-shadow:
   display: flex;
   align-items: center;
   justify-content: center;
-  contain: paint;
+  contain: layout style;
 
 isolation: isolate;
 
@@ -776,8 +776,8 @@ transform-style:
 border: 1px solid
   color-mix(
     in srgb,
-    var(--accent1) 5%,
-    rgba(255,255,255,.04)
+    var(--accent1) 10%,
+    rgba(255,255,255,.06)
   );
 
 background:
