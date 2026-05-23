@@ -882,8 +882,8 @@ opacity:
 
   transform:
     translateZ(92px)
-    translateX(calc(var(--tiltY, 0deg) * 0.035))
-    translateY(calc(var(--tiltX, 0deg) * -0.035));
+    translateX(calc(var(--tiltY, 0deg) * 0.016))
+    translateY(calc(var(--tiltX, 0deg) * -0.016));
   top: 12px;
   left: 12px;
   padding: 6px 11px;
@@ -957,7 +957,10 @@ opacity:
   gap: 10px;
   position: relative;
 z-index: 30;
-transform: translateZ(110px);
+transform:
+  translateZ(110px)
+  translateX(calc(var(--tiltY, 0deg) * 0.12))
+  translateY(calc(var(--tiltX, 0deg) * -0.12));
 }
 
 /* ABOUT / CONTACTO */
