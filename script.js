@@ -478,6 +478,33 @@ const oy =
 card.proximity += 
    ambientBleed;
 
+   const spatialCoupling =
+
+  this.cards.reduce(
+
+    (acc, otherCard) => {
+
+      if (otherCard === card) return acc;
+
+      return (
+
+        acc +
+
+        (
+          otherCard.priority *
+          0.0035
+        )
+
+      );
+
+    },
+
+    0
+
+  );
+
+card.priority += spatialCoupling;
+
    card.priority =
 
   Math.min(
