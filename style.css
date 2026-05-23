@@ -1546,10 +1546,8 @@ brightness(
 
   z-index: -1;
 
-  will-change:
-    transform,
-    opacity,
-    filter;
+ will-change:
+  opacity;
 }
 
 .project-thumb {
