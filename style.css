@@ -1389,8 +1389,8 @@ transition:
 
   filter 1.2s ease;
   pointer-events: none;
-  z-index: 1;
- mix-blend-mode: plus-lighter;
+  z-index: 3;
+ mix-blend-mode: screen;
   filter:
 
 blur(
@@ -1462,7 +1462,7 @@ backface-visibility: hidden;
   inset: -24px;
 
   border-radius: 42px;
-  mix-blend-mode: plus-lighter;
+ mix-blend-mode: screen;
   clip-path:
   inset(
     0 round
@@ -1540,7 +1540,7 @@ brightness(
 
   pointer-events: none;
 
-  z-index: -1;
+  z-index: 0;
 
   will-change:
     transform,
