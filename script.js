@@ -688,10 +688,20 @@ card.currentY +=
   card.currentY * 0.045
   ).toFixed(2)}px;
 
-  --depthShiftY:${(
+ --depthShiftY:${(
   card.currentX * -0.045
-  ).toFixed(2)}px;
-  `;
+).toFixed(2)}px;
+
+--depthPresence:${(
+  card.proximity * 0.9 +
+  card.energy * 0.25
+).toFixed(3)};
+
+--focusDepth:${(
+  0.72 +
+  (card.priority * 0.28)
+).toFixed(3)};
+`;
 
 const restEnergy =
 
