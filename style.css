@@ -1252,6 +1252,23 @@ touch-action: manipulation;
     rgba(255,255,255,.08)
   );
 
+  box-shadow:
+
+  0 18px 30px rgba(0,0,0,.32),
+
+  0 55px 140px rgba(0,0,0,.42),
+
+  0 90px 180px rgba(0,0,0,.18),
+
+  0 0 40px
+  color-mix(
+    in srgb,
+    var(--accent1) 18%,
+    transparent
+  );
+
+  /*
+
 box-shadow:
 
   0 12px 32px
@@ -1279,7 +1296,11 @@ box-shadow:
     var(--accent2) 16%,
     transparent
   );
+
+  */
 }
+
+  
 
 .project-card::before {
   content: "";
