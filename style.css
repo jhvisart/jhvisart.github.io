@@ -520,7 +520,7 @@ h1 span {
 
 .hero-card {
   position: relative;
- contain: layout style;
+ contain: layout;
 
 isolation: isolate;
 
@@ -882,7 +882,7 @@ translateY(
   preserve-3d;
 
 contain:
-  layout style;
+  layout;
 
   isolation: isolate;
 
