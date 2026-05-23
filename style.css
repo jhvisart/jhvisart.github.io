@@ -711,7 +711,7 @@ transform-style: preserve-3d;
       minmax(300px, 1fr)
     );
 
-  gap: 42px;
+  gap: 28px;
 
   isolation: isolate;
 }
@@ -820,26 +820,6 @@ background:
     )
   );
 
-  /*
-
- backdrop-filter:
-
-  blur(18px)
-
-  saturate(108%)
-
-  brightness(0.96);
-
--webkit-backdrop-filter:
-
-  blur(18px)
-
-  saturate(108%)
-
-  brightness(0.96);
-
-  */
-
  transform:
 
  translate3d(
@@ -877,19 +857,16 @@ contain:
   layout style;
 
   isolation: isolate;
-  opacity: 1;
 
-  /*temporal
 opacity:
   calc(
 
-    0.82 +
+    0.74 +
 
-    (var(--proximity) * 0.58) +
+    (var(--proximity) * 0.22) +
 
-    (var(--energy) * 0.05)
+    (var(--energy) * 0.04)
   );
-  */
 
   --proximity: 0;
   --energy: 0;
@@ -910,7 +887,7 @@ opacity:
   position: absolute;
 
   transform:
-    translateZ(140px)
+    translateZ(92px)
     translateX(calc(var(--tiltY, 0deg) * 0.035))
     translateY(calc(var(--tiltX, 0deg) * -0.035));
   top: 12px;
@@ -932,8 +909,8 @@ opacity:
   transform:
     translateZ(
   calc(
-    90px +
-    (var(--proximity) * 42px)
+    58px +
+    (var(--proximity) * 24px)
   )
 )
     translateX(
@@ -986,7 +963,7 @@ opacity:
   gap: 10px;
   position: relative;
 z-index: 30;
-transform: translateZ(220px);
+transform: translateZ(110px);
 }
 
 /* ABOUT / CONTACTO */
@@ -1258,16 +1235,16 @@ touch-action: manipulation;
 
   box-shadow:
 
-  0 18px 30px rgba(0,0,0,.32),
+  0 18px 30px rgba(0,0,0,.28),
 
-  0 55px 140px rgba(0,0,0,.42),
+  0 48px 120px rgba(0,0,0,.30),
 
-  0 90px 180px rgba(0,0,0,.18),
+  0 80px 160px rgba(0,0,0,.14),
 
-  0 0 40px
+  0 0 32px
   color-mix(
     in srgb,
-    var(--accent1) 18%,
+    var(--accent1) 14%,
     transparent
   );
 
