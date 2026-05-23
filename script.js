@@ -751,6 +751,16 @@ card.currentY +=
   --mx:${card.lightCurrentX}%;
   --my:${card.lightCurrentY}%;
 
+  --haloX:${(
+  card.lightCurrentX +
+  (card.currentY * 0.9)
+).toFixed(2)}%;
+
+--haloY:${(
+  card.lightCurrentY +
+  (card.currentX * -0.9)
+).toFixed(2)}%;
+
   --depthShiftX:${(
   card.currentY * 0.045
   ).toFixed(2)}px;
