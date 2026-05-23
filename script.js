@@ -747,6 +747,11 @@ card.currentY +=
   card.energy * 0.18 +
   card.priority * 0.22
 ).toFixed(3)};
+
+--foregroundAuthority:${(
+  card.priority * 0.72 +
+  card.proximity * 0.28
+).toFixed(3)};
 `;
 
 const restEnergy =
