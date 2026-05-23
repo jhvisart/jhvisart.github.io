@@ -740,15 +740,30 @@ transform-style: preserve-3d;
     );
 
   opacity:
-  calc(
+calc(
 
-    0.008 +
+  0.004 +
 
-    (var(--breath, 0) * 0.018)
-  );
+  (var(--breath, 0) * 0.012) +
+
+  (var(--globalAtmosphere, 0) * 0.028)
+);
 
 filter:
-  blur(78px);
+
+blur(
+  calc(
+    72px +
+    (var(--globalAtmosphere, 0) * 18px)
+  )
+)
+
+brightness(
+  calc(
+    0.92 +
+    (var(--globalAtmosphere, 0) * 0.08)
+  )
+);
 
   pointer-events: none;
 
