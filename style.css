@@ -1242,18 +1242,20 @@ touch-action: manipulation;
     rgba(255,255,255,.08)
   );
 
-  box-shadow:
+ box-shadow:
 
-  0 18px 30px rgba(0,0,0,.28),
+  0 2px 6px rgba(0,0,0,.18),
 
-  0 48px 120px rgba(0,0,0,.30),
+  0 14px 28px rgba(0,0,0,.22),
 
-  0 80px 160px rgba(0,0,0,.14),
+  0 42px 96px rgba(0,0,0,.26),
 
-  0 0 32px
+  0 78px 160px rgba(0,0,0,.14),
+
+  0 0 26px
   color-mix(
     in srgb,
-    var(--accent1) 14%,
+    var(--accent1) 12%,
     transparent
   );
 }
