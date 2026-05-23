@@ -711,7 +711,7 @@ transform-style: preserve-3d;
       minmax(300px, 1fr)
     );
 
-  gap: 24px;
+  gap: 42px;
 
   isolation: isolate;
 }
@@ -877,6 +877,9 @@ contain:
   layout style;
 
   isolation: isolate;
+  opacity: 1;
+
+  /*temporal
 opacity:
   calc(
 
@@ -886,6 +889,7 @@ opacity:
 
     (var(--energy) * 0.05)
   );
+  */
 
   --proximity: 0;
   --energy: 0;
