@@ -1503,19 +1503,24 @@ will-change:
 
   brightness(
     calc(
-      0.96 +
-      (var(--proximity) * 0.04)
+      0.88 +
+      (var(--proximity) * 0.08)
     )
   )
 
   saturate(
     calc(
-      1 +
-      (var(--proximity) * 0.035)
+      0.92 +
+      (var(--proximity) * 0.06)
     )
   )
 
-  contrast(1.015);
+  contrast(
+    calc(
+      1.08 +
+      (var(--proximity) * 0.04)
+    )
+  );
 
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
