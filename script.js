@@ -587,13 +587,25 @@ const forceY =
 card.velocityX += forceX;
 card.velocityY += forceY;
 
+const spatialMass =
+
+  1 +
+
+  (card.priority * 1.8) +
+
+  (card.proximity * 0.9);
+
+const inertialResistance =
+
+  0.78 +
+
+  (spatialMass * 0.028);
+
 const adaptiveDamping =
 
-  0.72 +
+  inertialResistance -
 
-  (card.proximity * 0.018) -
-
-  (pointer.energy * 0.012);
+  (pointer.energy * 0.010);
 
 card.velocityX *= adaptiveDamping;
 card.velocityY *= adaptiveDamping;
@@ -638,26 +650,42 @@ const microMotion =
 
   residualEnergy;
 
+const compressionCurve =
+
+  1 -
+
+  Math.min(
+    0.32,
+    card.priority * 0.22
+  );
+
 card.currentX +=
+
   Math.max(
-    -22,
+    -18,
     Math.min(
-      22,
-      card.velocityX + microMotion
+      18,
+
+      (
+        card.velocityX +
+        microMotion
+      ) * compressionCurve
     )
   );
 
 card.currentY +=
+
   Math.max(
-    -22,
+    -18,
     Math.min(
-      22,
-      card.velocityY + (microMotion * 0.7)
+      18,
+
+      (
+        card.velocityY +
+        (microMotion * 0.7)
+      ) * compressionCurve
     )
   );
-
-     
-
     });
    },
 
