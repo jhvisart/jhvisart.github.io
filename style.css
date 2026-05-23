@@ -889,11 +889,13 @@ contain:
 opacity:
   calc(
 
-    0.74 +
+    0.70 +
 
-    (var(--proximity) * 0.22) +
+    (var(--proximity) * 0.18) +
 
-    (var(--energy) * 0.04)
+    (var(--energy) * 0.04) +
+
+    (var(--fieldPresence, 0) * 0.12)
   );
 
   --proximity: 0;
