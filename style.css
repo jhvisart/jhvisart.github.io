@@ -902,7 +902,7 @@ opacity:
   position: absolute;
 
   transform:
-    translateZ(62px)
+    translateZ(140px)
     translateX(calc(var(--tiltY, 0deg) * 0.035))
     translateY(calc(var(--tiltX, 0deg) * -0.035));
   top: 12px;
@@ -923,11 +923,11 @@ opacity:
 
   transform:
     translateZ(
-      calc(
-        34px +
-        (var(--proximity) * 18px)
-      )
-    )
+  calc(
+    90px +
+    (var(--proximity) * 42px)
+  )
+)
     translateX(
       calc(var(--tiltY, 0deg) * 0.018)
     )
@@ -978,7 +978,7 @@ opacity:
   gap: 10px;
   position: relative;
 z-index: 30;
-transform: translateZ(120px);
+transform: translateZ(220px);
 }
 
 /* ABOUT / CONTACTO */
@@ -1502,12 +1502,12 @@ will-change:
 
  transform:
 
-  translateZ(
-    calc(
-      18px +
-      (var(--proximity) * 10px)
-    )
+ translateZ(
+  calc(
+    42px +
+    (var(--proximity) * 20px)
   )
+)
 
   scale(
     calc(
