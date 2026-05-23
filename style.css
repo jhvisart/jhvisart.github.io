@@ -1527,11 +1527,7 @@ brightness(
       0
     )
 
-    translateZ(
-      calc(
-        var(--atmosphericDepth, 0) * -18px
-      )
-    )
+    translateZ(0)
     scale(
   calc(
     1.004 +
