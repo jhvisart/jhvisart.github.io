@@ -1335,9 +1335,16 @@ transition:
   will-change: transform, opacity;
 transform:
   translate3d(
-    calc(var(--magneticX, 0px) * -0.08),
-    calc(var(--magneticY, 0px) * -0.08),
+    calc(var(--magneticX, 0px) * -0.12),
+    calc(var(--magneticY, 0px) * -0.12),
     0
+  )
+
+  scale(
+    calc(
+      1.02 +
+      (var(--energy) * 0.01)
+    )
   );
 
 backface-visibility: hidden;
@@ -1582,7 +1589,7 @@ will-change:
     opacity .55s ease,
     background-position .8s ease;
 
-  mix-blend-mode: soft-light;
+  mix-blend-mode: normal;
 
   transform:
     translate3d(
