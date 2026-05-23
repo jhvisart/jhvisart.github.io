@@ -914,10 +914,10 @@ opacity:
   )
 )
     translateX(
-      calc(var(--tiltY, 0deg) * 0.018)
+      calc(var(--tiltY, 0deg) * 0.09)
     )
     translateY(
-      calc(var(--tiltX, 0deg) * -0.018)
+      calc(var(--tiltX, 0deg) * -0.09)
     );
 
   padding: 22px 20px;
@@ -1247,38 +1247,6 @@ touch-action: manipulation;
     var(--accent1) 14%,
     transparent
   );
-
-  /*
-
-box-shadow:
-
-  0 12px 32px
-  rgba(0,0,0,.34),
-
-  0 34px 92px
-  rgba(0,0,0,.18),
-
-  0 0 calc(
-    28px +
-    (var(--energy) * 8px)
-  )
-  color-mix(
-    in srgb,
-    var(--accent1) 22%,
-    transparent
-  ),
-
-  0 0 calc(
-    40px +
-    (var(--energy) * 10px)
-  )
-  color-mix(
-    in srgb,
-    var(--accent2) 16%,
-    transparent
-  );
-
-  */
 }
 
   
@@ -1524,13 +1492,13 @@ will-change:
 
   translateX(
     calc(
-      var(--tiltY, 0deg) * 0.010
+      var(--tiltY, 0deg) * 0.06
     )
   )
 
   translateY(
     calc(
-      var(--tiltX, 0deg) * -0.010
+      var(--tiltX, 0deg) * -0.06
     )
   );
 
