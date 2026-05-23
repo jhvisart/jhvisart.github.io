@@ -291,10 +291,22 @@ pointer.cardsAuthority =
 
   (audioEnergy * 0.42);
 
- atmosphere.current +=
+const cardFieldPressure =
+
+  this.cards.reduce(
+    (acc, card) => {
+      return acc + (
+        card.priority * 0.028
+      );
+    },
+    0
+  );
+
+atmosphere.current +=
 (
   Math.min(
-    atmosphere.target,
+    atmosphere.target +
+    cardFieldPressure,
     1
   ) -
   atmosphere.current
