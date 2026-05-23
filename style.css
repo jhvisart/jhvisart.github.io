@@ -822,8 +822,8 @@ background:
 
  transform:
  translate3d(
-  calc(var(--magneticX, 0px) * 1.08),
-  calc(var(--magneticY, 0px) * 1.08),
+  calc(var(--magneticX, 0px) * 0.82),
+  calc(var(--magneticY, 0px) * 0.82),
    calc((var(--breath, 0) - 0.5) * 1.2px)
   )
 scale(
@@ -928,11 +928,11 @@ opacity:
   )
 
   translateX(
-    calc(var(--tiltY, 0deg) * 0.09)
+    calc(var(--tiltY, 0deg) * 0.12)
   )
 
   translateY(
-    calc(var(--tiltX, 0deg) * -0.09)
+    calc(var(--tiltX, 0deg) * -0.12)
   )
 
   rotateZ(
@@ -1525,13 +1525,13 @@ will-change:
 
     translateX(
       calc(
-        var(--tiltY, 0deg) * 0.06
+        var(--tiltY, 0deg) * 0.035
       )
     )
 
     translateY(
       calc(
-        var(--tiltX, 0deg) * -0.06
+        var(--tiltX, 0deg) * -0.035
       )
     );
 
