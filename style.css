@@ -880,7 +880,7 @@ contain:
 opacity:
   calc(
 
-    0.42 +
+    0.82 +
 
     (var(--proximity) * 0.58) +
 
