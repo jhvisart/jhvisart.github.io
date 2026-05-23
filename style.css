@@ -834,7 +834,21 @@ scale(
 )
  rotateX(var(--tiltX, 0deg))
 rotateY(var(--tiltY, 0deg))
-rotateZ(calc(var(--tiltY, 0deg) * 0.018
+rotateZ(
+  calc(
+    var(--tiltY, 0deg) * 0.018
+  )
+)
+
+translateX(
+  calc(
+    var(--depthShiftX, 0px)
+  )
+)
+
+translateY(
+  calc(
+    var(--depthShiftY, 0px)
   )
 );
 
