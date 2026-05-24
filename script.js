@@ -792,10 +792,15 @@ hero.currentY +=
     hero.currentY
   ) * 0.032;
 
-  hero.el.style.setProperty(
-    "--atmosphere",
-    atmosphere.breathing.toFixed(3)
-  );
+  const heroAtmosphere = Math.max(
+  atmosphere.breathing,
+  atmosphere.current * 0.9
+);
+
+hero.el.style.setProperty(
+  "--atmosphere",
+  heroAtmosphere.toFixed(3)
+);
 
   hero.el.style.transform = `
     perspective(900px)
