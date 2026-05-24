@@ -2095,3 +2095,82 @@ body.is-leaving {
   z-index: 30;
   pointer-events: auto !important;
 }
+
+/* =====================================================
+   VISART RENDER PROFILE — ANDROID
+   Target: Chromium/WebView Android
+   Strategy: flat compositing, no blend overload,
+             GPU layer reduction, filter simplification
+===================================================== */
+
+body.platform-android .project-card {
+  transform-style: flat;
+  contain: layout style;
+  will-change: transform, opacity;
+}
+
+/* Simplify the 3D child layers — they flatten anyway */
+body.platform-android .project-badge,
+body.platform-android .project-body,
+body.platform-android .project-actions {
+  transform: none !important;
+  will-change: auto;
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+}
+
+/* ::before — replace plus-lighter with screen,
+   which HW-accelerates on Android Chromium */
+body.platform-android .project-card::before {
+  mix-blend-mode: screen;
+  filter: blur(18px) brightness(1.04) saturate(1.1);
+  opacity: calc(0.06 + (var(--proximity) * 0.18));
+  transform: translate3d(0, 0, 0);
+  will-change: opacity;
+  transition: opacity 0.6s ease;
+}
+
+/* ::after — reduce blur, remove dynamic filter */
+body.platform-android .project-card::after {
+  filter: blur(14px);
+  opacity: calc(0.01 + (var(--proximity) * 0.07));
+  transform: translate3d(0, 0, 0);
+  transition: opacity 0.6s ease;
+  will-change: opacity;
+}
+
+/* Thumb — static transform, no per-frame 3D */
+body.platform-android .project-thumb img {
+  transform: scale(calc(1 + (var(--proximity) * 0.028)));
+  will-change: auto;
+  backface-visibility: visible;
+  filter:
+    brightness(calc(0.84 + (var(--proximity) * 0.10)))
+    saturate(calc(0.9  + (var(--proximity) * 0.06)));
+  transition: transform 0.6s ease, filter 0.5s ease;
+}
+
+/* Grid — remove perspective overhead */
+body.platform-android .projects-grid {
+  perspective: none;
+  transform-style: flat;
+}
+
+/* bg-grid — simplify, no dynamic transform */
+body.platform-android .bg-grid {
+  transform: none !important;
+  opacity: 0.07;
+  filter: none;
+  will-change: auto;
+}
+
+/* hero-card — reduce atmosphere scale */
+body.platform-android .hero-card {
+  transform: translate3d(0, 0, 0) !important;
+  will-change: auto;
+}
+body.platform-android .hero-card::before {
+  filter: blur(20px);
+  opacity: calc(0.14 + (var(--atmosphere, 0) * 0.10));
+  transition: opacity 0.8s ease;
+}
