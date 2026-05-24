@@ -679,6 +679,7 @@ border:
   z-index: 1;
   padding: 64px 0;
   overflow-x: clip;
+  overflow-y: clip;
 }
 
 .section-head {
