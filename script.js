@@ -1496,10 +1496,13 @@ function iniciarParticulasV() {
     });
   }
 
-  function animar() {
-    const rect = canvas.getBoundingClientRect();
-
-    ctx.clearRect(0, 0, rect.width, rect.height);
+ function animar() {
+  if (VISART_ENGINE._isScrolling()) {
+    requestAnimationFrame(animar);
+    return;
+  }
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0, 0, rect.width, rect.height);
 
     for (let i = 0; i < 2; i++) {
       crearParticula();
@@ -1606,9 +1609,12 @@ function iniciarFondoCanvas() {
   }
 
   function animar() {
-    const rect = canvas.getBoundingClientRect();
-
-    ctx.clearRect(0, 0, rect.width, rect.height);
+  if (VISART_ENGINE._isScrolling()) {
+    requestAnimationFrame(animar);
+    return;
+  }
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0, 0, rect.width, rect.height);
 
     const accent1 = getCssVar("--accent1");
     const accent2 = getCssVar("--accent2");
