@@ -1719,9 +1719,15 @@ window.addEventListener("resize", () => {
 
 });
 
+let _scrollRafPending = false;
 window.addEventListener("scroll", () => {
-  VISART_ENGINE.cards.forEach(card => {
-    card.needsRectUpdate = true;
+  if (_scrollRafPending) return;
+  _scrollRafPending = true;
+  requestAnimationFrame(() => {
+    VISART_ENGINE.cards.forEach(card => {
+      card.needsRectUpdate = true;
+    });
+    _scrollRafPending = false;
   });
 }, { passive: true });
 
