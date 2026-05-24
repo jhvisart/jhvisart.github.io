@@ -956,7 +956,7 @@ VISART_ENGINE.pointer.targetY = e.clientY;
 function iniciarHeroTilt() {
   const heroCard = document.querySelector(".hero-card");
 
-  if (!heroCard || IS_TOUCH_DEVICE) return;
+  if (!heroCard || !PLATFORM.isDesktop) return;
    
    const heroData = {
 
