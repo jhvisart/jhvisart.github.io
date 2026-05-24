@@ -954,51 +954,37 @@ VISART_ENGINE.pointer.targetY = e.clientY;
 /* ======================================= */
 
 function iniciarHeroTilt() {
+  console.log("1 - iniciarHeroTilt corre");
   const heroCard = document.querySelector(".hero-card");
-
+  console.log("2 - heroCard:", heroCard);
+  console.log("3 - PLATFORM.isDesktop:", PLATFORM.isDesktop);
   if (!heroCard || !PLATFORM.isDesktop) return;
-   
-   const heroData = {
+  console.log("4 - pasó el guard");
 
-  el: heroCard,
+  const heroData = {
+    el: heroCard,
+    currentX: 0,
+    currentY: 0,
+    targetX: 0,
+    targetY: 0
+  };
 
-  currentX: 0,
-  currentY: 0,
+  VISART_ENGINE.setHero(heroData);
+  console.log("5 - setHero ejecutado:", VISART_ENGINE.hero);
 
-  targetX: 0,
-  targetY: 0
+  window.addEventListener("pointermove", (e) => {
+    const x = (VISART_ENGINE.pointer.x / window.innerWidth - 0.5) * 1.8;
+    const y = (VISART_ENGINE.pointer.y / window.innerHeight - 0.5) * -1.2;
+    heroData.targetX = x;
+    heroData.targetY = y;
+  }, { passive: true });
 
-};
-
-VISART_ENGINE.setHero(heroData);
-
-
-window.addEventListener("pointermove", (e) => {
-
-  const x =
-  (VISART_ENGINE.pointer.x / window.innerWidth - 0.5) * 1.8;
-
-const y =
-  (VISART_ENGINE.pointer.y / window.innerHeight - 0.5) * -1.2;
-
-  heroData.targetX = x;
-  heroData.targetY = y;
-
-}, { passive: true });
-
-window.addEventListener(
-  "pointerleave",
-  () => {
-
+  window.addEventListener("pointerleave", () => {
     heroData.targetX = 0;
     heroData.targetY = 0;
-
     VISART_ENGINE.pointer.velocity *= 0.4;
     VISART_ENGINE.pointer.energy *= 0.6;
-
-  }
-);
-  
+  });
 }
 
 /* ======================================= */
