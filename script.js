@@ -1719,6 +1719,12 @@ window.addEventListener("resize", () => {
 
 });
 
+window.addEventListener("scroll", () => {
+  VISART_ENGINE.cards.forEach(card => {
+    card.needsRectUpdate = true;
+  });
+}, { passive: true });
+
 window.addEventListener("orientationchange", () => {
 
   VISART_ENGINE.cards.forEach(card => {
