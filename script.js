@@ -304,15 +304,17 @@ const cardFieldPressure =
     0
   );
 
-atmosphere.current +=
-(
+const nextAtmosphere = (
   Math.min(
-    atmosphere.target +
-    cardFieldPressure,
+    atmosphere.target + cardFieldPressure,
     1
   ) -
   atmosphere.current
 ) * 0.022;
+
+atmosphere.current = isNaN(atmosphere.current)
+  ? 0
+  : atmosphere.current + nextAtmosphere;
 
   atmosphere.pulse =
 
@@ -1176,6 +1178,8 @@ floatIntensity:
   0.85 + Math.random() * 0.35,
      
   proximity: 0,
+
+  priority: 0,
 
  hover: false,
 
