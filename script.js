@@ -931,8 +931,20 @@ const energy =
 
 const IS_TOUCH_DEVICE =
   "ontouchstart" in window ||
-  navigator.maxTouchPoints > 0;
-window.matchMedia("(pointer: coarse)").matches;
+  navigator.maxTouchPoints > 0 ||
+  window.matchMedia("(pointer: coarse)").matches;
+
+// ─── PLATFORM PROFILE ────────────────────────────────────
+const PLATFORM = (() => {
+  const ua = navigator.userAgent;
+  const isAndroid = /Android/i.test(ua);
+  const isIOS =
+    /iPhone|iPad|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (isAndroid) return { name: "android", isAndroid: true,  isIOS: false, isDesktop: false };
+  if (isIOS)     return { name: "ios",     isAndroid: false, isIOS: true,  isDesktop: false };
+  return           { name: "desktop",  isAndroid: false, isIOS: false, isDesktop: true  };
+})();
 
 function visartGetPoint(e) {
   const touch = e.touches?.[0] || e.changedTouches?.[0];
