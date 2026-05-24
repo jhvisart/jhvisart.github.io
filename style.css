@@ -2174,3 +2174,66 @@ body.platform-android .hero-card::before {
   opacity: calc(0.14 + (var(--atmosphere, 0) * 0.10));
   transition: opacity 0.8s ease;
 }
+
+/* =====================================================
+   VISART RENDER PROFILE — iOS / Safari
+   Target: WebKit iOS
+   Strategy: preserve-3d permitido pero acotado,
+             filters suavizados, sin plus-lighter,
+             compositing layers controlados
+===================================================== */
+
+body.platform-ios .project-card {
+  transform-style: preserve-3d;
+  contain: layout;
+  -webkit-transform-style: preserve-3d;
+}
+
+/* iOS maneja preserve-3d bien pero los filters
+   animados en ::before saturan el compositor */
+body.platform-ios .project-card::before {
+  mix-blend-mode: screen;
+  filter: blur(20px) brightness(1.02) saturate(1.12);
+  opacity: calc(0.05 + (var(--proximity) * 0.22));
+  transition: opacity 0.7s ease;
+  will-change: opacity;
+}
+
+body.platform-ios .project-card::after {
+  filter: blur(16px);
+  opacity: calc(0.008 + (var(--proximity) * 0.08));
+  transition: opacity 0.7s ease;
+}
+
+/* Reducir capas 3D de hijos — iOS los maneja
+   pero en cards con muchos children satura */
+body.platform-ios .project-badge {
+  transform: translateZ(60px);
+}
+
+body.platform-ios .project-body {
+  transform: translateZ(32px);
+}
+
+body.platform-ios .project-actions {
+  transform: translateZ(42px);
+}
+
+/* thumb — simplificar blur dinámico */
+body.platform-ios .project-thumb img {
+  filter:
+    brightness(calc(0.84 + (var(--proximity) * 0.10)))
+    saturate(calc(0.88 + (var(--proximity) * 0.07)));
+  transform:
+    translateZ(20px)
+    scale(calc(1.002 + (var(--energy) * 0.002)));
+  transition: transform 0.8s ease, filter 0.6s ease;
+}
+
+/* bg-grid — iOS Safari no necesita los custom props
+   dinámicos del grid para compositing correcto */
+body.platform-ios .bg-grid {
+  transform: translate3d(0, 0, 0);
+  opacity: calc(0.07 + (var(--globalAtmosphere, 0) * 0.10));
+  will-change: opacity;
+}
