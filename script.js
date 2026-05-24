@@ -449,72 +449,40 @@ card.proximity =
     2.4
   );
 
-const ambientBleed =
+const ambientBleed = this._isScrolling()
+  ? 0
+  : this.cards.reduce(
+      (acc, otherCard) => {
+        if (otherCard === card) return acc;
+        const ox = otherCard.centerX || 0;
+        const oy = otherCard.centerY || 0;
+        const ddx = centerX - ox;
+        const ddy = centerY - oy;
+        const dist = Math.sqrt(ddx * ddx + ddy * ddy);
+        return (
+          acc +
+          Math.max(0, 1 - dist / 420) *
+          otherCard.proximity *
+          0.018
+        );
+      },
+      0
+    );
 
-  this.cards.reduce(
+card.proximity += ambientBleed;
 
-    (acc, otherCard) => {
-
-      if (otherCard === card) return acc;
-
-      const ox =
-  otherCard.centerX || 0;
-
-const oy =
-  otherCard.centerY || 0;
-
-      const ddx = 
-         centerX - ox;
-       
-      const ddy = 
-         centerY - oy;
-
-      const dist =
-        Math.sqrt(
-           ddx * ddx + ddy * ddy);
-
-      return (
-        acc +
-        Math.max(
-           0,
-           1 - dist / 420) *
-        otherCard.proximity *
-        0.018
-      );
-
-    },
-
-    0
-
-  );
-
-card.proximity += 
-   ambientBleed;
-
-   const spatialCoupling =
-
-  this.cards.reduce(
-
-    (acc, otherCard) => {
-
-      if (otherCard === card) return acc;
-
-      return (
-
-        acc +
-
-        (
-          otherCard.priority *
-          0.0035
-        )
-
-      );
-
-    },
-
-    0
-
-  );
+   const spatialCoupling = this._isScrolling()
+  ? 0
+  : this.cards.reduce(
+      (acc, otherCard) => {
+        if (otherCard === card) return acc;
+        return (
+          acc +
+          (otherCard.priority * 0.0035)
+        );
+      },
+      0
+    );
 
 card.priority += spatialCoupling;
 
@@ -798,6 +766,14 @@ card.currentY +=
     this.atmosphere;
 
   if (!hero) return;
+
+     if (this._isScrolling()) {
+    hero.el.style.setProperty(
+      "--atmosphere",
+      atmosphere.breathing.toFixed(3)
+    );
+    return;
+  }
 
  const authority =
   this.pointer.heroAuthority;
@@ -1719,17 +1695,23 @@ window.addEventListener("resize", () => {
 
 });
 
-let _scrollRafPending = false;
+let _scrolling = false;
+let _scrollTimeout;
+
 window.addEventListener("scroll", () => {
-  if (_scrollRafPending) return;
-  _scrollRafPending = true;
-  requestAnimationFrame(() => {
+  _scrolling = true;
+  clearTimeout(_scrollTimeout);
+  _scrollTimeout = setTimeout(() => {
+    _scrolling = false;
+    // Al terminar el scroll, invalidar todos los rects
     VISART_ENGINE.cards.forEach(card => {
       card.needsRectUpdate = true;
     });
-    _scrollRafPending = false;
-  });
+  }, 80);
 }, { passive: true });
+
+// Exponer flag al engine
+VISART_ENGINE._isScrolling = () => _scrolling;
 
 window.addEventListener("orientationchange", () => {
 
