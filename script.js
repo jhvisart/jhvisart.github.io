@@ -1303,25 +1303,25 @@ engineCard.targetX =
   });
 
  function handlePointerLeave() {
-
   engineCard.hover = false;
 
-  const releaseX =
-    engineCard.velocityX * 0.32;
-
-  const releaseY =
-    engineCard.velocityY * 0.32;
-
-  engineCard.targetX = releaseX;
-  engineCard.targetY = releaseY;
-
-  setTimeout(() => {
-
+  if (PLATFORM.isAndroid) {
+    // En Android el micro-bounce causa flash —
+    // reset directo sin residual
     engineCard.targetX = 0;
     engineCard.targetY = 0;
-
-  }, 120);
-
+    engineCard.velocityX = 0;
+    engineCard.velocityY = 0;
+  } else {
+    const releaseX = engineCard.velocityX * 0.32;
+    const releaseY = engineCard.velocityY * 0.32;
+    engineCard.targetX = releaseX;
+    engineCard.targetY = releaseY;
+    setTimeout(() => {
+      engineCard.targetX = 0;
+      engineCard.targetY = 0;
+    }, 120);
+  }
 }
 
    card.addEventListener(
