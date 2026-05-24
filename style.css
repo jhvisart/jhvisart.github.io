@@ -2250,6 +2250,28 @@ body.platform-android .bg-grid {
   will-change: auto !important;
 }
 
+/* ─── ANDROID: eliminar transitions de hijos ─────────────
+   Causa del flash post-touch: transitions corriendo
+   sobre custom properties que vuelven a 0 al salir
+   el dedo. Aunque transform sea none, el transition
+   event igual dispara repaint en Chromium Android.
+──────────────────────────────────────────────────────── */
+
+body.platform-android .project-badge,
+body.platform-android .project-body,
+body.platform-android .project-actions,
+body.platform-android .project-thumb,
+body.platform-android .project-thumb img,
+body.platform-android .project-thumb::after {
+  transition: none !important;
+}
+
+/* Fijar opacity de hijos — no depender de vars */
+body.platform-android .project-body,
+body.platform-android .project-actions {
+  opacity: 1 !important;
+}
+
 /* =====================================================
    VISART RENDER PROFILE — iOS / Safari
    Target: WebKit iOS
