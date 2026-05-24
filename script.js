@@ -54,6 +54,8 @@ pointer: {
 
    isVisible: true,
 
+   _isScrolling: () => false,
+
    modulation: {
 
   audio: 0,
@@ -831,12 +833,11 @@ const atmosphere =
 const energy =
   pointer.energy;
 
- this.updateCards(time);
-
- this.renderCards(time);
-
-
-   this.updateHero();
+this.updateCards(time);
+if (!this._isScrolling()) {
+  this.renderCards(time);
+}
+this.updateHero();
 
   }
 
