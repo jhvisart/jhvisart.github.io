@@ -809,9 +809,13 @@ const tiltMagnitude = Math.sqrt(
   hero.currentY * hero.currentY
 ) / 14;
 
-const glowLevel = Math.max(heroAtmosphere, tiltMagnitude);
+// Respuesta rápida propia del hero — independiente de atmosphere
+hero._glowLevel = hero._glowLevel || 0;
+hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.08;
 
+const glowLevel = hero._glowLevel;
 const glowSpread = (glowLevel * 80).toFixed(1);
+
 hero.el.style.boxShadow = `
   0 10px 24px rgba(0,0,0,.22),
   0 38px 120px rgba(0,0,0,.16),
