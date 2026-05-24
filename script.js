@@ -365,6 +365,19 @@ if (
 const rect =
   card.rect;
 
+   const viewportPadding = 260;
+
+const isVisible =
+
+  rect.bottom > -viewportPadding &&
+
+  rect.top < (
+    window.innerHeight +
+    viewportPadding
+  );
+
+if (!isVisible) return;
+
 const centerX = 
    rect.left + rect.width * 0.5;
      
