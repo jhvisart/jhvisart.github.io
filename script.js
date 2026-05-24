@@ -814,21 +814,23 @@ hero._glowLevel = hero._glowLevel || 0;
 hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.08;
 
 const glowLevel = hero._glowLevel;
-const glowSpread = (glowLevel * 80).toFixed(1);
+const glowSpread = (glowLevel * 140).toFixed(1);
+const glowInner = (glowLevel * 60).toFixed(1);
 
 hero.el.style.boxShadow = `
   0 10px 24px rgba(0,0,0,.22),
   0 38px 120px rgba(0,0,0,.16),
   0 0 0 1px rgba(255,255,255,.022),
-  0 0 ${glowSpread}px rgba(0,234,255,${(glowLevel * 0.32).toFixed(3)}),
-  0 0 120px rgba(0,234,255,${(glowLevel * 0.14).toFixed(3)})
+  0 0 ${glowInner}px rgba(0,234,255,${(glowLevel * 0.55).toFixed(3)}),
+  0 0 ${glowSpread}px rgba(0,234,255,${(glowLevel * 0.28).toFixed(3)}),
+  0 0 200px rgba(0,234,255,${(glowLevel * 0.16).toFixed(3)})
 `;
 
-  hero.el.style.transform = `
-    perspective(900px)
-    rotateY(${hero.currentX * 0.9}deg)
-    rotateX(${hero.currentY * 0.9}deg)
-  `;
+ hero.el.style.transform = `
+  perspective(600px)
+  rotateY(${hero.currentX * 0.9}deg)
+  rotateX(${hero.currentY * 0.9}deg)
+`;
 
 },
    
@@ -1000,8 +1002,8 @@ function iniciarHeroTilt() {
   console.log("5 - setHero ejecutado:", VISART_ENGINE.hero);
 
   window.addEventListener("pointermove", (e) => {
-    const x = (VISART_ENGINE.pointer.x / window.innerWidth - 0.5) * 14;
-    const y = (VISART_ENGINE.pointer.y / window.innerHeight - 0.5) * -10;
+    const x = (VISART_ENGINE.pointer.x / window.innerWidth - 0.5) * 28;
+    const y = (VISART_ENGINE.pointer.y / window.innerHeight - 0.5) * -20;
     heroData.targetX = x;
     heroData.targetY = y;
   }, { passive: true });
