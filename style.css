@@ -678,6 +678,7 @@ border:
   position: relative;
   z-index: 1;
   padding: 64px 0;
+  overflow-x: clip;
 }
 
 .section-head {
@@ -715,7 +716,6 @@ transform-style: preserve-3d;
 
   isolation: isolate;
 
-  overflow: clip;
 }
 
 .projects-grid::before {
