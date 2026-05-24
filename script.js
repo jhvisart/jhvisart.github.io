@@ -741,116 +741,53 @@ card.currentY +=
     });
    },
 
-  renderCards(time) {
+     renderCards(time) {
 
-   const energy =
-  this.pointer.energy; 
+  const energy = this.pointer.energy;
 
   this.cards.forEach(card => {
 
-     const style =
-  card.el.style;
+    const style = card.el.style;
 
-     style.cssText += `
-  --tiltX:${card.currentX}deg;
-  --tiltY:${card.currentY}deg;
+    // ─── setProperty individual — sin cssText += ──────────
+    style.setProperty("--tiltX",  `${card.currentX.toFixed(3)}deg`);
+    style.setProperty("--tiltY",  `${card.currentY.toFixed(3)}deg`);
 
-  --magneticX:${card.magneticCurrentX}px;
-  --magneticY:${card.magneticCurrentY}px;
+    style.setProperty("--magneticX", `${card.magneticCurrentX.toFixed(2)}px`);
+    style.setProperty("--magneticY", `${card.magneticCurrentY.toFixed(2)}px`);
 
-  --proximity:${card.proximity.toFixed(3)};
-  --energy:${card.energy.toFixed(3)};
+    style.setProperty("--proximity", card.proximity.toFixed(3));
+    style.setProperty("--energy",    card.energy.toFixed(3));
 
-  --mx:${card.lightCurrentX}%;
-  --my:${card.lightCurrentY}%;
+    style.setProperty("--mx", `${card.lightCurrentX.toFixed(2)}%`);
+    style.setProperty("--my", `${card.lightCurrentY.toFixed(2)}%`);
 
-  --haloX:${(
-  card.lightCurrentX +
-  (card.currentY * 0.9)
-).toFixed(2)}%;
+    style.setProperty("--haloX", `${(card.lightCurrentX + card.currentY * 0.9).toFixed(2)}%`);
+    style.setProperty("--haloY", `${(card.lightCurrentY + card.currentX * -0.9).toFixed(2)}%`);
 
---haloY:${(
-  card.lightCurrentY +
-  (card.currentX * -0.9)
-).toFixed(2)}%;
+    style.setProperty("--depthShiftX", `${(card.currentY * 0.045).toFixed(2)}px`);
+    style.setProperty("--depthShiftY", `${(card.currentX * -0.045).toFixed(2)}px`);
 
-  --depthShiftX:${(
-  card.currentY * 0.045
-  ).toFixed(2)}px;
+    style.setProperty("--depthPresence",       (card.proximity * 0.9  + card.energy * 0.25).toFixed(3));
+    style.setProperty("--focusDepth",          (0.72 + card.priority * 0.28).toFixed(3));
+    style.setProperty("--atmosphericDepth",    (card.proximity * 0.6  + card.energy * 0.18 + card.priority * 0.22).toFixed(3));
+    style.setProperty("--foregroundAuthority", (card.priority * 0.72  + card.proximity * 0.28).toFixed(3));
+    style.setProperty("--fieldPresence",       (card.priority * 0.58  + card.energy * 0.16 + card.proximity * 0.22).toFixed(3));
 
- --depthShiftY:${(
-  card.currentX * -0.045
-).toFixed(2)}px;
+    // ─── breath ──────────────────────────────────────────
+    const restEnergy = energy > 0.025 ? energy * 0.52 : 0;
 
---depthPresence:${(
-  card.proximity * 0.9 +
-  card.energy * 0.25
-).toFixed(3)};
+    const idleField =
+      Math.sin(time * 0.00022 + card.floatSeed) * 0.5 + 0.5;
 
---focusDepth:${(
-  0.72 +
-  (card.priority * 0.28)
-).toFixed(3)};
+    const lightBreath =
+      (Math.sin(time * 0.00045) * 0.5 + 0.5) * 0.16 * restEnergy +
+      idleField * 0.018;
 
---atmosphericDepth:${(
-  card.proximity * 0.6 +
-  card.energy * 0.18 +
-  card.priority * 0.22
-).toFixed(3)};
+    style.setProperty("--breath", lightBreath.toFixed(3));
 
---foregroundAuthority:${(
-  card.priority * 0.72 +
-  card.proximity * 0.28
-).toFixed(3)};
-
---fieldPresence:${(
-  card.priority * 0.58 +
-  card.energy * 0.16 +
-  card.proximity * 0.22
-).toFixed(3)};
-`;
-
-const restEnergy =
-
-  energy > 0.025
-
-    ? energy * 0.52
-
-    : 0;
-
-const idleField =
-
-  Math.sin(
-    time * 0.00022 +
-    card.floatSeed
-  ) *
-
-  0.5 +
-
-  0.5;
-
-const lightBreath =
-
-  (
-    Math.sin(
-      time * 0.00045
-    ) * 0.5 + 0.5
-  ) *
-
-  0.16 *
-
-  restEnergy +
-
-  idleField * 0.018;
-
-style.setProperty(
-  "--breath",
-  lightBreath.toFixed(3)
-);
-
-   
-    });
-  },
+  });
+},
 
    updateHero() {
 
@@ -989,6 +926,8 @@ window.addEventListener(
 );
 
 document.addEventListener("DOMContentLoaded", () => {
+
+ document.body.classList.add(`platform-${PLATFORM.name}`);
 
   window.addEventListener("pointermove", (e) => {
    const dx =
