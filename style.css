@@ -958,8 +958,8 @@ filter 1.2s ease;
 
   translateZ(
     calc(
-      58px +
-      (var(--proximity) * 24px)
+      64px +
+      (var(--proximity) * 28px)
     )
   )
 
@@ -1594,8 +1594,8 @@ will-change:
 
     translateZ(
       calc(
-        42px +
-        (var(--proximity) * 20px)
+        36px +
+        (var(--proximity) * 16px)
       )
     )
 
