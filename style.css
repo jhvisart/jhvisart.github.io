@@ -1709,27 +1709,8 @@ calc(
 
   mix-blend-mode: normal;
 
-  transform:
-
-    translate3d(
-      calc(var(--magneticX, 0px) * -0.08),
-      calc(var(--magneticY, 0px) * -0.08),
-      0
-    )
-
-    translateZ(
-      calc(
-        var(--foregroundAuthority, 0) * 16px
-      )
-    )
-
-    scale(
-      calc(
-        1 +
-        (var(--foregroundAuthority, 0) * 0.012)
-      )
-    );
-
+  
+transform: translate3d(0,0,0);
   will-change:
     opacity,
     transform;
