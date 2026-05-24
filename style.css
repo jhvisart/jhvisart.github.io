@@ -714,6 +714,8 @@ transform-style: preserve-3d;
   gap: 28px;
 
   isolation: isolate;
+
+  overflow: clip;
 }
 
 .projects-grid::before {
