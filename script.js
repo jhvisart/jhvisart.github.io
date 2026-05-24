@@ -792,7 +792,7 @@ hero.currentY +=
     hero.currentY
   ) * 0.032;
 
-  const heroAtmosphere = Math.max(
+ const heroAtmosphere = Math.max(
   atmosphere.breathing,
   atmosphere.current * 0.9
 );
@@ -802,14 +802,20 @@ hero.el.style.setProperty(
   heroAtmosphere.toFixed(3)
 );
 
-   const glowIntensity = (heroAtmosphere * 22).toFixed(1);
-const glowSpread = (heroAtmosphere * 80).toFixed(1);
+const tiltMagnitude = Math.sqrt(
+  hero.currentX * hero.currentX +
+  hero.currentY * hero.currentY
+) / 14;
+
+const glowLevel = Math.max(heroAtmosphere, tiltMagnitude);
+
+const glowSpread = (glowLevel * 80).toFixed(1);
 hero.el.style.boxShadow = `
   0 10px 24px rgba(0,0,0,.22),
   0 38px 120px rgba(0,0,0,.16),
   0 0 0 1px rgba(255,255,255,.022),
-  0 0 ${glowSpread}px rgba(0,234,255,${(heroAtmosphere * 0.28).toFixed(3)}),
-  0 0 120px rgba(0,234,255,${(heroAtmosphere * 0.12).toFixed(3)})
+  0 0 ${glowSpread}px rgba(0,234,255,${(glowLevel * 0.32).toFixed(3)}),
+  0 0 120px rgba(0,234,255,${(glowLevel * 0.14).toFixed(3)})
 `;
 
   hero.el.style.transform = `
