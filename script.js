@@ -37,7 +37,12 @@ pointer: {
 
   energy: 0,
 
-   smoothedVelocity: 0
+   smoothedVelocity: 0,
+
+  heroAuthority: 1,
+
+  cardsAuthority: 0.35
+
 },
 
   running: false,
@@ -511,11 +516,11 @@ card.priority += spatialCoupling;
 
 (card.hover ? (
 
-  IS_TOUCH_DEVICE
+  PLATFORM.isDesktop
 
-    ? 0.014
+    ? 0.032
 
-    : 0.032
+    : 0.014
 
 ) : 0.0008) *
 
@@ -1552,35 +1557,13 @@ function iniciarParticulasV() {
   }
 
   resize();
+  // ─── Solo resize del canvas V — los rects de cards
+  //     se manejan desde el listener unificado al final ───
   window.addEventListener(
      "resize", 
      resize, 
      { passive: true }
   );
-
- window.addEventListener(
-  "resize",
-  () => {
-
-    VISART_ENGINE.cards.forEach(card => {
-      card.needsRectUpdate = true;
-    });
-
-  },
-  { passive: true }
-);
-
-window.addEventListener(
-  "orientationchange",
-  () => {
-
-    VISART_ENGINE.cards.forEach(card => {
-      card.needsRectUpdate = true;
-    });
-
-  },
-  { passive: true }
-);
    
   animar();
 }
@@ -1709,15 +1692,24 @@ function getCssVar(nombre) {
   );
 }
 
+// ─── LISTENERS UNIFICADOS DE INVALIDACIÓN DE RECT ────────
+// Un solo punto de control para resize y orientationchange.
+// Usa needsRectUpdate para consistencia con el guard
+// en updateCards. card.rect = null era redundante.
+
 window.addEventListener("resize", () => {
-
   VISART_ENGINE.cards.forEach(card => {
-
-    card.rect = null;
-
+    card.needsRectUpdate = true;
   });
+}, { passive: true });
 
-});
+window.addEventListener("orientationchange", () => {
+  VISART_ENGINE.cards.forEach(card => {
+    card.needsRectUpdate = true;
+  });
+}, { passive: true });
+
+// ─── SCROLL FLAG ─────────────────────────────────────────
 
 let _scrolling = false;
 let _scrollTimeout;
@@ -1736,16 +1728,5 @@ window.addEventListener("scroll", () => {
 
 // Exponer flag al engine
 VISART_ENGINE._isScrolling = () => _scrolling;
-
-window.addEventListener("orientationchange", () => {
-
-  VISART_ENGINE.cards.forEach(card => {
-
-    card.rect = null;
-
-  });
-
-});
-
 
 VISART_ENGINE.start();
