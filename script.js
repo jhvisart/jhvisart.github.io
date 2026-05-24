@@ -973,8 +973,8 @@ function iniciarHeroTilt() {
   console.log("5 - setHero ejecutado:", VISART_ENGINE.hero);
 
   window.addEventListener("pointermove", (e) => {
-    const x = (VISART_ENGINE.pointer.x / window.innerWidth - 0.5) * 1.8;
-    const y = (VISART_ENGINE.pointer.y / window.innerHeight - 0.5) * -1.2;
+    const x = (VISART_ENGINE.pointer.x / window.innerWidth - 0.5) * 14;
+    const y = (VISART_ENGINE.pointer.y / window.innerHeight - 0.5) * -10;
     heroData.targetX = x;
     heroData.targetY = y;
   }, { passive: true });
