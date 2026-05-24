@@ -541,9 +541,11 @@ transform:
   padding: 24px;
   border-radius: 30px;
   background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .04));
-  border:
-  1px solid
-  rgba(255,255,255,.06);
+  border: 1px solid color-mix(
+  in srgb,
+  var(--accent1) calc(8% + (var(--atmosphere, 0) * 28%)),
+  rgba(255,255,255,.06)
+);
   box-shadow:
   0 10px 24px rgba(0,0,0,.22),
   0 38px 120px rgba(0,0,0,.16),
