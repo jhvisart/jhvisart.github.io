@@ -802,6 +802,16 @@ hero.el.style.setProperty(
   heroAtmosphere.toFixed(3)
 );
 
+   const glowIntensity = (heroAtmosphere * 22).toFixed(1);
+const glowSpread = (heroAtmosphere * 80).toFixed(1);
+hero.el.style.boxShadow = `
+  0 10px 24px rgba(0,0,0,.22),
+  0 38px 120px rgba(0,0,0,.16),
+  0 0 0 1px rgba(255,255,255,.022),
+  0 0 ${glowSpread}px rgba(0,234,255,${(heroAtmosphere * 0.28).toFixed(3)}),
+  0 0 120px rgba(0,234,255,${(heroAtmosphere * 0.12).toFixed(3)})
+`;
+
   hero.el.style.transform = `
     perspective(900px)
     rotateY(${hero.currentX * 0.9}deg)
