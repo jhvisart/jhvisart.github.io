@@ -544,20 +544,12 @@ transform:
   border:
   1px solid
   rgba(255,255,255,.06);
-box-shadow:
-
+  box-shadow:
   0 10px 24px rgba(0,0,0,.22),
-
   0 38px 120px rgba(0,0,0,.16),
-
   0 0 0 1px rgba(255,255,255,.022),
-
-  0 0 120px
-  color-mix(
-    in srgb,
-    var(--accent1) 5%,
-    transparent
-  );
+  0 0 60px color-mix(in srgb, var(--accent1) 18%, transparent),
+  0 0 120px color-mix(in srgb, var(--accent1) 10%, transparent);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
