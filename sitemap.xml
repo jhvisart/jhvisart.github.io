@@ -4,4 +4,16 @@
     <loc>https://visart.dev/</loc>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://visart.dev/pages/visuales/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://visart.dev/pages/visualizers/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://visart.dev/pages/interactivos/</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>
