@@ -105,9 +105,7 @@ body.page-interactivos {
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* FIX 1: scroll-behavior duplicado eliminado — solo se declara una vez arriba en iOS fixes */
 
 body {
   margin: 0;
@@ -780,8 +778,8 @@ backface-visibility: hidden;
 
 -webkit-backface-visibility: hidden;
 
-transform-style:
-  preserve-3d;
+/* FIX 4: transform-style: preserve-3d declarado una sola vez */
+transform-style: preserve-3d;
 
   border-radius: 28px;
 
@@ -874,9 +872,6 @@ translateY(
   transform,
 
   opacity;
-
-  transform-style:
-  preserve-3d;
 
 contain:
   layout;
@@ -1326,13 +1321,6 @@ touch-action: manipulation;
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  /*
-  clip-path:
-  inset(
-    0 round
-    30px 27px 31px 28px
-  );
-  */
 
 background:
 
@@ -1462,13 +1450,6 @@ backface-visibility: hidden;
 
   border-radius: 34px;
  mix-blend-mode: screen;
-  /*
-  clip-path:
-  inset(
-    0 round
-    46px 50px 47px 49px
-  );
-  */
 
   background:
     radial-gradient(
@@ -2114,70 +2095,6 @@ body.platform-android .project-actions {
   -webkit-backface-visibility: visible;
 }
 
-/* ::before — replace plus-lighter with screen,
-   which HW-accelerates on Android Chromium */
-body.platform-android .project-card::before {
-  mix-blend-mode: screen;
-  filter: blur(18px) brightness(1.04) saturate(1.1);
-  opacity: calc(0.06 + (var(--proximity) * 0.18));
-  transform: translate3d(0, 0, 0);
-  will-change: opacity;
-  transition: opacity 0.6s ease;
-}
-
-/* ::after — reduce blur, remove dynamic filter */
-body.platform-android .project-card::after {
-  filter: blur(14px);
-  opacity: calc(0.01 + (var(--proximity) * 0.07));
-  transform: translate3d(0, 0, 0);
-  transition: opacity 0.6s ease;
-  will-change: opacity;
-}
-
-/* Thumb — static transform, no per-frame 3D */
-body.platform-android .project-thumb img {
-  transform: scale(calc(1 + (var(--proximity) * 0.028)));
-  will-change: auto;
-  backface-visibility: visible;
-  filter:
-    brightness(calc(0.84 + (var(--proximity) * 0.10)))
-    saturate(calc(0.9  + (var(--proximity) * 0.06)));
-  transition: transform 0.6s ease, filter 0.5s ease;
-}
-
-/* Grid — remove perspective overhead */
-body.platform-android .projects-grid {
-  perspective: none;
-  transform-style: flat;
-}
-
-/* bg-grid — simplify, no dynamic transform */
-body.platform-android .bg-grid {
-  transform: none !important;
-  opacity: 0.07;
-  filter: none;
-  will-change: auto;
-}
-
-/* hero-card — reduce atmosphere scale */
-body.platform-android .hero-card {
-  transform: translate3d(0, 0, 0) !important;
-  will-change: auto;
-}
-body.platform-android .hero-card::before {
-  filter: blur(20px);
-  opacity: calc(0.14 + (var(--atmosphere, 0) * 0.10));
-  transition: opacity 0.8s ease;
-}
-
-/* =====================================================
-   VISART ANDROID — NUCLEAR COMPOSITING STABILIZATION
-   Causa real del flicker: blend mode + blur filter
-   en pseudo-elementos con CSS vars que cambian 60fps.
-   Solución: eliminar pseudo-elementos del pipeline,
-   reemplazar con box-shadow GPU-nativo en la card.
-===================================================== */
-
 /* Desactivar completamente ::before y ::after */
 body.platform-android .project-card::before,
 body.platform-android .project-card::after {
@@ -2187,6 +2104,17 @@ body.platform-android .project-card::after {
 /* Fijar opacity — sacarla del RAF loop */
 body.platform-android .project-card {
   opacity: 1 !important;
+}
+
+/* FIX 2: bloques Android bg-grid y thumb img consolidados —
+   eliminadas las declaraciones anteriores redundantes */
+
+/* bg-grid — fijo en Android */
+body.platform-android .bg-grid {
+  transform: none !important;
+  opacity: 0.06 !important;
+  filter: none !important;
+  will-change: auto !important;
 }
 
 /* Reemplazar el halo con box-shadow — esto SÍ
@@ -2209,22 +2137,7 @@ body.platform-android .project-card:hover {
   border-color: rgba(0, 234, 255, 0.35);
 }
 
-/* thumb ::after también tiene blend mode en base CSS
-   — desactivarlo en Android */
-body.platform-android .project-thumb::after {
-  mix-blend-mode: normal;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.72),
-    transparent 58%
-  );
-  opacity: calc(0.38 + (var(--proximity) * 0.14));
-  filter: none;
-  transition: opacity 0.5s ease;
-}
-
-/* Desactivar filter en thumb img — usar solo
-   transition suave sin RAF */
+/* FIX 3: thumb img consolidado — una sola declaración Android */
 body.platform-android .project-thumb img {
   filter: brightness(0.85) saturate(0.9);
   transition: transform 0.5s ease, filter 0.4s ease;
@@ -2237,12 +2150,34 @@ body.platform-android .project-card:hover .project-thumb img {
   transform: scale(1.04);
 }
 
-/* bg-grid — fijo en Android */
-body.platform-android .bg-grid {
-  transform: none !important;
-  opacity: 0.06 !important;
-  filter: none !important;
-  will-change: auto !important;
+/* thumb ::after — desactivar blend mode en Android */
+body.platform-android .project-thumb::after {
+  mix-blend-mode: normal;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72),
+    transparent 58%
+  );
+  opacity: calc(0.38 + (var(--proximity) * 0.14));
+  filter: none;
+  transition: opacity 0.5s ease;
+}
+
+/* Grid — remove perspective overhead */
+body.platform-android .projects-grid {
+  perspective: none;
+  transform-style: flat;
+}
+
+/* hero-card — reduce atmosphere scale */
+body.platform-android .hero-card {
+  transform: translate3d(0, 0, 0) !important;
+  will-change: auto;
+}
+body.platform-android .hero-card::before {
+  filter: blur(20px);
+  opacity: calc(0.14 + (var(--atmosphere, 0) * 0.10));
+  transition: opacity 0.8s ease;
 }
 
 /* ─── ANDROID: eliminar transitions de hijos ─────────────
