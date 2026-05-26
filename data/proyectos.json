@@ -56,7 +56,7 @@
       "id": "visualizer-demo",
       "titulo": "Visualizer Demo",
       "descripcion": "Demo reservado para visualizers audio reactivos de VISART.",
-      "categoria": "audio_reactive",
+      "categoria": "interactivo",
       "tipo": "interactivo",
       "labelTipo": "interactivo",
       "img": "assets/biolux.png",
