@@ -53,8 +53,8 @@
       "fecha": "2026-04-15"
     },
     {
-      "id": "visualizer-demo",
-      "titulo": "Visualizer Demo",
+      "id": "biolux",
+      "titulo": "ecosistema-vivo",
       "descripcion": "Demo reservado para visualizers audio reactivos de VISART.",
       "categoria": "interactivo",
       "tipo": "interactivo",
