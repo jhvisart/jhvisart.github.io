@@ -1007,8 +1007,30 @@ function iniciarHeroTilt() {
   console.log("5 - setHero ejecutado:", VISART_ENGINE.hero);
 
   window.addEventListener("pointermove", (e) => {
-    const x = (VISART_ENGINE.pointer.x / window.innerWidth - 0.5) * 28;
-    const y = (VISART_ENGINE.pointer.y / window.innerHeight - 0.5) * -20;
+    // Centro del hero en pantalla
+    const rect = heroCard.getBoundingClientRect();
+    const heroCenterX = rect.left + rect.width * 0.5;
+    const heroCenterY = rect.top + rect.height * 0.5;
+
+    // Distancia del mouse al centro del hero
+    const dx = e.clientX - heroCenterX;
+    const dy = e.clientY - heroCenterY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Radio de influencia: hasta dónde "siente" el hero al mouse.
+    // Más grande = reacciona desde más lejos.
+    const influenceRadius = Math.max(rect.width, rect.height) * 1.6;
+
+    // Falloff: 1 cuando el mouse está en el centro, 0 al borde de la zona
+    let falloff = 1 - distance / influenceRadius;
+    falloff = Math.max(0, falloff);
+    // Curva suave para que el desvanecido sea cinematográfico
+    falloff = falloff * falloff;
+
+    // Tilt basado en la posición DENTRO de la zona, atenuado por el falloff
+    const x = (dx / influenceRadius) * 28 * falloff;
+    const y = (dy / influenceRadius) * -20 * falloff;
+
     heroData.targetX = x;
     heroData.targetY = y;
   }, { passive: true });
