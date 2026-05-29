@@ -19,7 +19,7 @@ body {
 .hero-card,
 .hero-visual,
 .projects-grid {
-  touch-action: pan-y;
+ touch-action: pan-y pinch-zoom;
 }
 
 video,
