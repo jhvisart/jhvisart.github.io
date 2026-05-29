@@ -1,14 +1,15 @@
 /* ===== IOS / SAFARI FIXES ===== */
 
 html {
+  background-color: #000;
   scroll-behavior: smooth;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
 }
-
 body {
+  background-color: #000;
   overflow-x: hidden;
-   overflow-y: auto;
+  overflow-y: auto;
   overscroll-behavior-y: auto;
   -webkit-overflow-scrolling: touch;
   min-height: 100svh;
