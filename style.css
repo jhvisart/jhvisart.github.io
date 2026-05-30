@@ -2283,6 +2283,7 @@ body.platform-ios .bg-grid {
   opacity: calc(0.07 + (var(--globalAtmosphere, 0) * 0.10));
   will-change: opacity;
 }
+
 /* ════════════════════════════════════════
    ANDROID STABILITY PASS — Paso 1
    El movimiento lo maneja solo el motor.
@@ -2294,6 +2295,7 @@ body.platform-android .project-card {
     box-shadow 0.4s ease,
     border-color 0.3s ease;
 }
+
 /* ════════════════════════════════════════
    ANDROID STABILITY PASS — Paso 2
    En táctil no hay mouse, pero el navegador
@@ -2316,4 +2318,18 @@ body.platform-android .project-card {
   .project-card:hover .project-thumb img {
     transform: none;
   }
+}
+
+/* ════════════════════════════════════════
+   ANDROID STABILITY PASS — Paso 3
+   Devuelve el brillo, pero SOLO mientras
+   tienes el dedo sobre la tarjeta (:active).
+   Al soltar se apaga solo — sin pegarse.
+   ════════════════════════════════════════ */
+body.platform-android .project-card:active {
+  border-color: rgba(0, 234, 255, 0.35);
+  box-shadow:
+    0 10px 32px rgba(0, 0, 0, 0.42),
+    0 32px 80px rgba(0, 0, 0, 0.26),
+    0 0 28px rgba(0, 234, 255, 0.22);
 }
