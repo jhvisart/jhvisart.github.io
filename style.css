@@ -1923,9 +1923,9 @@ h1 span::after {
   z-index: -1;
   pointer-events: none;
   box-shadow:
-    0 0 calc(45px * var(--heroGlow, 0)) rgba(180, 250, 255, calc(0.75 * var(--heroGlow, 0))),
-    0 0 calc(95px * var(--heroGlow, 0)) rgba(0, 234, 255, calc(0.45 * var(--heroGlow, 0))),
-    0 0 calc(160px * var(--heroGlow, 0)) rgba(0, 234, 255, calc(0.22 * var(--heroGlow, 0)));
+    0 0 calc(45px * var(--heroGlow, 0)) rgba(180, 250, 255, calc(0.95 * var(--heroGlow, 0))),
+    0 0 calc(95px * var(--heroGlow, 0)) rgba(0, 234, 255, calc(0.65 * var(--heroGlow, 0))),
+    0 0 calc(160px * var(--heroGlow, 0)) rgba(0, 234, 255, calc(0.42 * var(--heroGlow, 0)));
   transition: box-shadow 0.2s ease;
 }
 
