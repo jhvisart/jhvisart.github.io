@@ -499,7 +499,7 @@ const VISART_ENGINE = {
 
    hero.el.parentElement.style.setProperty("--heroGlow", glow.toFixed(3));
 
-    hero.el.style.transform = `
+   hero.el.parentElement.style.transform = `
       perspective(600px)
       rotateY(${hero.currentX * 0.9}deg)
       rotateX(${hero.currentY * 0.9}deg)
