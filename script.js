@@ -9,14 +9,6 @@
 
 const VISART_ENGINE = {
 
-  settings: {
-    maxEnergy: 1,
-    maxTilt: 22,
-    cinematicSilence: 0.11,
-    atmosphereCompression: 0.022,
-    magneticCompression: 0.034
-  },
-
   cards: [],
   hero: null,
 
@@ -36,22 +28,9 @@ const VISART_ENGINE = {
 
   running: false,
 
-  state: {
-    mode: "stable",
-    scene: "default",
-    interaction: "idle"
-  },
-
   isVisible: true,
 
   _isScrolling: () => false,
-
-  modulation: {
-    audio: 0,
-    cinematic: 0,
-    tension: 0,
-    ambience: 0
-  },
 
   audioEngine: {
     context: null,
@@ -571,14 +550,6 @@ const PLATFORM = (() => {
   if (isIOS) return { name: "ios", isAndroid: false, isIOS: true, isDesktop: false };
   return { name: "desktop", isAndroid: false, isIOS: false, isDesktop: true };
 })();
-
-function visartGetPoint(e) {
-  const touch = e.touches?.[0] || e.changedTouches?.[0];
-  return {
-    x: touch ? touch.clientX : e.clientX,
-    y: touch ? touch.clientY : e.clientY
-  };
-}
 
 document.addEventListener("visibilitychange", () => {
   VISART_ENGINE.isVisible = !document.hidden;
