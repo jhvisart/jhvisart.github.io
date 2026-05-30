@@ -489,18 +489,14 @@ const VISART_ENGINE = {
     hero._glowLevel = hero._glowLevel || 0;
     hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.08;
 
-    const glowLevel = hero._glowLevel;
-    const glowSpread = (glowLevel * 140).toFixed(1);
-    const glowInner = (glowLevel * 60).toFixed(1);
+   const glowLevel = hero._glowLevel;
 
-    hero.el.style.boxShadow = `
-      0 10px 24px rgba(0,0,0,.22),
-      0 38px 120px rgba(0,0,0,.16),
-      0 0 0 1px rgba(255,255,255,.022),
-      0 0 ${glowInner}px rgba(0,234,255,${(glowLevel * 0.55).toFixed(3)}),
-      0 0 ${glowSpread}px rgba(0,234,255,${(glowLevel * 0.28).toFixed(3)}),
-      0 0 200px rgba(0,234,255,${(glowLevel * 0.16).toFixed(3)})
-    `;
+    // Escribe la variable que lee la capa .hero-glow (fuera del overflow).
+    // Se limita a 1 para que no se dispare en exceso.
+    hero.el.style.setProperty(
+      "--heroGlow",
+      Math.min(glowLevel, 1).toFixed(3)
+    );
 
     hero.el.style.transform = `
       perspective(600px)
