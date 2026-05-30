@@ -497,7 +497,7 @@ const VISART_ENGINE = {
     // 2) Amplificar para que llegue a full (1) con un tilt normal
     glow = Math.min(glow * 2.6, 1);
 
-    hero.el.style.setProperty("--heroGlow", glow.toFixed(3));
+   hero.el.parentElement.style.setProperty("--heroGlow", glow.toFixed(3));
 
     hero.el.style.transform = `
       perspective(600px)
