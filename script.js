@@ -483,7 +483,7 @@ const VISART_ENGINE = {
     const tiltMagnitude = Math.sqrt(
       hero.currentX * hero.currentX +
       hero.currentY * hero.currentY
-    ) / 14;
+    ) / 6;
 
     // Respuesta rápida propia del hero — independiente de atmosphere
     hero._glowLevel = hero._glowLevel || 0;
