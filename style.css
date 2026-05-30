@@ -2372,3 +2372,14 @@ body.platform-android .project-card:active {
       0 0 90px color-mix(in srgb, var(--accent1) 22%, transparent);
   }
 }
+
+/* ════════════════════════════════════════
+   ARREGLO — el glow del hero sigue el color
+   de cada página (antes estaba fijo en cian).
+   ════════════════════════════════════════ */
+.hero-glow {
+  box-shadow:
+    0 0 calc(45px * var(--heroGlow, 0))  color-mix(in srgb, var(--accent1) 75%, white),
+    0 0 calc(95px * var(--heroGlow, 0))  color-mix(in srgb, var(--accent1) 65%, transparent),
+    0 0 calc(160px * var(--heroGlow, 0)) color-mix(in srgb, var(--accent1) 42%, transparent);
+}
