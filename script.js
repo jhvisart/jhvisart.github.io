@@ -470,8 +470,8 @@ const VISART_ENGINE = {
 
     const authority = this.pointer.heroAuthority;
 
-    hero.currentX += ((hero.targetX * authority) - hero.currentX) * 0.032;
-    hero.currentY += ((hero.targetY * authority) - hero.currentY) * 0.032;
+    hero.currentX += ((hero.targetX * authority) - hero.currentX) * 0.08;
+    hero.currentY += ((hero.targetY * authority) - hero.currentY) * 0.08;
 
     const heroAtmosphere = Math.max(
       atmosphere.breathing,
