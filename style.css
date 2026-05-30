@@ -2330,3 +2330,45 @@ body.platform-android .project-card:active {
     0 32px 80px rgba(0, 0, 0, 0.26),
     0 0 28px color-mix(in srgb, var(--accent1) 22%, transparent);
 }
+
+/* ════════════════════════════════════════
+   ARREGLO — sombra oscura al pie de la foto
+   La bajamos y hacemos que casi no reaccione
+   al mouse. Se mantiene el brillo que sigue
+   al cursor.
+   ════════════════════════════════════════ */
+.project-thumb::after {
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, .35),
+      transparent 48%
+    ),
+    radial-gradient(
+      circle at
+      calc(var(--mx, 50%) + 2%)
+      calc(var(--my, 0%) - 6%),
+      rgba(255, 255, 255, .16),
+      transparent 42%
+    );
+  opacity: calc(
+    0.20 +
+    (var(--proximity) * 0.10) +
+    (var(--energy) * 0.04)
+  );
+}
+
+/* ════════════════════════════════════════
+   ARREGLO — glow de color de la tarjeta
+   más visible al pasar el mouse (PC).
+   ════════════════════════════════════════ */
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, .34),
+      0 12px 24px rgba(0, 0, 0, .26),
+      0 42px 96px rgba(0, 0, 0, .26),
+      0 0 38px color-mix(in srgb, var(--accent1) 38%, transparent),
+      0 0 90px color-mix(in srgb, var(--accent1) 22%, transparent);
+  }
+}
