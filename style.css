@@ -1919,6 +1919,7 @@ h1 span::after {
 }
 .hero-card-wrap {
   position: relative;
+   transform-style: preserve-3d;
 }
 .hero-glow {
   position: absolute;
