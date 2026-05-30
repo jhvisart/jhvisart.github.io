@@ -1,117 +1,79 @@
 /* =========================================================
    VISART ENGINE CORE
+   ---------------------------------------------------------
+   FASE A — STRUCTURE PASS
+   updateCards() dividido en:
+     updateSpatial() · updateMagnetic() · updatePhysics() · updateCompression()
+   Sin cambios de comportamiento, física ni efectos.
 ========================================================= */
 
 const VISART_ENGINE = {
 
-   settings: {
-
-  maxEnergy: 1,
-
-  maxTilt: 22,
-
-  cinematicSilence: 0.11,
-
-  atmosphereCompression: 0.022,
-
-  magneticCompression: 0.034
-
-},
+  settings: {
+    maxEnergy: 1,
+    maxTilt: 22,
+    cinematicSilence: 0.11,
+    atmosphereCompression: 0.022,
+    magneticCompression: 0.034
+  },
 
   cards: [],
-
   hero: null,
 
-pointer: {
-
-  x: window.innerWidth * 0.5,
-  y: window.innerHeight * 0.5,
-
-  targetX: window.innerWidth * 0.5,
-  targetY: window.innerHeight * 0.5,
-
-  lastX: window.innerWidth * 0.5,
-  lastY: window.innerHeight * 0.5,
-
-  velocity: 0,
-
-  energy: 0,
-
-   smoothedVelocity: 0,
-
-  heroAuthority: 1,
-
-  cardsAuthority: 0.35
-
-},
+  pointer: {
+    x: window.innerWidth * 0.5,
+    y: window.innerHeight * 0.5,
+    targetX: window.innerWidth * 0.5,
+    targetY: window.innerHeight * 0.5,
+    lastX: window.innerWidth * 0.5,
+    lastY: window.innerHeight * 0.5,
+    velocity: 0,
+    energy: 0,
+    smoothedVelocity: 0,
+    heroAuthority: 1,
+    cardsAuthority: 0.35
+  },
 
   running: false,
 
-   state: {
+  state: {
+    mode: "stable",
+    scene: "default",
+    interaction: "idle"
+  },
 
-  mode: "stable",
+  isVisible: true,
 
-  scene: "default",
+  _isScrolling: () => false,
 
-  interaction: "idle"
+  modulation: {
+    audio: 0,
+    cinematic: 0,
+    tension: 0,
+    ambience: 0
+  },
 
-},
+  audioEngine: {
+    context: null,
+    analyser: null,
+    source: null,
+    dataArray: null,
+    fftSize: 512,
+    enabled: false,
+    initialized: false,
+    energy: 0,
+    bass: 0,
+    mids: 0,
+    highs: 0,
+    cinematicWeight: 0
+  },
 
-   isVisible: true,
-
-   _isScrolling: () => false,
-
-   modulation: {
-
-  audio: 0,
-
-  cinematic: 0,
-
-  tension: 0,
-
-  ambience: 0
-
-},
-
-audioEngine: {
-
-  context: null,
-
-  analyser: null,
-
-  source: null,
-
-  dataArray: null,
-
-  fftSize: 512,
-
-  enabled: false,
-
-  initialized: false,
-
-  energy: 0,
-
-  bass: 0,
-
-  mids: 0,
-
-  highs: 0,
-
-  cinematicWeight: 0
-
-},
-
-atmosphere: {
-
-  current: 0,
-
-  target: 0,
-
-  pulse: 0,
-
-  breathing: 0
-
-},
+  atmosphere: {
+    current: 0,
+    target: 0,
+    pulse: 0,
+    breathing: 0
+  },
 
   addCard(card) {
     this.cards.push(card);
@@ -122,757 +84,473 @@ atmosphere: {
   },
 
   start() {
-
     if (this.running) return;
-
     this.running = true;
 
     const tick = () => {
-
       this.update();
-
       requestAnimationFrame(tick);
-
     };
 
     requestAnimationFrame(tick);
-
   },
 
-   updatePointer() {
+  /* =========================================================
+     POINTER
+  ========================================================= */
+  updatePointer() {
+    const pointer = this.pointer;
 
-  const pointer =
-    this.pointer;
+    pointer.smoothedVelocity +=
+      (pointer.velocity - pointer.smoothedVelocity) * 0.12;
 
-   pointer.smoothedVelocity +=
-  (
-    pointer.velocity -
-    pointer.smoothedVelocity
-  ) * 0.12;
+    const targetEnergy =
+      pointer.smoothedVelocity *
+      (pointer.velocity > 0.08 ? 1 : 0.35);
 
-  const targetEnergy =
+    pointer.energy += (targetEnergy - pointer.energy) * 0.018;
+    pointer.energy = Math.min(pointer.energy, 1);
 
-    pointer.smoothedVelocity *
+    pointer.heroAuthority = Math.max(0, 1 - (pointer.energy * 1.8));
+    pointer.cardsAuthority = Math.min(1, 0.35 + (pointer.energy * 1.4));
 
-    (
-      pointer.velocity > 0.08
-        ? 1
-        : 0.35
-    );
+    pointer.x += (pointer.targetX - pointer.x) * 0.11;
+    pointer.y += (pointer.targetY - pointer.y) * 0.11;
+  },
 
-  pointer.energy +=
-    (
-      targetEnergy -
-      pointer.energy
-    ) * 0.018;
+  /* =========================================================
+     AUDIO
+  ========================================================= */
+  updateAudio() {
+    const audio = this.audioEngine;
 
-      pointer.energy =
-
-  Math.min(
-    pointer.energy,
-    1
-  );
-
-      pointer.heroAuthority =
-
-  Math.max(
-    0,
-    1 - (pointer.energy * 1.8)
-  );
-
-pointer.cardsAuthority =
-
-  Math.min(
-    1,
-    0.35 + (pointer.energy * 1.4)
-  );
-
-  pointer.x +=
-    (pointer.targetX - pointer.x) * 0.11;
-
-  pointer.y +=
-    (pointer.targetY - pointer.y) * 0.11;
-
-},
-
- updateAudio() {
-
-  const audio =
-    this.audioEngine;
-
-  if (
-    !audio.enabled ||
-    !audio.analyser ||
-    !audio.dataArray
-  ) {
-    return;
-  }
-
-  audio.analyser.getByteFrequencyData(
-    audio.dataArray
-  );
-
-  let bass = 0;
-  let mids = 0;
-  let highs = 0;
-
-  const buffer =
-    audio.dataArray;
-
-  const length =
-    buffer.length;
-
-  for (let i = 0; i < length; i++) {
-
-    const value =
-      buffer[i] / 255;
-
-    if (i < length * 0.12) {
-      bass += value;
+    if (!audio.enabled || !audio.analyser || !audio.dataArray) {
+      return;
     }
 
-    else if (i < length * 0.45) {
-      mids += value;
+    audio.analyser.getByteFrequencyData(audio.dataArray);
+
+    let bass = 0;
+    let mids = 0;
+    let highs = 0;
+
+    const buffer = audio.dataArray;
+    const length = buffer.length;
+
+    for (let i = 0; i < length; i++) {
+      const value = buffer[i] / 255;
+
+      if (i < length * 0.12) {
+        bass += value;
+      } else if (i < length * 0.45) {
+        mids += value;
+      } else {
+        highs += value;
+      }
     }
 
-    else {
-      highs += value;
-    }
+    bass /= length * 0.12;
+    mids /= length * 0.33;
+    highs /= length * 0.55;
 
-  }
+    audio.bass += (bass - audio.bass) * 0.12;
+    audio.mids += (mids - audio.mids) * 0.08;
+    audio.highs += (highs - audio.highs) * 0.06;
 
-  bass /= length * 0.12;
-  mids /= length * 0.33;
-  highs /= length * 0.55;
-
-  audio.bass +=
-    (bass - audio.bass) * 0.12;
-
-  audio.mids +=
-    (mids - audio.mids) * 0.08;
-
-  audio.highs +=
-    (highs - audio.highs) * 0.06;
-
-  const totalEnergy =
-
-    (
+    const totalEnergy =
       audio.bass * 0.52 +
       audio.mids * 0.32 +
-      audio.highs * 0.16
-    );
+      audio.highs * 0.16;
 
-  audio.energy +=
-    (
-      totalEnergy -
-      audio.energy
-    ) * 0.08;
+    audio.energy += (totalEnergy - audio.energy) * 0.08;
+  },
 
-},
-   
-   updateAtmosphere(time) {
+  /* =========================================================
+     ATMOSPHERE
+  ========================================================= */
+  updateAtmosphere(time) {
+    const pointer = this.pointer;
+    const atmosphere = this.atmosphere;
+    const energy = pointer.energy;
+    const audioEnergy = this.audioEngine.energy;
 
-  const pointer =
-    this.pointer;
+    atmosphere.target =
+      (pointer.velocity > 0.04 ? energy : 0) +
+      (audioEnergy * 0.42);
 
-  const atmosphere =
-    this.atmosphere;
-
-  const energy =
-    pointer.energy;
-
-   const audioEnergy =
-
-  this.audioEngine.energy;
-
-  atmosphere.target =
-
-  (
-    pointer.velocity > 0.04
-
-      ? energy
-
-      : 0
-
-  ) +
-
-  (audioEnergy * 0.42);
-
-const cardFieldPressure =
-
-  this.cards.reduce(
-    (acc, card) => {
-      return acc + (
-        card.priority * 0.028
-      );
-    },
-    0
-  );
-
-const nextAtmosphere = (
-  Math.min(
-    atmosphere.target + cardFieldPressure,
-    1
-  ) -
-  atmosphere.current
-) * 0.022;
-
-atmosphere.current = isNaN(atmosphere.current)
-  ? 0
-  : atmosphere.current + nextAtmosphere;
-
-  atmosphere.pulse =
-
-    Math.sin(
-      time * 0.00032
-    ) * 0.5 + 0.5;
-
-  atmosphere.breathing =
-
-    (
-      atmosphere.pulse * 0.12
-    ) *
-
-    atmosphere.current;
-
-  document.body.style.setProperty(
-    "--globalAtmosphere",
-    atmosphere.current.toFixed(3)
-  );
-
-},
-
-   updateCards(time) {
-
-  const pointer =
-    this.pointer;
-
- const energy =
-  pointer.energy;
-
-this.cards.forEach(card => {
-
-  card.energy =
-    energy;
-
-     /* =========================
-   SPATIAL ANALYSIS
-========================= */
-
-if (
-  !card.rect ||
-  card.needsRectUpdate
-) {
-
-  card.rect =
-    card.el.getBoundingClientRect();
-
-  card.needsRectUpdate = false;
-
-}
-
-const rect =
-  card.rect;
-
-   const viewportPadding = 260;
-
-const isVisible =
-
-  rect.bottom > -viewportPadding &&
-
-  rect.top < (
-    window.innerHeight +
-    viewportPadding
-  );
-
-if (!isVisible) return;
-
-const centerX = 
-   rect.left + rect.width * 0.5;
-     
-const centerY = 
-   rect.top + rect.height * 0.5;
-
-card.centerX = centerX;
-card.centerY = centerY;
-
-const dx =
-  pointer.x - centerX;
-
-const dy =
-  pointer.y - centerY;
-
- const localX =
-  pointer.x - rect.left;
-
-const localY =
-  pointer.y - rect.top;
-
-const percentX =
-  localX / rect.width;
-
-const percentY =
-  localY / rect.height;
-
-card.lightX = 
-   percentX * 100;
-     
-card.lightY = 
-   percentY * 100;
-
-card.lightCurrentX +=
-  (card.lightX - card.lightCurrentX) * 0.08;
-
-card.lightCurrentY +=
-  (card.lightY - card.lightCurrentY) * 0.08;
-
-const distance =
-  Math.sqrt(dx * dx + dy * dy);
-
-const maxDistance = 
-   420;
-
-const authority =
-  pointer.cardsAuthority;
-
-const fieldInfluence =
-
-  (pointer.energy * authority) *
-
-  (
-    0.08 +
-
-    (card.proximity * 0.16)
-  );
-
-const normalizedDistance =
-  Math.max(
-     0, 
-     1 - distance / maxDistance
-  );
-
-card.proximity =
-
-  Math.pow(
-    normalizedDistance,
-    2.4
-  );
-
-const ambientBleed = this._isScrolling()
-  ? 0
-  : this.cards.reduce(
-      (acc, otherCard) => {
-        if (otherCard === card) return acc;
-        const ox = otherCard.centerX || 0;
-        const oy = otherCard.centerY || 0;
-        const ddx = centerX - ox;
-        const ddy = centerY - oy;
-        const dist = Math.sqrt(ddx * ddx + ddy * ddy);
-        return (
-          acc +
-          Math.max(0, 1 - dist / 420) *
-          otherCard.proximity *
-          0.018
-        );
-      },
+    const cardFieldPressure = this.cards.reduce(
+      (acc, card) => acc + (card.priority * 0.028),
       0
     );
 
-card.proximity += ambientBleed;
+    const nextAtmosphere = (
+      Math.min(atmosphere.target + cardFieldPressure, 1) -
+      atmosphere.current
+    ) * 0.022;
 
-   const spatialCoupling = this._isScrolling()
-  ? 0
-  : this.cards.reduce(
-      (acc, otherCard) => {
-        if (otherCard === card) return acc;
-        return (
-          acc +
-          (otherCard.priority * 0.0035)
-        );
-      },
-      0
+    atmosphere.current = isNaN(atmosphere.current)
+      ? 0
+      : atmosphere.current + nextAtmosphere;
+
+    atmosphere.pulse = Math.sin(time * 0.00032) * 0.5 + 0.5;
+    atmosphere.breathing = (atmosphere.pulse * 0.12) * atmosphere.current;
+
+    document.body.style.setProperty(
+      "--globalAtmosphere",
+      atmosphere.current.toFixed(3)
     );
-
-card.priority += spatialCoupling;
-
-   card.priority =
-
-  Math.min(
-
-    1,
-
-    Math.pow(
-      card.proximity,
-      2.1
-    )
-
-  );
-
-     /* =========================
-   MAGNETIC FIELD
-========================= */
-
-   const magneticStrength =
-
-(card.hover ? (
-
-  PLATFORM.isDesktop
-
-    ? 0.032
-
-    : 0.014
-
-) : 0.0008) *
-
-Math.pow(
-  0.35 + card.priority,
-  1.18
-);
-
-card.magneticX =
-  dx * magneticStrength * card.proximity;
-
-card.magneticY =
-  dy * magneticStrength * card.proximity;
-
-const magneticCompression =
-
-  0.034 +
-
-  (card.priority * 0.008);
-
-card.magneticCurrentX +=
-  (
-    card.magneticX -
-    card.magneticCurrentX
-  ) * magneticCompression;
-
-card.magneticCurrentY +=
-  (
-    card.magneticY -
-    card.magneticCurrentY
-  ) * magneticCompression;
-
- card.currentX +=
-  Math.sin(
-    time * 0.0011 +
-    distance * 0.006
-  ) * fieldInfluence * 0.008;
-
-card.currentY +=
-  Math.cos(
-    time * 0.0010 +
-    distance * 0.005
-  ) * fieldInfluence * 0.008;
-
-  const restDecay =
-
-  Math.max(
-    0.08,
-    pointer.energy
-  );
-
-const ambientStillness =
-
-  Math.max(
-    0,
-    restDecay - 0.12
-  );
-
-const ambientFloat =
-
-  Math.sin(
-
-    time * 0.00016 +
-
-    card.floatSeed +
-
-    distance * 0.00016
-
-  ) *
-
-  0.0012 *
-
-  card.floatIntensity *
-
-  ambientStillness;
-
-card.currentY += ambientFloat;
-
-     /* =========================
-   PHYSICS SYNTHESIS
-========================= */
-    
- const adaptiveSpeed =
-  card.speed +
-  (pointer.energy * 0.12);
-
-const forceX =
-  (card.targetX - card.currentX) * adaptiveSpeed;
-
-const forceY =
-  (card.targetY - card.currentY) * adaptiveSpeed;
-    
-card.velocityX += forceX;
-card.velocityY += forceY;
-
-const spatialMass =
-
-  1 +
-
-  (card.priority * 1.8) +
-
-  (card.proximity * 0.9);
-
-const inertialResistance =
-
-  0.78 +
-
-  (spatialMass * 0.028);
-
-const adaptiveDamping =
-
-  inertialResistance -
-
-  (pointer.energy * 0.010);
-
-card.velocityX *= adaptiveDamping;
-card.velocityY *= adaptiveDamping;
-    
-card.velocityX *= 0.985;
-card.velocityY *= 0.985;
-
-     /* =========================
-   MOTION COMPRESSION
-========================= */
-
-const residualEnergy =
-
-  energy > 0.11
-
-    ? (
-        energy - 0.11
-      )
-
-    : 0;
-
-const silenceGate =
-
-  Math.max(
-    0,
-    card.proximity - 0.08
-  );
-
-const microMotion =
-
-  Math.sin(
-
-    time * 0.00032 +
-
-    card.floatSeed
-
-  ) *
-
-  0.00028 *
-
-  silenceGate *
-
-  residualEnergy;
-
-const compressionCurve =
-
-  1 -
-
-  Math.min(
-    0.32,
-    card.priority * 0.22
-  );
-
-card.currentX +=
-
-  Math.max(
-    -18,
-    Math.min(
-      18,
-
-      (
-        card.velocityX +
-        microMotion
-      ) * compressionCurve
-    )
-  );
-
-card.currentY +=
-
-  Math.max(
-    -18,
-    Math.min(
-      18,
-
-      (
-        card.velocityY +
-        (microMotion * 0.7)
-      ) * compressionCurve
-    )
-  );
+  },
+
+  /* =========================================================
+     CARDS — orquestador
+     Cada card recibe un ctx limpio que viaja por los 4 módulos.
+     ctx lleva los valores temporales del frame (dx, dy,
+     distance, fieldInfluence) que antes eran variables locales.
+  ========================================================= */
+  updateCards(time) {
+    const pointer = this.pointer;
+    const energy = pointer.energy;
+
+    this.cards.forEach(card => {
+      card.energy = energy;
+
+      const ctx = {
+        time,
+        pointer,
+        energy,
+        dx: 0,
+        dy: 0,
+        distance: 0,
+        fieldInfluence: 0
+      };
+
+      // updateSpatial devuelve false si la card no es visible:
+      // ese es el reemplazo exacto del "return" que antes
+      // cortaba el forEach.
+      if (this.updateSpatial(card, ctx) === false) return;
+
+      this.updateMagnetic(card, ctx);
+      this.updatePhysics(card, ctx);
+      this.updateCompression(card, ctx);
     });
-   },
+  },
 
-     renderCards(time) {
+  /* ─────────────────────────────────────────────
+     SPATIAL ANALYSIS
+     rect · visibilidad · centro · luz · distancia
+     proximity · ambientBleed · spatialCoupling · priority
+  ───────────────────────────────────────────── */
+  updateSpatial(card, ctx) {
+    const pointer = ctx.pointer;
 
-  const energy = this.pointer.energy;
+    if (!card.rect || card.needsRectUpdate) {
+      card.rect = card.el.getBoundingClientRect();
+      card.needsRectUpdate = false;
+    }
 
-  this.cards.forEach(card => {
+    const rect = card.rect;
+    const viewportPadding = 260;
 
-    const style = card.el.style;
+    const isVisible =
+      rect.bottom > -viewportPadding &&
+      rect.top < (window.innerHeight + viewportPadding);
 
-    // ─── setProperty individual — sin cssText += ──────────
-    style.setProperty("--tiltX",  `${card.currentX.toFixed(3)}deg`);
-    style.setProperty("--tiltY",  `${card.currentY.toFixed(3)}deg`);
+    if (!isVisible) return false;
 
-    style.setProperty("--magneticX", `${card.magneticCurrentX.toFixed(2)}px`);
-    style.setProperty("--magneticY", `${card.magneticCurrentY.toFixed(2)}px`);
+    const centerX = rect.left + rect.width * 0.5;
+    const centerY = rect.top + rect.height * 0.5;
+    card.centerX = centerX;
+    card.centerY = centerY;
 
-    style.setProperty("--proximity", card.proximity.toFixed(3));
-    style.setProperty("--energy",    card.energy.toFixed(3));
+    const dx = pointer.x - centerX;
+    const dy = pointer.y - centerY;
 
-    style.setProperty("--mx", `${card.lightCurrentX.toFixed(2)}%`);
-    style.setProperty("--my", `${card.lightCurrentY.toFixed(2)}%`);
+    const localX = pointer.x - rect.left;
+    const localY = pointer.y - rect.top;
+    const percentX = localX / rect.width;
+    const percentY = localY / rect.height;
 
-    style.setProperty("--haloX", `${(card.lightCurrentX + card.currentY * 0.9).toFixed(2)}%`);
-    style.setProperty("--haloY", `${(card.lightCurrentY + card.currentX * -0.9).toFixed(2)}%`);
+    card.lightX = percentX * 100;
+    card.lightY = percentY * 100;
+    card.lightCurrentX += (card.lightX - card.lightCurrentX) * 0.08;
+    card.lightCurrentY += (card.lightY - card.lightCurrentY) * 0.08;
 
-    style.setProperty("--depthShiftX", `${(card.currentY * 0.045).toFixed(2)}px`);
-    style.setProperty("--depthShiftY", `${(card.currentX * -0.045).toFixed(2)}px`);
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const maxDistance = 420;
+    const authority = pointer.cardsAuthority;
 
-    style.setProperty("--depthPresence",       (card.proximity * 0.9  + card.energy * 0.25).toFixed(3));
-    style.setProperty("--focusDepth",          (0.72 + card.priority * 0.28).toFixed(3));
-    style.setProperty("--atmosphericDepth",    (card.proximity * 0.6  + card.energy * 0.18 + card.priority * 0.22).toFixed(3));
-    style.setProperty("--foregroundAuthority", (card.priority * 0.72  + card.proximity * 0.28).toFixed(3));
-    style.setProperty("--fieldPresence",       (card.priority * 0.58  + card.energy * 0.16 + card.proximity * 0.22).toFixed(3));
+    const fieldInfluence =
+      (pointer.energy * authority) *
+      (0.08 + (card.proximity * 0.16));
 
-    // ─── breath ──────────────────────────────────────────
-    const restEnergy = energy > 0.025 ? energy * 0.52 : 0;
+    const normalizedDistance = Math.max(0, 1 - distance / maxDistance);
+    card.proximity = Math.pow(normalizedDistance, 2.4);
 
-    const idleField =
-      Math.sin(time * 0.00022 + card.floatSeed) * 0.5 + 0.5;
+    const ambientBleed = this._isScrolling()
+      ? 0
+      : this.cards.reduce((acc, otherCard) => {
+          if (otherCard === card) return acc;
+          const ox = otherCard.centerX || 0;
+          const oy = otherCard.centerY || 0;
+          const ddx = centerX - ox;
+          const ddy = centerY - oy;
+          const dist = Math.sqrt(ddx * ddx + ddy * ddy);
+          return acc + Math.max(0, 1 - dist / 420) * otherCard.proximity * 0.018;
+        }, 0);
 
-    const lightBreath =
-      (Math.sin(time * 0.00045) * 0.5 + 0.5) * 0.16 * restEnergy +
-      idleField * 0.018;
+    card.proximity += ambientBleed;
 
-    style.setProperty("--breath", lightBreath.toFixed(3));
+    const spatialCoupling = this._isScrolling()
+      ? 0
+      : this.cards.reduce((acc, otherCard) => {
+          if (otherCard === card) return acc;
+          return acc + (otherCard.priority * 0.0035);
+        }, 0);
 
-  });
-},
+    card.priority += spatialCoupling;
+    card.priority = Math.min(1, Math.pow(card.proximity, 2.1));
 
-   updateHero() {
+    // Exponer al resto de módulos lo que necesitan
+    ctx.dx = dx;
+    ctx.dy = dy;
+    ctx.distance = distance;
+    ctx.fieldInfluence = fieldInfluence;
 
-  const hero =
-    this.hero;
+    return true;
+  },
 
-  const atmosphere =
-    this.atmosphere;
+  /* ─────────────────────────────────────────────
+     MAGNETIC FIELD
+     fuerza magnética · interpolación · field float · ambient float
+  ───────────────────────────────────────────── */
+  updateMagnetic(card, ctx) {
+    const pointer = ctx.pointer;
+    const time = ctx.time;
+    const dx = ctx.dx;
+    const dy = ctx.dy;
+    const distance = ctx.distance;
+    const fieldInfluence = ctx.fieldInfluence;
 
-  if (!hero) return;
+    const magneticStrength =
+      (card.hover
+        ? (PLATFORM.isDesktop ? 0.032 : 0.014)
+        : 0.0008) *
+      Math.pow(0.35 + card.priority, 1.18);
 
-     if (this._isScrolling()) {
-    hero.el.style.setProperty(
-      "--atmosphere",
-      atmosphere.breathing.toFixed(3)
+    card.magneticX = dx * magneticStrength * card.proximity;
+    card.magneticY = dy * magneticStrength * card.proximity;
+
+    const magneticCompression = 0.034 + (card.priority * 0.008);
+
+    card.magneticCurrentX +=
+      (card.magneticX - card.magneticCurrentX) * magneticCompression;
+    card.magneticCurrentY +=
+      (card.magneticY - card.magneticCurrentY) * magneticCompression;
+
+    card.currentX +=
+      Math.sin(time * 0.0011 + distance * 0.006) * fieldInfluence * 0.008;
+    card.currentY +=
+      Math.cos(time * 0.0010 + distance * 0.005) * fieldInfluence * 0.008;
+
+    const restDecay = Math.max(0.08, pointer.energy);
+    const ambientStillness = Math.max(0, restDecay - 0.12);
+
+    const ambientFloat =
+      Math.sin(time * 0.00016 + card.floatSeed + distance * 0.00016) *
+      0.0012 *
+      card.floatIntensity *
+      ambientStillness;
+
+    card.currentY += ambientFloat;
+  },
+
+  /* ─────────────────────────────────────────────
+     PHYSICS SYNTHESIS
+     velocidad · masa espacial · damping
+  ───────────────────────────────────────────── */
+  updatePhysics(card, ctx) {
+    const pointer = ctx.pointer;
+
+    const adaptiveSpeed = card.speed + (pointer.energy * 0.12);
+
+    const forceX = (card.targetX - card.currentX) * adaptiveSpeed;
+    const forceY = (card.targetY - card.currentY) * adaptiveSpeed;
+
+    card.velocityX += forceX;
+    card.velocityY += forceY;
+
+    const spatialMass =
+      1 +
+      (card.priority * 1.8) +
+      (card.proximity * 0.9);
+
+    const inertialResistance = 0.78 + (spatialMass * 0.028);
+    const adaptiveDamping = inertialResistance - (pointer.energy * 0.010);
+
+    card.velocityX *= adaptiveDamping;
+    card.velocityY *= adaptiveDamping;
+
+    card.velocityX *= 0.985;
+    card.velocityY *= 0.985;
+  },
+
+  /* ─────────────────────────────────────────────
+     MOTION COMPRESSION
+     micro-motion · curva de compresión · clamp final
+  ───────────────────────────────────────────── */
+  updateCompression(card, ctx) {
+    const time = ctx.time;
+    const energy = ctx.energy;
+
+    const residualEnergy = energy > 0.11 ? (energy - 0.11) : 0;
+    const silenceGate = Math.max(0, card.proximity - 0.08);
+
+    const microMotion =
+      Math.sin(time * 0.00032 + card.floatSeed) *
+      0.00028 *
+      silenceGate *
+      residualEnergy;
+
+    const compressionCurve = 1 - Math.min(0.32, card.priority * 0.22);
+
+    card.currentX += Math.max(
+      -18,
+      Math.min(18, (card.velocityX + microMotion) * compressionCurve)
     );
-    return;
-  }
 
- const authority =
-  this.pointer.heroAuthority;
+    card.currentY += Math.max(
+      -18,
+      Math.min(18, (card.velocityY + (microMotion * 0.7)) * compressionCurve)
+    );
+  },
 
-hero.currentX +=
-  (
-    (hero.targetX * authority) -
-    hero.currentX
-  ) * 0.032;
+  /* =========================================================
+     RENDER CARDS
+  ========================================================= */
+  renderCards(time) {
+    const energy = this.pointer.energy;
 
-hero.currentY +=
-  (
-    (hero.targetY * authority) -
-    hero.currentY
-  ) * 0.032;
+    this.cards.forEach(card => {
+      const style = card.el.style;
 
- const heroAtmosphere = Math.max(
-  atmosphere.breathing,
-  atmosphere.current * 0.9
-);
+      // setProperty individual — sin cssText +=
+      style.setProperty("--tiltX", `${card.currentX.toFixed(3)}deg`);
+      style.setProperty("--tiltY", `${card.currentY.toFixed(3)}deg`);
 
-hero.el.style.setProperty(
-  "--atmosphere",
-  heroAtmosphere.toFixed(3)
-);
+      style.setProperty("--magneticX", `${card.magneticCurrentX.toFixed(2)}px`);
+      style.setProperty("--magneticY", `${card.magneticCurrentY.toFixed(2)}px`);
 
-const tiltMagnitude = Math.sqrt(
-  hero.currentX * hero.currentX +
-  hero.currentY * hero.currentY
-) / 14;
+      style.setProperty("--proximity", card.proximity.toFixed(3));
+      style.setProperty("--energy", card.energy.toFixed(3));
 
-// Respuesta rápida propia del hero — independiente de atmosphere
-hero._glowLevel = hero._glowLevel || 0;
-hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.08;
+      style.setProperty("--mx", `${card.lightCurrentX.toFixed(2)}%`);
+      style.setProperty("--my", `${card.lightCurrentY.toFixed(2)}%`);
 
-const glowLevel = hero._glowLevel;
-const glowSpread = (glowLevel * 140).toFixed(1);
-const glowInner = (glowLevel * 60).toFixed(1);
+      style.setProperty("--haloX", `${(card.lightCurrentX + card.currentY * 0.9).toFixed(2)}%`);
+      style.setProperty("--haloY", `${(card.lightCurrentY + card.currentX * -0.9).toFixed(2)}%`);
 
-hero.el.style.boxShadow = `
-  0 10px 24px rgba(0,0,0,.22),
-  0 38px 120px rgba(0,0,0,.16),
-  0 0 0 1px rgba(255,255,255,.022),
-  0 0 ${glowInner}px rgba(0,234,255,${(glowLevel * 0.55).toFixed(3)}),
-  0 0 ${glowSpread}px rgba(0,234,255,${(glowLevel * 0.28).toFixed(3)}),
-  0 0 200px rgba(0,234,255,${(glowLevel * 0.16).toFixed(3)})
-`;
+      style.setProperty("--depthShiftX", `${(card.currentY * 0.045).toFixed(2)}px`);
+      style.setProperty("--depthShiftY", `${(card.currentX * -0.045).toFixed(2)}px`);
 
- hero.el.style.transform = `
-  perspective(600px)
-  rotateY(${hero.currentX * 0.9}deg)
-  rotateX(${hero.currentY * 0.9}deg)
-`;
+      style.setProperty("--depthPresence", (card.proximity * 0.9 + card.energy * 0.25).toFixed(3));
+      style.setProperty("--focusDepth", (0.72 + card.priority * 0.28).toFixed(3));
+      style.setProperty("--atmosphericDepth", (card.proximity * 0.6 + card.energy * 0.18 + card.priority * 0.22).toFixed(3));
+      style.setProperty("--foregroundAuthority", (card.priority * 0.72 + card.proximity * 0.28).toFixed(3));
+      style.setProperty("--fieldPresence", (card.priority * 0.58 + card.energy * 0.16 + card.proximity * 0.22).toFixed(3));
 
-},
-   
-   update() {
+      // breath
+      const restEnergy = energy > 0.025 ? energy * 0.52 : 0;
 
-   const time =
-  performance.now();
+      const idleField =
+        Math.sin(time * 0.00022 + card.floatSeed) * 0.5 + 0.5;
 
-   if (!this.isVisible) {
+      const lightBreath =
+        (Math.sin(time * 0.00045) * 0.5 + 0.5) * 0.16 * restEnergy +
+        idleField * 0.018;
 
-  this.pointer.energy *= 0.92;
+      style.setProperty("--breath", lightBreath.toFixed(3));
+    });
+  },
 
-  return;
+  /* =========================================================
+     HERO
+  ========================================================= */
+  updateHero() {
+    const hero = this.hero;
+    const atmosphere = this.atmosphere;
 
-}
+    if (!hero) return;
 
-     this.updatePointer();
+    if (this._isScrolling()) {
+      hero.el.style.setProperty(
+        "--atmosphere",
+        atmosphere.breathing.toFixed(3)
+      );
+      return;
+    }
 
-      this.updateAudio();
+    const authority = this.pointer.heroAuthority;
 
-     const pointer =
-  this.pointer;
+    hero.currentX += ((hero.targetX * authority) - hero.currentX) * 0.032;
+    hero.currentY += ((hero.targetY * authority) - hero.currentY) * 0.032;
 
-this.updateAtmosphere(time);
+    const heroAtmosphere = Math.max(
+      atmosphere.breathing,
+      atmosphere.current * 0.9
+    );
 
-const atmosphere =
-  this.atmosphere;
+    hero.el.style.setProperty("--atmosphere", heroAtmosphere.toFixed(3));
 
-const energy =
-  pointer.energy;
+    const tiltMagnitude = Math.sqrt(
+      hero.currentX * hero.currentX +
+      hero.currentY * hero.currentY
+    ) / 14;
 
-this.updateCards(time);
-if (!this._isScrolling()) {
-  this.renderCards(time);
-}
-this.updateHero();
+    // Respuesta rápida propia del hero — independiente de atmosphere
+    hero._glowLevel = hero._glowLevel || 0;
+    hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.08;
 
+    const glowLevel = hero._glowLevel;
+    const glowSpread = (glowLevel * 140).toFixed(1);
+    const glowInner = (glowLevel * 60).toFixed(1);
+
+    hero.el.style.boxShadow = `
+      0 10px 24px rgba(0,0,0,.22),
+      0 38px 120px rgba(0,0,0,.16),
+      0 0 0 1px rgba(255,255,255,.022),
+      0 0 ${glowInner}px rgba(0,234,255,${(glowLevel * 0.55).toFixed(3)}),
+      0 0 ${glowSpread}px rgba(0,234,255,${(glowLevel * 0.28).toFixed(3)}),
+      0 0 200px rgba(0,234,255,${(glowLevel * 0.16).toFixed(3)})
+    `;
+
+    hero.el.style.transform = `
+      perspective(600px)
+      rotateY(${hero.currentX * 0.9}deg)
+      rotateX(${hero.currentY * 0.9}deg)
+    `;
+  },
+
+  /* =========================================================
+     UPDATE — loop principal
+  ========================================================= */
+  update() {
+    const time = performance.now();
+
+    if (!this.isVisible) {
+      this.pointer.energy *= 0.92;
+      return;
+    }
+
+    this.updatePointer();
+    this.updateAudio();
+    this.updateAtmosphere(time);
+    this.updateCards(time);
+
+    if (!this._isScrolling()) {
+      this.renderCards(time);
+    }
+
+    this.updateHero();
   }
 
 };
@@ -889,90 +567,56 @@ const PLATFORM = (() => {
   const isIOS =
     /iPhone|iPad|iPod/i.test(ua) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  if (isAndroid) return { name: "android", isAndroid: true,  isIOS: false, isDesktop: false };
-  if (isIOS)     return { name: "ios",     isAndroid: false, isIOS: true,  isDesktop: false };
-  return           { name: "desktop",  isAndroid: false, isIOS: false, isDesktop: true  };
+  if (isAndroid) return { name: "android", isAndroid: true, isIOS: false, isDesktop: false };
+  if (isIOS) return { name: "ios", isAndroid: false, isIOS: true, isDesktop: false };
+  return { name: "desktop", isAndroid: false, isIOS: false, isDesktop: true };
 })();
 
 function visartGetPoint(e) {
   const touch = e.touches?.[0] || e.changedTouches?.[0];
-
   return {
     x: touch ? touch.clientX : e.clientX,
     y: touch ? touch.clientY : e.clientY
   };
 }
 
-document.addEventListener(
-  "visibilitychange",
-  () => {
+document.addEventListener("visibilitychange", () => {
+  VISART_ENGINE.isVisible = !document.hidden;
+});
 
-    VISART_ENGINE.isVisible =
-      !document.hidden;
+window.addEventListener("blur", () => {
+  VISART_ENGINE.isVisible = false;
+});
 
-  }
-);
-
-window.addEventListener(
-  "blur",
-  () => {
-
-    VISART_ENGINE.isVisible = false;
-
-  }
-);
-
-window.addEventListener(
-  "focus",
-  () => {
-
-    VISART_ENGINE.isVisible = true;
-
-    VISART_ENGINE.pointer.velocity = 0;
-    VISART_ENGINE.pointer.energy = 0;
-
-    VISART_ENGINE.pointer.smoothedVelocity = 0;
-
-  }
-);
+window.addEventListener("focus", () => {
+  VISART_ENGINE.isVisible = true;
+  VISART_ENGINE.pointer.velocity = 0;
+  VISART_ENGINE.pointer.energy = 0;
+  VISART_ENGINE.pointer.smoothedVelocity = 0;
+});
 
 document.addEventListener("DOMContentLoaded", () => {
 
- document.body.classList.add(`platform-${PLATFORM.name}`);
+  document.body.classList.add(`platform-${PLATFORM.name}`);
 
   window.addEventListener("pointermove", (e) => {
-   const dx =
-  e.clientX - VISART_ENGINE.pointer.lastX;
+    const dx = e.clientX - VISART_ENGINE.pointer.lastX;
+    const dy = e.clientY - VISART_ENGINE.pointer.lastY;
 
-const dy =
-  e.clientY - VISART_ENGINE.pointer.lastY;
+    const rawVelocity = Math.min(
+      Math.sqrt(dx * dx + dy * dy) * 0.065,
+      1
+    );
 
-const rawVelocity =
+    VISART_ENGINE.pointer.velocity =
+      rawVelocity < 0.035 ? 0 : Math.pow(rawVelocity, 1.58);
 
-  Math.min(
-    Math.sqrt(dx * dx + dy * dy) * 0.065,
-    1
-  );
-     
-VISART_ENGINE.pointer.velocity =
+    VISART_ENGINE.pointer.targetX = e.clientX;
+    VISART_ENGINE.pointer.targetY = e.clientY;
+    VISART_ENGINE.pointer.lastX = e.clientX;
+    VISART_ENGINE.pointer.lastY = e.clientY;
+  }, { passive: true });
 
-  rawVelocity < 0.035
-
-    ? 0
-
-    : Math.pow(
-        rawVelocity,
-        1.58
-      );
-
- VISART_ENGINE.pointer.targetX = e.clientX;
-VISART_ENGINE.pointer.targetY = e.clientY;
-
- VISART_ENGINE.pointer.lastX = e.clientX;
- VISART_ENGINE.pointer.lastY = e.clientY;
-
-}, { passive: true });
-   
   iniciarHeroTilt();
   iniciarParticulasV();
   iniciarProyectos();
@@ -988,12 +632,8 @@ VISART_ENGINE.pointer.targetY = e.clientY;
 /* ======================================= */
 
 function iniciarHeroTilt() {
-  console.log("1 - iniciarHeroTilt corre");
   const heroCard = document.querySelector(".hero-card");
-  console.log("2 - heroCard:", heroCard);
-  console.log("3 - PLATFORM.isDesktop:", PLATFORM.isDesktop);
   if (!heroCard || !PLATFORM.isDesktop) return;
-  console.log("4 - pasó el guard");
 
   const heroData = {
     el: heroCard,
@@ -1004,7 +644,6 @@ function iniciarHeroTilt() {
   };
 
   VISART_ENGINE.setHero(heroData);
-  console.log("5 - setHero ejecutado:", VISART_ENGINE.hero);
 
   window.addEventListener("pointermove", (e) => {
     // Centro del hero en pantalla
@@ -1021,13 +660,11 @@ function iniciarHeroTilt() {
     // Más grande = reacciona desde más lejos.
     const influenceRadius = Math.max(rect.width, rect.height) * 1.6;
 
-    // Falloff: 1 cuando el mouse está en el centro, 0 al borde de la zona
+    // Falloff: 1 en el centro, 0 al borde de la zona
     let falloff = 1 - distance / influenceRadius;
     falloff = Math.max(0, falloff);
-    // Curva suave para que el desvanecido sea cinematográfico
-    falloff = falloff * falloff;
+    falloff = falloff * falloff; // curva suave
 
-    // Tilt basado en la posición DENTRO de la zona, atenuado por el falloff
     const x = (dx / influenceRadius) * 28 * falloff;
     const y = (dy / influenceRadius) * -20 * falloff;
 
@@ -1049,7 +686,6 @@ function iniciarHeroTilt() {
 
 function iniciarProyectos() {
   const container = document.getElementById("projects-container");
-
   if (!container) return;
 
   const tipoPagina = document.body.dataset.tipo || "landing";
@@ -1060,26 +696,22 @@ function iniciarProyectos() {
       if (!res.ok) {
         throw new Error("No se pudo cargar proyectos.json");
       }
-
       return res.json();
     })
-
     .then((data) => {
-      const proyectos =
-        Array.isArray(data)
-          ? data
-          : data.proyectos || [];
+      const proyectos = Array.isArray(data)
+        ? data
+        : data.proyectos || [];
 
       const filtrados = proyectos
         .filter((p) => {
-         if (tipoPagina === "landing") {
-          return p.landing === true;
+          if (tipoPagina === "landing") {
+            return p.landing === true;
           }
           return p.tipo === tipoPagina;
         })
         .sort((a, b) => {
-          return new Date(b.fecha || 0)
-            - new Date(a.fecha || 0);
+          return new Date(b.fecha || 0) - new Date(a.fecha || 0);
         });
 
       container.innerHTML = "";
@@ -1096,7 +728,6 @@ function iniciarProyectos() {
             </div>
           </article>
         `;
-
         return;
       }
 
@@ -1115,17 +746,14 @@ function iniciarProyectos() {
               loading="lazy"
               decoding="async"
             >
-
             <span class="project-badge">
               ${limpiar(p.labelTipo || p.tipo || "Proyecto")}
             </span>
           </div>
 
           <div class="project-body">
-
             <div class="project-top">
               <h3>${limpiar(p.titulo)}</h3>
-
               <span class="project-tag">
                 ${limpiar(p.categoria || "Proyecto")}
               </span>
@@ -1143,7 +771,6 @@ function iniciarProyectos() {
                 Ver demo
               </a>
             </div>
-
           </div>
         `;
 
@@ -1151,11 +778,10 @@ function iniciarProyectos() {
         container.appendChild(card);
       });
 
-    setTimeout(() => {
-  iniciarScrollReveal();
-}, 80);
+      setTimeout(() => {
+        iniciarScrollReveal();
+      }, 80);
     })
-
     .catch((err) => {
       console.error("Error cargando JSON:", err);
 
@@ -1180,177 +806,95 @@ function iniciarProyectos() {
 function iniciarTiltCard(card) {
   if (!card) return;
 
-  let currentX = 0;
-  let currentY = 0;
-
-  let targetX = 0;
-  let targetY = 0;
-
   const engineCard = {
+    el: card,
+    needsRectUpdate: true,
+    rect: null,
+    currentX: 0,
+    currentY: 0,
+    targetX: 0,
+    targetY: 0,
+    velocityX: 0,
+    velocityY: 0,
+    speed: 0.12,
+    floatSeed: Math.random() * 1000,
+    floatIntensity: 0.85 + Math.random() * 0.35,
+    proximity: 0,
+    priority: 0,
+    hover: false,
+    magneticX: 0,
+    magneticY: 0,
+    magneticCurrentX: 0,
+    magneticCurrentY: 0,
+    lightX: 50,
+    lightY: 50,
+    lightCurrentX: 50,
+    lightCurrentY: 50
+  };
 
-  el: card,
-
-   needsRectUpdate: true,
-
-   rect: null,
-
-  currentX,
-  currentY,
-
-  targetX,
-  targetY,
-
- velocityX: 0,
- velocityY: 0,
-
-  speed: 0.12,
-
-   floatSeed: Math.random() * 1000,
-
-floatIntensity:
-  0.85 + Math.random() * 0.35,
-     
-  proximity: 0,
-
-  priority: 0,
-
- hover: false,
-
- magneticX: 0,
- magneticY: 0,
-
- magneticCurrentX: 0,
- magneticCurrentY: 0,
-
-lightX: 50,
-lightY: 50,
-
-lightCurrentX: 50,
-lightCurrentY: 50,
-
-};
-
-VISART_ENGINE.addCard(engineCard);
+  VISART_ENGINE.addCard(engineCard);
 
   function handleCardMove(e) {
-     
     if (!IS_TOUCH_DEVICE) {
-  engineCard.hover = true;
-}
+      engineCard.hover = true;
+    }
+
     const rect = card.getBoundingClientRect();
+    const pointer = VISART_ENGINE.pointer;
 
-    const point = visartGetPoint(e);
+    const px = Math.min(1, Math.max(0, (pointer.x - rect.left) / rect.width));
+    const py = Math.min(1, Math.max(0, (pointer.y - rect.top) / rect.height));
 
-     const pointer =
-  VISART_ENGINE.pointer;
+    const centeredX = (px - 0.5);
+    const centeredY = (py - 0.5);
 
-   const px =
-  Math.min(
-    1,
-    Math.max(
-      0,
-      (pointer.x - rect.left) / rect.width
-    )
-  );
+    const responseCurve = IS_TOUCH_DEVICE ? 1.34 : 1.22;
 
-const py =
-  Math.min(
-    1,
-    Math.max(
-      0,
-      (pointer.y - rect.top) / rect.height
-    )
-  );
+    const curveX =
+      Math.sign(centeredX) *
+      Math.pow(Math.min(Math.abs(centeredX), 0.92), responseCurve);
 
-const centeredX = (px - 0.5);
-const centeredY = (py - 0.5);
+    const curveY =
+      Math.sign(centeredY) *
+      Math.pow(Math.min(Math.abs(centeredY), 0.92), responseCurve);
 
-const responseCurve =
+    const cinematicTilt = IS_TOUCH_DEVICE
+      ? (7 + (engineCard.proximity * 1.8))
+      : (18 + (engineCard.proximity * 5.8));
 
-  IS_TOUCH_DEVICE
-
-    ? 1.34
-
-    : 1.22;
-
-const curveX =
-  Math.sign(centeredX) *
-
-  Math.pow(
-   Math.min(
-  Math.abs(centeredX),
-  0.92
-),
-    responseCurve
-  );
-
-const curveY =
-  Math.sign(centeredY) *
-
-  Math.pow(
-   Math.min(
-  Math.abs(centeredY),
-  0.92
-),
-    responseCurve
-  );
-
-const cinematicTilt =
-
-  IS_TOUCH_DEVICE
-
-    ? (
-        7 +
-        (engineCard.proximity * 1.8)
-      )
-
-    : (
-        18 +
-        (engineCard.proximity * 5.8)
-      );
-
-engineCard.targetY =
-  curveX * cinematicTilt;
-
-engineCard.targetX =
-  -curveY * cinematicTilt;
+    engineCard.targetY = curveX * cinematicTilt;
+    engineCard.targetX = -curveY * cinematicTilt;
 
     card.style.setProperty("--mx", `${px * 100}%`);
     card.style.setProperty("--my", `${py * 100}%`);
   }
 
-  card.addEventListener("pointermove", handleCardMove, {
-    passive: true
-  });
+  card.addEventListener("pointermove", handleCardMove, { passive: true });
 
- function handlePointerLeave() {
-  engineCard.hover = false;
+  function handlePointerLeave() {
+    engineCard.hover = false;
 
-  if (PLATFORM.isAndroid) {
-    // En Android el micro-bounce causa flash —
-    // reset directo sin residual
-    engineCard.targetX = 0;
-    engineCard.targetY = 0;
-    engineCard.velocityX = 0;
-    engineCard.velocityY = 0;
-  } else {
-    const releaseX = engineCard.velocityX * 0.32;
-    const releaseY = engineCard.velocityY * 0.32;
-    engineCard.targetX = releaseX;
-    engineCard.targetY = releaseY;
-    setTimeout(() => {
+    if (PLATFORM.isAndroid) {
+      // En Android el micro-bounce causa flash —
+      // reset directo sin residual
       engineCard.targetX = 0;
       engineCard.targetY = 0;
-    }, 120);
+      engineCard.velocityX = 0;
+      engineCard.velocityY = 0;
+    } else {
+      const releaseX = engineCard.velocityX * 0.32;
+      const releaseY = engineCard.velocityY * 0.32;
+      engineCard.targetX = releaseX;
+      engineCard.targetY = releaseY;
+      setTimeout(() => {
+        engineCard.targetX = 0;
+        engineCard.targetY = 0;
+      }, 120);
+    }
   }
-}
 
-   card.addEventListener(
-  "pointerleave",
-  handlePointerLeave
-   );
+  card.addEventListener("pointerleave", handlePointerLeave);
 }
-
 
 /* ======================================= */
 /* VIDEO FIX IOS */
@@ -1358,7 +902,6 @@ engineCard.targetX =
 
 function iniciarVideoFondo() {
   const video = document.querySelector(".bg-video");
-
   if (!video) return;
 
   video.muted = true;
@@ -1420,7 +963,6 @@ let visartRevealObserver;
 
 function iniciarScrollReveal() {
   const elementos = document.querySelectorAll(".reveal");
-
   if (!elementos.length) return;
 
   if (visartRevealObserver) {
@@ -1470,7 +1012,6 @@ function iniciarPageTransition() {
       if (IS_TOUCH_DEVICE) return;
 
       e.preventDefault();
-
       document.body.classList.add("is-leaving");
 
       setTimeout(() => {
@@ -1501,7 +1042,6 @@ function iniciarParticulasV() {
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
-
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     canvas.width = Math.floor(rect.width * dpr);
@@ -1512,18 +1052,11 @@ function iniciarParticulasV() {
 
   function crearParticula() {
     const rect = canvas.getBoundingClientRect();
-
-    const point = path.getPointAtLength(
-      Math.random() * pathLength
-    );
-
+    const point = path.getPointAtLength(Math.random() * pathLength);
     const viewBox = svg.viewBox.baseVal;
 
-    const x =
-      ((point.x - viewBox.x) / viewBox.width) * rect.width;
-
-    const y =
-      ((point.y - viewBox.y) / viewBox.height) * rect.height;
+    const x = ((point.x - viewBox.x) / viewBox.width) * rect.width;
+    const y = ((point.y - viewBox.y) / viewBox.height) * rect.height;
 
     const accent1 = getCssVar("--accent1");
     const accent2 = getCssVar("--accent2");
@@ -1540,13 +1073,14 @@ function iniciarParticulasV() {
     });
   }
 
- function animar() {
-  if (VISART_ENGINE._isScrolling()) {
-    requestAnimationFrame(animar);
-    return;
-  }
-  const rect = canvas.getBoundingClientRect();
-  ctx.clearRect(0, 0, rect.width, rect.height);
+  function animar() {
+    if (VISART_ENGINE._isScrolling()) {
+      requestAnimationFrame(animar);
+      return;
+    }
+
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
 
     for (let i = 0; i < 2; i++) {
       crearParticula();
@@ -1579,14 +1113,7 @@ function iniciarParticulasV() {
   }
 
   resize();
-  // ─── Solo resize del canvas V — los rects de cards
-  //     se manejan desde el listener unificado al final ───
-  window.addEventListener(
-     "resize", 
-     resize, 
-     { passive: true }
-  );
-   
+  window.addEventListener("resize", resize, { passive: true });
   animar();
 }
 
@@ -1596,7 +1123,6 @@ function iniciarParticulasV() {
 
 function iniciarFondoCanvas() {
   const canvas = document.getElementById("bgFX");
-
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d", {
@@ -1608,7 +1134,6 @@ function iniciarFondoCanvas() {
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
-
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     canvas.width = Math.floor(rect.width * dpr);
@@ -1631,12 +1156,13 @@ function iniciarFondoCanvas() {
   }
 
   function animar() {
-  if (VISART_ENGINE._isScrolling()) {
-    requestAnimationFrame(animar);
-    return;
-  }
-  const rect = canvas.getBoundingClientRect();
-  ctx.clearRect(0, 0, rect.width, rect.height);
+    if (VISART_ENGINE._isScrolling()) {
+      requestAnimationFrame(animar);
+      return;
+    }
+
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
 
     const accent1 = getCssVar("--accent1");
     const accent2 = getCssVar("--accent2");
@@ -1651,11 +1177,8 @@ function iniciarFondoCanvas() {
       ctx.save();
       ctx.globalAlpha = p.alpha;
       ctx.shadowBlur = 8;
-      ctx.shadowColor =
-        index % 2 === 0 ? accent1 : accent2;
-
-      ctx.fillStyle =
-        index % 2 === 0 ? accent1 : accent2;
+      ctx.shadowColor = index % 2 === 0 ? accent1 : accent2;
+      ctx.fillStyle = index % 2 === 0 ? accent1 : accent2;
 
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
@@ -1667,10 +1190,7 @@ function iniciarFondoCanvas() {
   }
 
   resize();
-  window.addEventListener("resize", resize, {
-    passive: true
-  });
-
+  window.addEventListener("resize", resize, { passive: true });
   animar();
 }
 
@@ -1685,9 +1205,7 @@ function resolverRuta(ruta) {
     return ruta;
   }
 
-  const prefijoAssets =
-    document.body.dataset.assets || "";
-
+  const prefijoAssets = document.body.dataset.assets || "";
   return prefijoAssets + ruta;
 }
 
@@ -1705,19 +1223,15 @@ function getCssVar(nombre) {
     getComputedStyle(document.body)
       .getPropertyValue(nombre)
       .trim() ||
-
     getComputedStyle(document.documentElement)
       .getPropertyValue(nombre)
       .trim() ||
-
     "#00eaff"
   );
 }
 
 // ─── LISTENERS UNIFICADOS DE INVALIDACIÓN DE RECT ────────
 // Un solo punto de control para resize y orientationchange.
-// Usa needsRectUpdate para consistencia con el guard
-// en updateCards. card.rect = null era redundante.
 
 window.addEventListener("resize", () => {
   VISART_ENGINE.cards.forEach(card => {
