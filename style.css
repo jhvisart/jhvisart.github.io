@@ -2283,3 +2283,37 @@ body.platform-ios .bg-grid {
   opacity: calc(0.07 + (var(--globalAtmosphere, 0) * 0.10));
   will-change: opacity;
 }
+/* ════════════════════════════════════════
+   ANDROID STABILITY PASS — Paso 1
+   El movimiento lo maneja solo el motor.
+   Quitamos la transición del transform para
+   que no pelee con él y se quite el parpadeo.
+   ════════════════════════════════════════ */
+body.platform-android .project-card {
+  transition:
+    box-shadow 0.4s ease,
+    border-color 0.3s ease;
+}
+/* ════════════════════════════════════════
+   ANDROID STABILITY PASS — Paso 2
+   En táctil no hay mouse, pero el navegador
+   "finge" un hover al tocar y se queda pegado.
+   Aquí lo apagamos.
+   ════════════════════════════════════════ */
+@media (hover: none) {
+
+  body.platform-android .project-card:hover {
+    box-shadow:
+      0 8px 28px rgba(0, 0, 0, 0.38),
+      0 24px 64px rgba(0, 0, 0, 0.22);
+    border-color: color-mix(
+      in srgb,
+      var(--accent1) 10%,
+      rgba(255, 255, 255, .06)
+    );
+  }
+
+  .project-card:hover .project-thumb img {
+    transform: none;
+  }
+}
