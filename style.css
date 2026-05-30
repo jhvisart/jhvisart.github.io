@@ -2321,15 +2321,12 @@ body.platform-android .project-card {
 }
 
 /* ════════════════════════════════════════
-   ANDROID STABILITY PASS — Paso 3
-   Devuelve el brillo, pero SOLO mientras
-   tienes el dedo sobre la tarjeta (:active).
-   Al soltar se apaga solo — sin pegarse.
+   ANDROID STABILITY PASS — Paso 3 (color por página)
    ════════════════════════════════════════ */
 body.platform-android .project-card:active {
-  border-color: rgba(0, 234, 255, 0.35);
+  border-color: color-mix(in srgb, var(--accent1) 35%, transparent);
   box-shadow:
     0 10px 32px rgba(0, 0, 0, 0.42),
     0 32px 80px rgba(0, 0, 0, 0.26),
-    0 0 28px rgba(0, 234, 255, 0.22);
+    0 0 28px color-mix(in srgb, var(--accent1) 22%, transparent);
 }
