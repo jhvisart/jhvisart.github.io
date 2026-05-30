@@ -486,17 +486,18 @@ const VISART_ENGINE = {
     ) / 6;
 
     // Respuesta rápida propia del hero — independiente de atmosphere
+   // Respuesta rápida propia del hero — independiente de atmosphere
     hero._glowLevel = hero._glowLevel || 0;
     hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.08;
 
-   const glowLevel = hero._glowLevel;
+    // 1) Apagado total en reposo: por debajo de este umbral, glow = 0
+    const glowFloor = 0.04;
+    let glow = Math.max(0, hero._glowLevel - glowFloor);
 
-    // Escribe la variable que lee la capa .hero-glow (fuera del overflow).
-    // Se limita a 1 para que no se dispare en exceso.
-    hero.el.style.setProperty(
-      "--heroGlow",
-      Math.min(glowLevel, 1).toFixed(3)
-    );
+    // 2) Amplificar para que llegue a full (1) con un tilt normal
+    glow = Math.min(glow * 2.6, 1);
+
+    hero.el.style.setProperty("--heroGlow", glow.toFixed(3));
 
     hero.el.style.transform = `
       perspective(600px)
