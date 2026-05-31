@@ -491,7 +491,7 @@ const VISART_ENGINE = {
     hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.25;
 
     // 1) Apagado total en reposo: por debajo de este umbral, glow = 0
-    const glowFloor = 0.04;
+    const glowFloor = 0.01;
     let glow = Math.max(0, hero._glowLevel - glowFloor);
 
     // 2) Amplificar para que llegue a full (1) con un tilt normal
