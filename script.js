@@ -499,7 +499,7 @@ const VISART_ENGINE = {
     // Respuesta rápida propia del hero — independiente de atmosphere
    // Respuesta rápida propia del hero — independiente de atmosphere
     hero._glowLevel = hero._glowLevel || 0;
-    hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.25;
+    hero._glowLevel += (tiltMagnitude - hero._glowLevel) * 0.35;
 
     // 1) Apagado total en reposo: por debajo de este umbral, glow = 0
     const glowFloor = 0.01;
