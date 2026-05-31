@@ -2395,25 +2395,26 @@ body.platform-android .project-card:active {
 }
 
 /* ════════════════════════════════════════
-   GLOW 3D — el lado hacia el que se inclina
-   la tarjeta se apaga (profundidad real).
+   GLOW 3D — APAGADO FUERTE (opción A)
+   El lado inclinado hacia atrás desaparece
+   por completo; el glow se concentra al frente.
    Solo PC (en Android el ::after está apagado).
    ════════════════════════════════════════ */
 @media (hover: hover) and (pointer: fine) {
   .project-card::after {
     -webkit-mask-image: radial-gradient(
       circle at
-        calc(50% - var(--glowX, 0px) * 6)
-        calc(50% - var(--glowY, 0px) * 6),
-      black 30%,
-      transparent 80%
+        calc(50% - var(--glowX, 0px) * 14)
+        calc(50% - var(--glowY, 0px) * 14),
+      black 8%,
+      transparent 48%
     );
     mask-image: radial-gradient(
       circle at
-        calc(50% - var(--glowX, 0px) * 6)
-        calc(50% - var(--glowY, 0px) * 6),
-      black 30%,
-      transparent 80%
+        calc(50% - var(--glowX, 0px) * 14)
+        calc(50% - var(--glowY, 0px) * 14),
+      black 8%,
+      transparent 48%
     );
   }
 }
