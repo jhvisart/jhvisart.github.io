@@ -2393,3 +2393,27 @@ body.platform-android .project-card:active {
 .hero-glow {
   transition: box-shadow 0.08s ease;
 }
+
+/* ════════════════════════════════════════
+   GLOW 3D — el lado hacia el que se inclina
+   la tarjeta se apaga (profundidad real).
+   Solo PC (en Android el ::after está apagado).
+   ════════════════════════════════════════ */
+@media (hover: hover) and (pointer: fine) {
+  .project-card::after {
+    -webkit-mask-image: radial-gradient(
+      circle at
+        calc(50% - var(--glowX, 0px) * 6)
+        calc(50% - var(--glowY, 0px) * 6),
+      black 30%,
+      transparent 80%
+    );
+    mask-image: radial-gradient(
+      circle at
+        calc(50% - var(--glowX, 0px) * 6)
+        calc(50% - var(--glowY, 0px) * 6),
+      black 30%,
+      transparent 80%
+    );
+  }
+}
