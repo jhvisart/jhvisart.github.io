@@ -408,8 +408,8 @@ const VISART_ENGINE = {
     );
      // Aplica la elevación al elemento (sube + crece), sin pisar el tilt
     // porque el tilt va por variables CSS y esto va por su propio transform.
-    const liftPx = card.lift * -10;        // sube hasta 10px
-    const liftScale = 1 + card.lift * 0.02; // crece hasta 1.02
+    const liftPx = card.lift * -16;        // sube hasta 10px
+    const liftScale = 1 + card.lift * 0.04; // crece hasta 1.02
     card.el.style.setProperty("--liftY", `${liftPx.toFixed(2)}px`);
     card.el.style.setProperty("--liftScale", liftScale.toFixed(4));
   },
