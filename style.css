@@ -2358,19 +2358,17 @@ body.platform-android .project-card:active {
   );
 }
 
+
 /* ════════════════════════════════════════
-   TARJETA FLOTANTE — al pasar el mouse se
-   eleva del fondo: sombra separada + glow.
+   TARJETA FLOTANTE — elevación SOLO con sombra,
+   sin tocar el transform (así el tilt se conserva).
    ════════════════════════════════════════ */
 @media (hover: hover) and (pointer: fine) {
   .project-card:hover {
-    transform:
-      translateY(-16px)
-      scale(1.02);
     box-shadow:
       0 2px 4px rgba(0, 0, 0, .30),
-      0 30px 40px rgba(0, 0, 0, .55),
-      0 50px 90px rgba(0, 0, 0, .45),
+      0 30px 40px rgba(0, 0, 0, .45),
+      0 50px 90px rgba(0, 0, 0, .35),
       0 0 38px color-mix(in srgb, var(--accent1) 32%, transparent);
   }
 }
