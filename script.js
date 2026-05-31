@@ -416,6 +416,9 @@ const VISART_ENGINE = {
       style.setProperty("--tiltX", `${card.currentX.toFixed(3)}deg`);
       style.setProperty("--tiltY", `${card.currentY.toFixed(3)}deg`);
 
+       style.setProperty("--glowX", `${(card.currentY * -1.4).toFixed(2)}px`);
+       style.setProperty("--glowY", `${(card.currentX *  1.4).toFixed(2)}px`);
+
       style.setProperty("--magneticX", `${card.magneticCurrentX.toFixed(2)}px`);
       style.setProperty("--magneticY", `${card.magneticCurrentY.toFixed(2)}px`);
 
