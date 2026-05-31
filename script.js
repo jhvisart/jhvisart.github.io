@@ -371,6 +371,11 @@ const VISART_ENGINE = {
 
     card.velocityX *= 0.985;
     card.velocityY *= 0.985;
+
+     // Elevación suave: sube hacia 1 si el mouse está encima, baja a 0 si no.
+    card.lift = card.lift || 0;
+    const liftTarget = card.hover ? 1 : 0;
+    card.lift += (liftTarget - card.lift) * 0.12;
   },
 
   /* ─────────────────────────────────────────────
@@ -401,6 +406,12 @@ const VISART_ENGINE = {
       -18,
       Math.min(18, (card.velocityY + (microMotion * 0.7)) * compressionCurve)
     );
+     // Aplica la elevación al elemento (sube + crece), sin pisar el tilt
+    // porque el tilt va por variables CSS y esto va por su propio transform.
+    const liftPx = card.lift * -10;        // sube hasta 10px
+    const liftScale = 1 + card.lift * 0.02; // crece hasta 1.02
+    card.el.style.setProperty("--liftY", `${liftPx.toFixed(2)}px`);
+    card.el.style.setProperty("--liftScale", liftScale.toFixed(4));
   },
 
   /* =========================================================
