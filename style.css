@@ -2380,9 +2380,9 @@ body.platform-android .project-card:active {
    ════════════════════════════════════════ */
 .hero-glow {
   box-shadow:
-    0 0 calc(45px * var(--heroGlow, 0))  color-mix(in srgb, var(--accent1) 75%, white),
-    0 0 calc(95px * var(--heroGlow, 0))  color-mix(in srgb, var(--accent1) 65%, transparent),
-    0 0 calc(160px * var(--heroGlow, 0)) color-mix(in srgb, var(--accent1) 42%, transparent);
+    0 0 calc(22px * var(--heroGlow, 0))  color-mix(in srgb, var(--accent1) 75%, white),
+    0 0 calc(48px * var(--heroGlow, 0))  color-mix(in srgb, var(--accent1) 65%, transparent),
+    0 0 calc(80px * var(--heroGlow, 0)) color-mix(in srgb, var(--accent1) 42%, transparent);
 }
 
 /* ════════════════════════════════════════
