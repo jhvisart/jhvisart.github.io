@@ -2359,16 +2359,19 @@ body.platform-android .project-card:active {
 }
 
 /* ════════════════════════════════════════
-   GLOW de las tarjetas — visible y centrado (PC)
+   TARJETA FLOTANTE — al pasar el mouse se
+   eleva del fondo: sombra separada + glow.
    ════════════════════════════════════════ */
 @media (hover: hover) and (pointer: fine) {
   .project-card:hover {
+    transform:
+      translateY(-10px)
+      scale(1.02);
     box-shadow:
-      0 1px 2px rgba(0, 0, 0, .34),
-      0 12px 24px rgba(0, 0, 0, .26),
-      0 42px 96px rgba(0, 0, 0, .26),
-      0 0 38px color-mix(in srgb, var(--accent1) 38%, transparent),
-      0 0 90px color-mix(in srgb, var(--accent1) 22%, transparent);
+      0 2px 4px rgba(0, 0, 0, .30),
+      0 30px 40px rgba(0, 0, 0, .45),
+      0 50px 90px rgba(0, 0, 0, .35),
+      0 0 38px color-mix(in srgb, var(--accent1) 32%, transparent);
   }
 }
 /* ════════════════════════════════════════
