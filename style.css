@@ -832,6 +832,8 @@ background:
   );
 
  transform:
+   translateY(var(--liftY, 0px))
+  scale(var(--liftScale, 1))
  translate3d(
   calc(var(--magneticX, 0px) * 0.82),
   calc(var(--magneticY, 0px) * 0.82),
