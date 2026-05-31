@@ -2367,8 +2367,8 @@ body.platform-android .project-card:active {
   .project-card:hover {
     box-shadow:
       0 2px 4px rgba(0, 0, 0, .30),
-      0 30px 40px rgba(0, 0, 0, .45),
-      0 50px 90px rgba(0, 0, 0, .35),
+      0 40px 40px rgba(0, 0, 0, .35),
+      0 60px 90px rgba(0, 0, 0, .25),
       0 0 38px color-mix(in srgb, var(--accent1) 32%, transparent);
   }
 }
