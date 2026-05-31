@@ -2383,3 +2383,11 @@ body.platform-android .project-card:active {
     0 0 calc(95px * var(--heroGlow, 0))  color-mix(in srgb, var(--accent1) 65%, transparent),
     0 0 calc(160px * var(--heroGlow, 0)) color-mix(in srgb, var(--accent1) 42%, transparent);
 }
+
+/* ════════════════════════════════════════
+   ARREGLO — glow del hero más rápido,
+   como el de las tarjetas.
+   ════════════════════════════════════════ */
+.hero-glow {
+  transition: box-shadow 0.08s ease;
+}
