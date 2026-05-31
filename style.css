@@ -2390,7 +2390,7 @@ body.platform-android .project-card:active {
    como el de las tarjetas.
    ════════════════════════════════════════ */
 .hero-glow {
-  transition: box-shadow 0.08s ease;
+  transition: box-shadow 0.03s ease;
 }
 
 
