@@ -718,38 +718,54 @@ function iniciarProyectos() {
         const demo = p.manifestacion || p.demo || p.url || "#";
 
         card.innerHTML = `
-          <div class="project-thumb">
-            <img
-              src="${img}"
-              alt="${limpiar(p.titulo)}"
-              loading="lazy"
-              decoding="async"
-            >
-            <span class="project-badge">
-              ${limpiar(p.labelTipo || p.tipo || "Proyecto")}
-            </span>
-          </div>
+          <div class="project-card-inner">
 
-          <div class="project-body">
-            <div class="project-top">
-              <h3>${limpiar(p.titulo)}</h3>
-              <span class="project-tag">
-                ${limpiar(p.categoria || "Proyecto")}
-              </span>
-            </div>
-
-            <p>${limpiar(p.descripcion || "")}</p>
-
-            <div class="project-actions">
-              <a
-                class="btn btn-primary"
-                href="${demo}"
-                target="_blank"
-                rel="noopener noreferrer"
+            <div class="project-card-front">
+              <img
+                class="pc-img"
+                src="${img}"
+                alt="${limpiar(p.titulo)}"
+                loading="lazy"
+                decoding="async"
               >
-                Ver demo
-              </a>
+              <div class="pc-veil"></div>
+
+              <span class="pc-badge">
+                ${limpiar(p.labelTipo || p.tipo || "Proyecto")}
+              </span>
+              <span class="pc-hint">
+                ${IS_TOUCH_DEVICE ? "toca para ver" : "pasa el cursor"}
+              </span>
+
+              <div class="pc-brand">
+                <div class="pc-brand-row">
+                  <span class="pc-brand-v">V</span>
+                  <span class="pc-brand-name">ISART</span>
+                </div>
+                <span class="pc-brand-sub">Creative Studio</span>
+              </div>
             </div>
+
+            <div class="project-card-back">
+              <div class="pc-body">
+                <div class="pc-top">
+                  <h3>${limpiar(p.titulo)}</h3>
+                  <span class="pc-tag">${limpiar(p.categoria || "Proyecto")}</span>
+                </div>
+                <p>${limpiar(p.descripcion || "")}</p>
+                <div class="project-actions">
+                  
+                    class="btn btn-primary"
+                    href="${demo}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver demo
+                  </a>
+                </div>
+              </div>
+            </div>
+
           </div>
         `;
 
