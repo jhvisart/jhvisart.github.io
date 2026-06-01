@@ -2536,7 +2536,7 @@ body.platform-android .project-card:active {
   transform: translateZ(40px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: stretch;
   contain: layout;
 }
