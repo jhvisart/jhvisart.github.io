@@ -2532,8 +2532,11 @@ body.platform-android .project-card:active {
   padding: 26px 22px;
   width: 100%;
   max-height: 100%;
-  overflow: auto;
+  overflow: hidden;
   transform: translateZ(40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .project-card-back .pc-top {
   display: flex;
@@ -2556,6 +2559,10 @@ body.platform-android .project-card:active {
   color: var(--muted);
   line-height: 1.6;
   margin: 0 0 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .project-card:hover .project-card-back,
