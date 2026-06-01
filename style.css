@@ -2428,7 +2428,7 @@ body.platform-android .project-card:active {
   border-radius: 28px;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border: 1px solid color-mix(in srgb, var(--accent1) 14%, rgba(255,255,255,.06));
+ border: 1px solid rgba(255,255,255,.06);
 }
 
 .project-card-front {
