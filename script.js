@@ -895,23 +895,33 @@ function iniciarTiltCard(card) {
 /* FLIP CARDS */
 /* ======================================= */
 
+/* ======================================= */
+/* FLIP CARDS */
+/* ======================================= */
+
 function iniciarFlipCard(card) {
   if (!card) return;
 
   // Desktop: el flip lo resuelve el :hover por CSS. Nada que hacer.
   if (!IS_TOUCH_DEVICE) return;
 
-  // Táctil: tap para voltear.
+  // Táctil: tap para voltear / volver.
   card.addEventListener("click", (e) => {
     // Si tocas el botón "Ver demo" (o cualquier enlace), deja que navegue.
     if (e.target.closest("a, button")) return;
 
-    // Solo una card abierta a la vez.
+    const estaVolteada = card.classList.contains("is-flipped");
+
+    // Cierra cualquier otra card abierta (una a la vez).
     document.querySelectorAll(".project-card.is-flipped").forEach((c) => {
-      if (c !== card) c.classList.remove("is-flipped");
+      c.classList.remove("is-flipped");
     });
 
-    card.classList.toggle("is-flipped");
+    // Si esta NO estaba volteada, la abre.
+    // Si ya estaba volteada, el paso de arriba ya la cerró → vuelve al frente.
+    if (!estaVolteada) {
+      card.classList.add("is-flipped");
+    }
   });
 }
 
