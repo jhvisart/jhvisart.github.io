@@ -773,8 +773,6 @@ brightness(
 .project-card {
   position: relative;
 
-  perspective: 1000px;
-
  overflow: visible;
 
 backface-visibility: hidden;
