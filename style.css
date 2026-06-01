@@ -2456,6 +2456,128 @@ body.platform-android .project-card:active {
   transform: translateZ(1px);
   background:
     linear-gradient(to top, rgba(0,0,0,.82), rgba(0,0,0,.15) 55%, transparent 80%),
-    radial-gradient(
+    radial-gradient(circle at 50% 22%,
+      color-mix(in srgb, var(--accent1) 14%, transparent), transparent 55%);
+}
+
+.pc-brand {
+  position: absolute;
+  left: 0; right: 0; bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+  transform: translateZ(60px);
+}
+.pc-brand-row { display: flex; align-items: baseline; gap: 6px; }
+.pc-brand-v {
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent1) 55%, transparent));
+}
+.pc-brand-name {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,.5);
+}
+.pc-brand-sub {
+  font-size: 11px;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+
+.project-card-front .pc-badge {
+  position: absolute;
+  top: 14px; left: 14px;
+  z-index: 4;
+  transform: translateZ(40px);
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.68);
+  color: #fff;
+  border: 1px solid var(--accent1);
+  font-size: 12px;
+}
+.project-card-front .pc-hint {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 4;
+  font-size: 11px;
+  color: var(--soft);
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.4);
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+.project-card-back {
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  transform-style: preserve-3d;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)),
+    rgba(3,5,12,.92);
+}
+.project-card-back .pc-body {
+  padding: 26px 22px;
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  transform: translateZ(40px);
+}
+.project-card-back .pc-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.project-card-back .pc-top h3 { margin: 0; font-size: 1.25rem; }
+.project-card-back .pc-tag {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--accent1);
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent1) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent1) 20%, transparent);
+}
+.project-card-back .pc-body p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.project-card:hover .project-card-back,
+.project-card.is-flipped .project-card-back {
+  box-shadow: inset 0 0 60px color-mix(in srgb, var(--accent1) 10%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    box-shadow:
+      0 2px 4px rgba(0,0,0,.30),
+      0 24px 40px rgba(0,0,0,.45),
+      0 0 38px color-mix(in srgb, var(--accent1) 30%, transparent);
+  }
+}
+
+body.platform-android .project-card,
+body.platform-ios .project-card {
+  transform: none !important;
+}
+body.platform-android .project-card-inner {
+  transition: transform 0.55s cubic-bezier(.22,.61,.36,1);
+}
 
 
