@@ -903,7 +903,10 @@ function iniciarFlipCard(card) {
   if (!card) return;
 
   // Desktop: el flip lo resuelve el :hover por CSS. Nada que hacer.
-  if (!IS_TOUCH_DEVICE) return;
+  // Solo activar clic-para-voltear en pantallas SIN hover real (móvil/tablet).
+  // En PC (con hover) el flip lo maneja el :hover del CSS, así que salimos.
+  const sinHover = window.matchMedia("(hover: none)").matches;
+  if (!sinHover) return;
 
   // Táctil: tap para voltear / volver.
   card.addEventListener("click", (e) => {
