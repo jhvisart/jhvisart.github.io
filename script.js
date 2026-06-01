@@ -769,7 +769,7 @@ function iniciarProyectos() {
           </div>
         `;
 
-        iniciarTiltCard(card);
+        iniciarFlipCard(card);
         container.appendChild(card);
       });
 
@@ -889,6 +889,30 @@ function iniciarTiltCard(card) {
   }
 
   card.addEventListener("pointerleave", handlePointerLeave);
+}
+
+/* ======================================= */
+/* FLIP CARDS */
+/* ======================================= */
+
+function iniciarFlipCard(card) {
+  if (!card) return;
+
+  // Desktop: el flip lo resuelve el :hover por CSS. Nada que hacer.
+  if (!IS_TOUCH_DEVICE) return;
+
+  // Táctil: tap para voltear.
+  card.addEventListener("click", (e) => {
+    // Si tocas el botón "Ver demo" (o cualquier enlace), deja que navegue.
+    if (e.target.closest("a, button")) return;
+
+    // Solo una card abierta a la vez.
+    document.querySelectorAll(".project-card.is-flipped").forEach((c) => {
+      if (c !== card) c.classList.remove("is-flipped");
+    });
+
+    card.classList.toggle("is-flipped");
+  });
 }
 
 /* ======================================= */
