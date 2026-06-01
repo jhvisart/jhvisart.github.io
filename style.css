@@ -2525,7 +2525,7 @@ body.platform-android .project-card:active {
   transform-style: preserve-3d;
   background:
     linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025)),
-    rgba(3,5,12,.92);
+    rgba(3,5,12,1);
 }
 .project-card-back .pc-body {
   padding: 26px 22px;
