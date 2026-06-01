@@ -747,6 +747,7 @@ function iniciarProyectos() {
             </div>
 
             <div class="project-card-back">
+              <img class="pc-back-img" src="${img}" alt="" aria-hidden="true">
               <div class="pc-body">
                 <div class="pc-top">
                   <h3>${limpiar(p.titulo)}</h3>
