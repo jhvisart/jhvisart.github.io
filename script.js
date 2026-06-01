@@ -755,7 +755,7 @@ function iniciarProyectos() {
                 <p>${limpiar(p.descripcion || "")}</p>
                 <div class="project-actions">
                   
-                    class="btn btn-primary"
+                   <a class="btn btn-primary"
                     href="${demo}"
                     target="_blank"
                     rel="noopener noreferrer"
