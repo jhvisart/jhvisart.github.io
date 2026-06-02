@@ -2397,7 +2397,7 @@ body.platform-android .project-card:active {
 
 .project-card {
   transform: none !important;
-  perspective: 1200px;
+  perspective: 850px;
   overflow: visible;
   background: transparent;
   border: none;
@@ -2452,7 +2452,7 @@ body.platform-android .project-card:active {
   inset: 0;
   border-radius: 28px;
   pointer-events: none;
-  transform: translateZ(1px);
+  transform: translateZ(18px);
   background:
     linear-gradient(to top, rgba(0,0,0,.82), rgba(0,0,0,.15) 55%, transparent 80%),
     radial-gradient(circle at 50% 22%,
@@ -2467,7 +2467,7 @@ body.platform-android .project-card:active {
   align-items: center;
   gap: 4px;
   pointer-events: none;
-  transform: translateZ(60px);
+  transform: translateZ(85px);
 }
 .pc-brand-row { display: flex; align-items: baseline; gap: 6px; }
 .pc-brand-v {
@@ -2498,7 +2498,7 @@ body.platform-android .project-card:active {
   position: absolute;
   top: 14px; left: 14px;
   z-index: 4;
-  transform: translateZ(40px);
+  transform: translateZ(55px);
   padding: 6px 11px;
   border-radius: 999px;
   background: rgba(0,0,0,.68);
