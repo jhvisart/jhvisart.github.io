@@ -2593,7 +2593,7 @@ body.platform-android .project-card-inner {
 
 /* === Imagen tenue de fondo en el reverso === */
 .project-card-back {
-  overflow: hidden;            /* recorta la imagen de fondo a las esquinas */
+  overflow:;            /* recorta la imagen de fondo a las esquinas */
 }
 
 .project-card-back .pc-back-img {
