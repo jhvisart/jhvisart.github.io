@@ -2617,7 +2617,7 @@ body.platform-android .project-card-inner {
 
 /* === Cards con ancho controlado y rejilla centrada === */
 .projects-grid {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 300px));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   justify-content: center;
 }
 
