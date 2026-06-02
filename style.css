@@ -2411,7 +2411,7 @@ body.platform-android .project-card:active {
 .project-card-inner {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 420px;
   transform-style: preserve-3d;
   transition: transform 0.7s cubic-bezier(.22,.61,.36,1);
 }
@@ -2614,6 +2614,20 @@ body.platform-android .project-card-inner {
 .project-card-back .pc-body {
   position: relative;
   z-index: 1;
+}
+
+/* === Cards con ancho controlado y rejilla centrada === */
+.projects-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 380px));
+  justify-content: center;
+}
+
+/* En móvil, una columna que llena el ancho disponible */
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: minmax(0, 420px);
+    justify-content: center;
+  }
 }
 
 
