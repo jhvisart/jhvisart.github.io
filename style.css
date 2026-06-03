@@ -2532,7 +2532,7 @@ body.platform-android .project-card:active {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  transform: translateZ(40px);
+  transform: translateZ(70px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -2607,6 +2607,7 @@ body.platform-android .project-card-inner {
   opacity: .5;
   z-index: 0;
   pointer-events: none;
+  transform: translateZ(0);
 }
 
 /* El texto por encima de la imagen de fondo */
@@ -2628,5 +2629,10 @@ body.platform-android .project-card-inner {
     justify-content: center;
   }
 }
+
+/* Escalonar elementos dentro del reverso */
+.project-card-back .pc-top   { transform: translateZ(20px); }
+.project-card-back .pc-body p { transform: translateZ(10px); }
+.project-card-back .project-actions { transform: translateZ(30px); }
 
 
