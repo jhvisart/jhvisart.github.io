@@ -2,50 +2,128 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
 
-  <title>VISART | Portafolio Creativo</title>
+  <title>VISART | Portafolio Creativo, Visualizers y Arte Digital Interactivo</title>
 
   <meta name="google" content="notranslate">
+
   <meta
     name="description"
-    content="Portafolio creativo de VISART: arte digital interactivo, visualizers audio reactivos y experiencias visuales experimentales en visart.dev."
+    content="VISART es un portafolio creativo de arte digital interactivo, visualizers audio reactivos, experiencias web modernas y sistemas visuales experimentales en visart.dev."
   />
+
+  <meta
+    name="keywords"
+    content="VISART, portafolio creativo, arte digital, visualizers, audio reactive, diseño web, frontend, experiencias interactivas, visual design, HTML, CSS, JavaScript"
+  />
+
+  <meta name="author" content="VISART">
+  <meta name="creator" content="VISART">
+  <meta name="publisher" content="VISART">
+
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#0b0f1a">
+  <meta name="color-scheme" content="dark">
 
   <link rel="canonical" href="https://visart.dev/">
 
-  <meta property="og:title" content="VISART | Visual Portfolio">
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VISART">
+  <meta property="og:locale" content="es_US">
+  <meta property="og:title" content="VISART | Portafolio Creativo Visual">
   <meta
     property="og:description"
-    content="Arte visual interactivo y visualizers audio-reactivos."
+    content="Arte digital interactivo, visualizers audio reactivos y experiencias web visuales creadas por VISART."
   >
+  <meta property="og:url" content="https://visart.dev/">
+  <meta property="og:image" content="https://visart.dev/assets/preview.png">
+  <meta property="og:image:secure_url" content="https://visart.dev/assets/preview.png">
+  <meta property="og:image:alt" content="Vista previa del portafolio creativo VISART">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
-  <meta
-    property="og:image"
-    content="https://visart.dev/assets/preview.png"
-  >
-
-  <meta property="og:url" content="https://visart.dev">
+  <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VISART | Portafolio Creativo Visual">
+  <meta
+    name="twitter:description"
+    content="Experiencias visuales interactivas, visualizers audio reactivos y arte digital experimental."
+  >
+  <meta name="twitter:image" content="https://visart.dev/assets/preview.png">
+  <meta name="twitter:image:alt" content="Vista previa del portafolio creativo VISART">
 
-  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+  <!-- Favicons / App icons -->
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/assets/favicon-192.png" sizes="192x192">
   <link rel="apple-touch-icon" href="/assets/favicon-192.png">
   <link rel="manifest" href="/site.webmanifest">
 
+  <!-- Performance hints -->
+  <link rel="preload" href="/style.css" as="style">
+  <link rel="preload" href="/assets/hero-poster.jpg" as="image">
+  <link rel="preload" href="/assets/preview.png" as="image">
+
   <link rel="stylesheet" href="/style.css">
 
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "VISART",
-    "url": "https://visart.dev",
-    "logo": "https://visart.dev/assets/favicon-512.png",
-    "sameAs": [
-      "https://github.com/jhvisart"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://visart.dev/#organization",
+        "name": "VISART",
+        "url": "https://visart.dev/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://visart.dev/assets/favicon-512.png",
+          "width": 512,
+          "height": 512
+        },
+        "sameAs": [
+          "https://github.com/jhvisart"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://visart.dev/#website",
+        "url": "https://visart.dev/",
+        "name": "VISART",
+        "description": "Portafolio creativo de arte digital interactivo, visualizers audio reactivos y experiencias web visuales.",
+        "publisher": {
+          "@id": "https://visart.dev/#organization"
+        },
+        "inLanguage": "es"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://visart.dev/#webpage",
+        "url": "https://visart.dev/",
+        "name": "VISART | Portafolio Creativo, Visualizers y Arte Digital Interactivo",
+        "description": "VISART es un portafolio creativo de arte digital interactivo, visualizers audio reactivos, experiencias web modernas y sistemas visuales experimentales.",
+        "isPartOf": {
+          "@id": "https://visart.dev/#website"
+        },
+        "about": {
+          "@id": "https://visart.dev/#organization"
+        },
+        "primaryImageOfPage": {
+          "@type": "ImageObject",
+          "url": "https://visart.dev/assets/preview.png",
+          "width": 1200,
+          "height": 630
+        },
+        "inLanguage": "es"
+      }
     ]
   }
   </script>
@@ -58,7 +136,7 @@
   data-assets="/"
 >
 
-  <div class="bg-grid"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
 
   <header class="header">
     <div class="container header-inner">
@@ -101,18 +179,18 @@
 
   <main>
 
-    <section class="hero" id="inicio">
-      <div class="hero-silence-layer"></div>
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-silence-layer" aria-hidden="true"></div>
+
       <div class="container hero-grid">
 
         <div class="hero-content reveal">
-      
 
           <div class="eyebrow">
             Portafolio visual e interactivo
           </div>
 
-          <h1>
+          <h1 id="hero-title">
             Diseños y experiencias
             <span>creativas</span>
             con identidad digital.
@@ -141,65 +219,68 @@
             </a>
           </div>
 
-          <div class="hero-points">
+          <div class="hero-points" aria-label="Especialidades de VISART">
             <span>Visual Design</span>
             <span>Audio Reactive</span>
             <span>Frontend Pro</span>
           </div>
 
         </div>
-        
-          <div class="hero-card-wrap">
-        <div class="hero-glow"></div>
-        <div class="hero-card reveal">
-         
-        <div class="hero-visual">
 
-            <video
-              autoplay
-              muted
-              loop
-              playsinline
-              webkit-playsinline
-              preload="metadata"
-              poster="/assets/hero-poster.jpg"
-              class="bg-video"
-            >
-              <source src="/assets/hero-card.mp4" type="video/mp4">
-            </video>
+        <div class="hero-card-wrap">
+          <div class="hero-glow" aria-hidden="true"></div>
 
-            <canvas id="bgFX"></canvas>
+          <div class="hero-card reveal">
+
+            <div class="hero-visual">
+
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                webkit-playsinline
+                preload="metadata"
+                poster="/assets/hero-poster.jpg"
+                class="bg-video"
+                aria-label="Visual experimental de VISART"
+              >
+                <source src="/assets/hero-card.mp4" type="video/mp4">
+              </video>
+
+              <canvas id="bgFX" aria-hidden="true"></canvas>
+            </div>
+
+            <div class="hero-mini-stats">
+
+              <div class="mini">
+                <strong>VISART</strong>
+                <small>Creative Studio</small>
+              </div>
+
+              <div class="mini">
+                <strong>Audio Reactive</strong>
+                <small>Visual Systems</small>
+              </div>
+
+              <div class="mini">
+                <strong>LIVE</strong>
+                <small>visart.dev</small>
+              </div>
+
+            </div>
+
           </div>
-
-          <div class="hero-mini-stats">
-
-            <div class="mini">
-              <strong>VISART</strong>
-              <small>Creative Studio</small>
-            </div>
-
-            <div class="mini">
-              <strong>Audio Reactive</strong>
-              <small>Visual Systems</small>
-            </div>
-
-            <div class="mini">
-              <strong>LIVE</strong>
-              <small>visart.dev</small>
-            </div>
-
-          </div>
-
         </div>
 
       </div>
     </section>
 
-    <section class="section reveal" id="proyectos">
+    <section class="section reveal" id="proyectos" aria-labelledby="projects-title">
       <div class="container">
 
         <div class="section-head">
-          <h2>Proyectos destacados</h2>
+          <h2 id="projects-title">Proyectos destacados</h2>
           <p>
             Una selección de trabajos digitales y visuales
             cargados dinámicamente desde JSON.
@@ -211,11 +292,11 @@
       </div>
     </section>
 
-    <section class="section reveal" id="sobre-mi">
+    <section class="section reveal" id="sobre-mi" aria-labelledby="about-title">
       <div class="container about-grid">
 
         <div class="glass">
-          <h3>Identidad</h3>
+          <h3 id="about-title">Identidad</h3>
 
           <p>
             <strong>VISART</strong>
@@ -223,7 +304,7 @@
             visualizers y conceptos creativos modernos.
           </p>
 
-          <div class="skills">
+          <div class="skills" aria-label="Habilidades principales">
             <span>Pages</span>
             <span>Diseño Visual</span>
             <span>Frontend</span>
@@ -242,12 +323,12 @@
       </div>
     </section>
 
-    <section class="section reveal" id="contacto">
+    <section class="section reveal" id="contacto" aria-labelledby="contact-title">
       <div class="container">
 
         <div class="glass contact-box">
 
-          <h2>Contacto</h2>
+          <h2 id="contact-title">Contacto</h2>
 
           <div class="hero-actions center-actions">
 
