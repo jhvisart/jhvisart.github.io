@@ -63,7 +63,7 @@
   <link rel="icon" href="/assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="/assets/favicon-192.png" sizes="192x192">
-  <link rel="apple-touch-icon" href="/assets/favicon-192.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180">
   <link rel="manifest" href="/site.webmanifest">
 
   <!-- Performance hints -->
@@ -143,23 +143,19 @@
 
       <a href="/" class="brand" aria-label="Ir al inicio de VISART">
         <div class="brand-mark">
-
-          <svg viewBox="0 0 100 100" class="v-nav" aria-hidden="true">
-            <defs>
-              <linearGradient id="vGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="var(--accent1)" />
-                <stop offset="100%" stop-color="var(--accent2)" />
-              </linearGradient>
-            </defs>
-
-            <path d="M10 10 L50 90 L90 10" />
-          </svg>
-
-          <canvas class="v-canvas" aria-hidden="true"></canvas>
+          <img
+            class="brand-logo-image"
+            src="/assets/visart-logo.png"
+            alt=""
+            aria-hidden="true"
+            width="40"
+            height="40"
+            decoding="async"
+          >
         </div>
 
         <div class="brand-text">
-          <span>ISART</span>
+          <span>VISART</span>
           <small>Creative Studio</small>
         </div>
       </a>
