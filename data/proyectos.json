@@ -267,6 +267,18 @@
       "manifestacion": "https://visart.dev/anima-criatura-tinta-viva/",
       "estado": "activo",
       "fecha": "2026-04-15"
-    }
+    },
+    {
+  "id": "genesis",
+  "titulo": "Genesis",
+  "descripcion": "Experiencia visual interactiva con partículas, fases animadas y estética cinematográfica.",
+  "categoria": "visual_experimental",
+  "tipo": "interactivo",
+  "labelTipo": "Interactivo",
+  "img": "assets/genesis.png",
+  "manifestacion": "https://visart.dev/proyectos/genesis/",
+  "estado": "activo",
+  "fecha": "2026-09-01"
+}
   ]
 }
