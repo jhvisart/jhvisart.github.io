@@ -279,6 +279,18 @@
   "manifestacion": "https://visart.dev/proyectos/genesis/",
   "estado": "activo",
   "fecha": "2026-09-01"
+ },
+    {
+  "id": "singularity",
+  "titulo": "Singularity",
+  "descripcion": "Experiencia visual interactiva de estética futurista y experimental.",
+  "categoria": "visual_experimental",
+  "tipo": "interactivo",
+  "labelTipo": "Interactivo",
+  "img": "assets/singularity.png",
+  "manifestacion": "https://visart.dev/proyectos/Singularity/",
+  "estado": "activo",
+  "fecha": "2026-09-01"
 }
   ]
 }
