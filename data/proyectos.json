@@ -257,14 +257,14 @@
       "fecha": "2026-04-15"
     },
       {
-      "id": "espectro-luminoso",
-      "titulo": "Espectro Luminoso",
-      "descripcion": "Obra visual con colores vibrantes y formas dinámicas.",
+      "id": "vortex",
+      "titulo": "Vortex",
+      "descripcion": "Analizador de audio en tiempo real hecho de partículas.",
       "categoria": "arte_digital",
-      "tipo": "visual",
-      "labelTipo": "Visual",
-      "img": "assets/anima-criatura-tinta-viva.png",
-      "manifestacion": "https://visart.dev/anima-criatura-tinta-viva/",
+      "tipo": "visualizer",
+      "labelTipo": "Visualizer",
+      "img": "assets/vortex.png",
+      "manifestacion": "proyectos/vortex/",
       "estado": "activo",
       "fecha": "2026-04-15"
     },

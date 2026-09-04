@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VORTEX · VISART.DEV</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300;400;700;900&family=Teko:wght@300;400;600;700&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --a:#39ff14;--b:#ff6600;--c:#00cfff;--d:#ff0080;
+  --e:#ffee00;--void:#010008;
+}
+html,body{width:100%;height:100%;background:var(--void);overflow:hidden;cursor:none}
+
+#cur{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--a);pointer-events:none;z-index:1000;transform:translate(-50%,-50%);box-shadow:0 0 16px 4px rgba(57,255,20,.7)}
+#cur-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(57,255,20,.25);border-radius:50%;pointer-events:none;z-index:999;transform:translate(-50%,-50%)}
+
+canvas{position:fixed;inset:0;width:100%;height:100%}
+#vig{position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 22%,rgba(1,0,8,.94) 100%);pointer-events:none;z-index:5}
+#scan{position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(57,255,20,.006) 2px,rgba(57,255,20,.006) 4px);pointer-events:none;z-index:6;animation:sm 14s linear infinite}
+@keyframes sm{to{background-position:0 80px}}
+
+#ui{position:fixed;inset:0;pointer-events:none;z-index:10}
+#top{position:absolute;top:0;left:0;right:0;padding:24px 40px;display:flex;justify-content:space-between}
+.tl,.tr{opacity:0;animation:fu .6s ease forwards}
+.tl{animation-delay:.8s}.tr{animation-delay:1s;text-align:right}
+.lbl{font-family:'Exo 2',sans-serif;font-size:.44rem;font-weight:300;letter-spacing:.6em;color:rgba(57,255,20,.35);text-transform:uppercase;display:block}
+.val{font-family:'Teko',sans-serif;font-size:1rem;letter-spacing:.18em;color:rgba(255,255,255,.16);display:block;margin-top:1px}
+
+#ctitle{position:absolute;top:16%;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;white-space:nowrap}
+#ct1{font-family:'Teko',sans-serif;font-weight:700;font-size:clamp(1rem,3vw,2rem);letter-spacing:.8em;background:linear-gradient(90deg,var(--a),var(--c),var(--d));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;animation:fu .7s ease forwards 1.3s;filter:drop-shadow(0 0 18px rgba(57,255,20,.35))}
+#ct2{font-family:'Exo 2',sans-serif;font-weight:100;font-size:.5rem;letter-spacing:.6em;color:rgba(57,255,20,.22);margin-top:5px;opacity:0;animation:fu .6s ease forwards 1.6s;text-transform:uppercase}
+
+.cm{position:absolute;width:20px;height:20px;opacity:0;animation:fi .3s ease forwards}
+.cm svg{width:100%;height:100%}
+.cm-tl{top:16px;left:16px;animation-delay:1.8s}.cm-tr{top:16px;right:16px;animation-delay:1.9s}
+.cm-bl{bottom:16px;left:16px;animation-delay:2s}.cm-br{bottom:16px;right:16px;animation-delay:2.1s}
+.hr{position:absolute;left:40px;right:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(57,255,20,.07),transparent);opacity:0;animation:fi .3s ease forwards}
+.hr-t{top:62px;animation-delay:1.6s}.hr-b{bottom:62px;animation-delay:1.7s}
+
+#bot{position:absolute;bottom:0;left:0;right:0;padding:22px 40px;display:flex;justify-content:space-between;align-items:flex-end}
+.bs{opacity:0;animation:fu .5s ease forwards}
+.b1{animation-delay:1.8s}.b2{animation-delay:1.9s}.b3{animation-delay:2s}.b4{animation-delay:2.1s}
+
+#upl{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:16px;transition:opacity .5s,transform .5s;pointer-events:auto}
+#upl.gone{opacity:0;transform:translate(-50%,calc(-50% + 16px));pointer-events:none}
+.dz{border:1px solid rgba(57,255,20,.18);padding:24px 48px;text-align:center;cursor:pointer;background:rgba(57,255,20,.02);transition:all .3s;clip-path:polygon(12px 0%,100% 0%,100% calc(100% - 12px),calc(100% - 12px) 100%,0% 100%,0% 12px);position:relative}
+.dz::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(57,255,20,.04),transparent 55%)}
+.dz:hover{border-color:rgba(57,255,20,.45);box-shadow:0 0 26px rgba(57,255,20,.1)}
+.dz.over{border-color:var(--b);box-shadow:0 0 26px rgba(255,102,0,.2)}
+.dz-ico{font-size:1.5rem;color:var(--a);display:block;margin-bottom:9px}
+.dz h3{font-family:'Teko',sans-serif;font-size:.95rem;letter-spacing:.5em;color:rgba(57,255,20,.6);margin-bottom:4px}
+.dz p{font-family:'Exo 2',sans-serif;font-weight:300;font-size:.5rem;letter-spacing:.15em;color:rgba(255,255,255,.2)}
+#fi{position:absolute;width:1px;height:1px;opacity:0;border:0;padding:0;overflow:hidden}
+
+#np{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:20;text-align:center;opacity:0;transition:opacity .5s;pointer-events:none}
+#np.show{opacity:1;pointer-events:auto}
+#tn{font-family:'Teko',sans-serif;font-size:clamp(.7rem,1.6vw,.95rem);letter-spacing:.4em;color:rgba(57,255,20,.65);margin-bottom:9px;filter:drop-shadow(0 0 8px rgba(57,255,20,.45))}
+.pbc{display:flex;gap:9px;justify-content:center;margin-bottom:9px}
+#pw{width:250px;height:1px;background:rgba(57,255,20,.12);cursor:pointer;margin:0 auto 7px}
+#pb{height:100%;background:linear-gradient(90deg,var(--a),var(--b));width:0%;box-shadow:0 0 6px var(--a)}
+#td{font-family:'Exo 2',sans-serif;font-weight:300;font-size:.44rem;letter-spacing:.2em;color:rgba(255,255,255,.2)}
+
+.btn{font-family:'Teko',sans-serif;font-size:.75rem;letter-spacing:.5em;padding:6px 16px;border:1px solid rgba(57,255,20,.28);background:transparent;color:rgba(57,255,20,.6);cursor:pointer;transition:all .2s;clip-path:polygon(8px 0%,100% 0%,100% calc(100% - 8px),calc(100% - 8px) 100%,0% 100%,0% 8px)}
+.btn:hover{color:var(--a);border-color:rgba(57,255,20,.65);box-shadow:0 0 14px rgba(57,255,20,.22)}
+.btn.o{border-color:rgba(255,102,0,.28);color:rgba(255,102,0,.6)}
+.btn.o:hover{color:var(--b);border-color:rgba(255,102,0,.65);box-shadow:0 0 14px rgba(255,102,0,.22)}
+
+#eq{position:fixed;bottom:0;left:0;right:0;height:50px;z-index:8;pointer-events:none;display:flex;align-items:flex-end;gap:1px;padding:0 40px;opacity:0;transition:opacity .5s}
+#eq.show{opacity:1}
+.eqb{flex:1;transform-origin:bottom;height:0;background:linear-gradient(0deg,rgba(57,255,20,.55),rgba(255,102,0,.2))}
+
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+
+/* ═══ COMPATIBILIDAD — nada de esto altera la composicion ═══ */
+html,body{overscroll-behavior:none;-webkit-text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent}
+canvas{touch-action:none}
+.btn,.dz{touch-action:manipulation}
+/* safe-area del iPhone. Si el navegador no soporta env() estas reglas
+   se descartan solas y quedan las originales */
+#top{padding-top:calc(24px + env(safe-area-inset-top));
+  padding-left:calc(40px + env(safe-area-inset-left));
+  padding-right:calc(40px + env(safe-area-inset-right))}
+#bot{padding-bottom:calc(22px + env(safe-area-inset-bottom));
+  padding-left:calc(40px + env(safe-area-inset-left));
+  padding-right:calc(40px + env(safe-area-inset-right))}
+#eq{height:calc(50px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom)}
+#np{bottom:calc(24px + env(safe-area-inset-bottom))}
+.cm-tl{top:calc(16px + env(safe-area-inset-top));left:calc(16px + env(safe-area-inset-left))}
+.cm-tr{top:calc(16px + env(safe-area-inset-top));right:calc(16px + env(safe-area-inset-right))}
+.cm-bl{bottom:calc(16px + env(safe-area-inset-bottom));left:calc(16px + env(safe-area-inset-left))}
+.cm-br{bottom:calc(16px + env(safe-area-inset-bottom));right:calc(16px + env(safe-area-inset-right))}
+/* la linea sigue siendo de 1px; solo gana 12px invisibles arriba y abajo
+   para que se pueda tocar con el dedo */
+#pw{padding:12px 0;box-sizing:content-box;background-clip:content-box;touch-action:none}
+
+/* En telefono la caja de carga salia al 50% del ancho y a dos lineas.
+   La compactamos para dejar mas galaxia y mas letras a la vista.
+   En PC no cambia nada. */
+@media (max-width:600px){
+  .dz{padding:11px 16px}
+  .dz-ico{font-size:.95rem;margin-bottom:3px}
+  .dz h3{font-size:.62rem;letter-spacing:.2em;margin-bottom:2px}
+  .dz p{font-size:.38rem;letter-spacing:.06em}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div><div id="cur-ring"></div>
+<canvas id="c"></canvas>
+<div id="vig"></div><div id="scan"></div>
+<div id="eq"></div>
+
+<div id="ui">
+  <div id="top">
+    <div class="tl"><span class="lbl">System</span><span class="val">VORTEX.SYS</span></div>
+    <div class="tr"><span class="lbl">Signal</span><span class="val" id="sv">Dormant</span></div>
+  </div>
+  <div class="cm cm-tl"><svg viewBox="0 0 22 22" fill="none"><path d="M1 21V1H21" stroke="rgba(57,255,20,.4)" stroke-width="1"/><circle cx="1" cy="1" r="1.5" fill="rgba(57,255,20,.7)"/></svg></div>
+  <div class="cm cm-tr"><svg viewBox="0 0 22 22" fill="none"><path d="M21 21V1H1" stroke="rgba(57,255,20,.4)" stroke-width="1"/><circle cx="21" cy="1" r="1.5" fill="rgba(57,255,20,.7)"/></svg></div>
+  <div class="cm cm-bl"><svg viewBox="0 0 22 22" fill="none"><path d="M1 1V21H21" stroke="rgba(255,102,0,.4)" stroke-width="1"/><circle cx="1" cy="21" r="1.5" fill="rgba(255,102,0,.7)"/></svg></div>
+  <div class="cm cm-br"><svg viewBox="0 0 22 22" fill="none"><path d="M21 1V21H1" stroke="rgba(255,102,0,.4)" stroke-width="1"/><circle cx="21" cy="21" r="1.5" fill="rgba(255,102,0,.7)"/></svg></div>
+  <div class="hr hr-t"></div><div class="hr hr-b"></div>
+  <div id="ctitle">
+    <div id="ct1">VORTEX SIGNAL</div>
+    <div id="ct2">Spiral Galaxy Audio Reactor · VISART.DEV</div>
+  </div>
+  <div id="bot">
+    <div class="bs b1"><span class="lbl">Particles</span><span class="val" id="sp">—</span></div>
+    <div class="bs b2"><span class="lbl">Bass</span><span class="val" id="sb">—</span></div>
+    <div class="bs b3" style="text-align:center"><span class="lbl">RPM</span><span class="val" id="srpm">—</span></div>
+    <div class="bs b4" style="text-align:right"><span class="lbl">Energy</span><span class="val" id="se">—</span></div>
+  </div>
+</div>
+
+<div id="upl">
+  <label class="dz" id="dz" for="fi">
+    <span class="dz-ico">◎</span>
+    <h3>Load Signal</h3>
+    <p>Drag MP3 · WAV · OGG · FLAC</p>
+  </label>
+  <input type="file" id="fi" accept="audio/*,.mp3,.wav,.ogg,.flac,.m4a,.aac,.opus">
+</div>
+
+<div id="np">
+  <div id="tn">—</div>
+  <div class="pbc">
+    <button class="btn" id="pbtn" onclick="togglePlay()">PLAY</button>
+    <button class="btn o" onclick="newTrack()">EJECT</button>
+  </div>
+  <div id="pw" onclick="seekA(event)"><div id="pb"></div></div>
+  <div id="td">0:00 / 0:00</div>
+</div>
+<audio id="aud" crossorigin="anonymous" playsinline webkit-playsinline></audio>
+
+<script>
+// ═══════════════════════════════════════════════════
+// VORTEX — VISART.DEV Spiral Galaxy Audio Reactor
+// ═══════════════════════════════════════════════════
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+let W,H,cx,cy,T=0,playing=false;
+let mx=0,my=0,curX=0,curY=0,ringX=0,ringY=0;
+const curDot=document.getElementById('cur');
+const curRing=document.getElementById('cur-ring');
+
+const audEl=document.getElementById('aud');
+let actx,analyser,src,connected=false,freqData,timeData,bufLen;
+let bass=0,mid=0,high=0,avg=0;
+let bassHist=new Array(50).fill(0),beatDetected=false,beatFlash=0;
+let galaxyAngle=0,pulsarRadius=0,pulsarFlash=0;
+
+// Comprueba que el lienzo PINTA a esta resolucion. Si el navegador no puede
+// reservar la memoria no da error: deja de dibujar en silencio.
+function lienzoPinta(){
+  try{
+    ctx.save(); ctx.setTransform(1,0,0,1,0,0);
+    ctx.fillStyle='#f00'; ctx.fillRect(0,0,2,2);
+    const d=ctx.getImageData(0,0,1,1).data;
+    ctx.clearRect(0,0,2,2); ctx.restore();
+    return d[0]>200;
+  }catch(e){ return false }
+}
+let DPR=1, rsT, listo=false;
+function medidas(){
+  const d=document.documentElement;
+  return [window.innerWidth||d.clientWidth||0, window.innerHeight||d.clientHeight||0];
+}
+function resize(){
+  const [w,h]=medidas();
+  if(w<2||h<2){                       // el contenedor todavia no tiene tamaño
+    clearTimeout(rsT); rsT=setTimeout(resize,100);   // reintentar, no reventar
+    return;
+  }
+  let dpr=Math.min(window.devicePixelRatio||1,2);
+  W=w; H=h;
+  if(W*H*dpr*dpr>4.2e6) dpr=Math.max(1,Math.sqrt(4.2e6/(W*H)));
+  for(;;){
+    canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr);
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);      // se sigue dibujando en px CSS
+    if(dpr<=1||lienzoPinta())break;
+    dpr=(dpr>1.5)?1.5:1;
+  }
+  DPR=dpr;
+  cx=W/2; cy=H/2;
+  buildTargets();
+  listo=true;
+}
+window.addEventListener('resize',()=>{clearTimeout(rsT);rsT=setTimeout(resize,150)});
+window.addEventListener('orientationchange',()=>{clearTimeout(rsT);rsT=setTimeout(resize,300)});
+
+function movePointer(x,y){
+  mx=x;my=y;curX=x;curY=y;
+  curDot.style.left=x+'px';curDot.style.top=y+'px';
+}
+window.addEventListener('mousemove',e=>movePointer(e.clientX,e.clientY));
+window.addEventListener('touchstart',e=>{
+  const t=e.touches[0]; if(t)movePointer(t.clientX,t.clientY);
+  if(actx&&actx.state==='suspended')actx.resume();
+},{passive:true});
+window.addEventListener('touchmove',e=>{const t=e.touches[0];if(t)movePointer(t.clientX,t.clientY)},{passive:true});
+
+// ── AUDIO ──────────────────────────────────────────
+function initAudio(){
+  if(!actx){
+    actx=new(window.AudioContext||window.webkitAudioContext)();
+    analyser=actx.createAnalyser();
+    analyser.fftSize=2048;analyser.smoothingTimeConstant=.8;
+    bufLen=analyser.frequencyBinCount;
+    freqData=new Uint8Array(bufLen);
+    timeData=new Uint8Array(bufLen);
+  }
+  if(!connected){
+    src=actx.createMediaElementSource(audEl);
+    src.connect(analyser);analyser.connect(actx.destination);
+    connected=true;
+  }
+}
+function getAudio(){
+  if(!analyser)return;
+  analyser.getByteFrequencyData(freqData);
+  analyser.getByteTimeDomainData(timeData);
+  const a=(s,e)=>{let t=0;for(let i=s;i<e&&i<bufLen;i++)t+=freqData[i];return t/(e-s)/255};
+  bass=a(0,8);mid=a(8,80);high=a(80,400);avg=a(0,bufLen);
+  bassHist.push(bass);bassHist.shift();
+  const mean=bassHist.reduce((a,b)=>a+b)/bassHist.length;
+  const prev=beatDetected;
+  beatDetected=bass>mean*1.48&&bass>.18;
+  if(beatDetected&&!prev){beatFlash=1;pulsarFlash=1;}
+  beatFlash*=.86; pulsarFlash*=.9;
+}
+
+const fiEl=document.getElementById('fi'),dzEl=document.getElementById('dz');
+fiEl.addEventListener('change',e=>loadFile(e.target.files[0]));
+dzEl.addEventListener('dragover',e=>{e.preventDefault();dzEl.classList.add('over')});
+dzEl.addEventListener('dragleave',()=>dzEl.classList.remove('over'));
+dzEl.addEventListener('drop',e=>{e.preventDefault();dzEl.classList.remove('over');loadFile(e.dataTransfer.files[0])});
+
+const AUDIO_RX=/\.(mp3|wav|ogg|oga|opus|flac|m4a|aac|aif|aiff|weba|webm|mp4)$/i;
+function loadFile(file){
+  if(!file)return;
+  if(!((file.type&&file.type.indexOf('audio')===0)||AUDIO_RX.test(file.name||'')))return;
+  initAudio();
+  if(actx&&actx.state==='suspended')actx.resume();
+  audEl.src=URL.createObjectURL(file);
+  const pr=audEl.play(); if(pr&&pr.catch)pr.catch(()=>{});
+  playing=true;
+  document.getElementById('pbtn').textContent='PAUSE';
+  document.getElementById('tn').textContent=file.name.replace(/\.[^.]+$/,'').toUpperCase();
+  document.getElementById('upl').classList.add('gone');
+  document.getElementById('np').classList.add('show');
+  document.getElementById('eq').classList.add('show');
+  document.getElementById('sv').textContent='Active';
+  if(actx.state==='suspended')actx.resume();
+}
+function togglePlay(){
+  if(!audEl.src)return;
+  if(actx&&actx.state==='suspended')actx.resume();
+  if(playing){audEl.pause();playing=false;document.getElementById('pbtn').textContent='PLAY';}
+  else{audEl.play();playing=true;document.getElementById('pbtn').textContent='PAUSE';}
+}
+function newTrack(){
+  audEl.pause();playing=false;
+  document.getElementById('upl').classList.remove('gone');
+  document.getElementById('np').classList.remove('show');
+  document.getElementById('eq').classList.remove('show');
+  document.getElementById('sv').textContent='Dormant';
+  fiEl.value='';bass=mid=high=avg=0;beatDetected=false;
+}
+function seekA(e){
+  if(!audEl.duration||!isFinite(audEl.duration))return;
+  const r=document.getElementById('pw').getBoundingClientRect();
+  const x=(e.clientX!==undefined)?e.clientX:(e.touches&&e.touches[0]?e.touches[0].clientX:0);
+  audEl.currentTime=Math.min(1,Math.max(0,(x-r.left)/r.width))*audEl.duration;
+}
+document.getElementById('pw').addEventListener('touchstart',seekA,{passive:true});
+document.getElementById('pw').addEventListener('touchmove',seekA,{passive:true});
+audEl.addEventListener('timeupdate',()=>{
+  if(!audEl.duration)return;
+  document.getElementById('pb').style.width=(audEl.currentTime/audEl.duration*100)+'%';
+  const f=n=>`${Math.floor(n/60)}:${String(Math.floor(n%60)).padStart(2,'0')}`;
+  document.getElementById('td').textContent=`${f(audEl.currentTime)} / ${f(audEl.duration)}`;
+});
+audEl.addEventListener('ended',()=>{playing=false;document.getElementById('pbtn').textContent='PLAY';});
+
+// ── EQ ─────────────────────────────────────────────
+const eqWrap=document.getElementById('eq');
+const EQN=90;const eqEls=[];
+for(let i=0;i<EQN;i++){const d=document.createElement('div');d.className='eqb';eqWrap.appendChild(d);eqEls.push(d);}
+function updateEQ(){
+  if(!freqData)return;
+  for(let i=0;i<EQN;i++){
+    const v=(freqData[Math.floor(i/EQN*bufLen*.55)]||0)/255;
+    eqEls[i].style.height=(v*50)+'px';
+  }
+}
+
+// ══════════════════════════════════════════════════
+// TEXT TARGETS — VISART.DEV
+// ══════════════════════════════════════════════════
+const BRAND='VISART.DEV';
+const PAL=[[57,255,20],[255,102,0],[0,207,255],[255,0,128],[255,238,0]];
+let targets=[];
+let textParticles=[];
+
+function buildTargets(){
+  targets=[];
+  const off=document.createElement('canvas');
+  const ow=Math.max(16,Math.round(Math.min(W*.92,1100))),oh=Math.max(16,Math.round(Math.min(H*.38,200)));
+  off.width=ow;off.height=oh;
+  const oc=off.getContext('2d');
+  let fs=Math.min(ow*.185,oh*.88);          // MISMA formula que el original
+  const setF=()=>{oc.font=`700 ${fs}px 'Teko',sans-serif`};
+  setF();
+  const chars=BRAND.split('');
+  let widths=chars.map(ch=>oc.measureText(ch).width);
+  let total=widths.reduce((a,b)=>a+b,0);
+  if(total>ow*.94&&total>0){                 // red de seguridad: no cortarse nunca
+    fs*=ow*.94/total; setF();
+    widths=chars.map(ch=>oc.measureText(ch).width);
+    total=widths.reduce((a,b)=>a+b,0);
+  }
+  oc.clearRect(0,0,ow,oh);
+  oc.fillStyle='#fff';
+  oc.textAlign='left';oc.textBaseline='middle';
+  const zn=new Uint8Array(ow);               // x -> color, uno por letra
+  let pen=(ow-total)/2;
+  for(let i=0;i<chars.length;i++){
+    oc.fillText(chars[i],pen,oh/2);
+    const a=Math.max(0,Math.floor(pen)),b=Math.min(ow,Math.ceil(pen+widths[i]));
+    for(let x=a;x<b;x++)zn[x]=i%PAL.length;
+    pen+=widths[i];
+  }
+  const id=oc.getImageData(0,0,ow,oh).data;
+  const step=4;
+  for(let py=0;py<oh;py+=step){
+    for(let px=0;px<ow;px+=step){
+      if(id[(py*ow+px)*4+3]>100){
+        const sx=(px/ow-.5)*ow+cx;
+        const sy=(py/oh-.5)*oh+cy;
+        const c=PAL[zn[px]]||PAL[0];
+        targets.push({x:sx,y:sy,r:c[0],g:c[1],b:c[2]});
+      }
+    }
+  }
+  syncTP();
+}
+
+// ══════════════════════════════════════════════════
+// TEXT PARTICLE CLASS
+// ══════════════════════════════════════════════════
+class TextParticle{
+  constructor(tgt){
+    this.tx=tgt.x;this.ty=tgt.y;
+    this.cr=tgt.r;this.cg=tgt.g;this.cb=tgt.b;
+    // Spawn spiraling in from galaxy edge
+    const ang=Math.random()*Math.PI*2;
+    const dist=Math.min(W,H)*(.3+Math.random()*.3);
+    this.x=cx+Math.cos(ang)*dist;
+    this.y=cy+Math.sin(ang)*dist;
+    this.vx=0;this.vy=0;
+    this.size=Math.random()*1.7+.4;
+    this.alpha=0;this.gathered=false;
+    this.trail=[];this.trailLen=Math.floor(Math.random()*10+4);
+    this.twinklePhase=Math.random()*Math.PI*2;
+    this.twinkleSpeed=.05+Math.random()*.08;
+  }
+  update(){
+    this.twinklePhase+=this.twinkleSpeed+(playing?high*.1:0);
+
+    // Beat blast
+    if(beatDetected&&this.gathered&&Math.random()<.5){
+      const ang=Math.random()*Math.PI*2;
+      const f=bass*(12+Math.random()*10);
+      this.vx+=Math.cos(ang)*f;this.vy+=Math.sin(ang)*f;
+      this.gathered=false;
+    }
+
+    const dx=this.tx-this.x,dy=this.ty-this.y;
+    const d=Math.sqrt(dx*dx+dy*dy)||1;
+
+    // Spring
+    const sp=playing?(.06+mid*.1):.042;
+    this.vx+=dx*sp;this.vy+=dy*sp;
+
+    // Bass repels outward radially from text
+    if(playing&&bass>.28){
+      this.vx+=(dx/d)*-bass*bass*6;
+      this.vy+=(dy/d)*-bass*bass*6;
+    }
+
+    // Galaxy spin force — adds rotation
+    const toCx=cx-this.x,toCy=cy-this.y;
+    const toDist=Math.sqrt(toCx*toCx+toCy*toCy)||1;
+    const spinAmt=playing?(mid*.004):.001;
+    this.vx+=(-toCy/toDist)*spinAmt*toDist*.015;
+    this.vy+=(toCx/toDist)*spinAmt*toDist*.015;
+
+    // High flutter
+    if(playing&&high>.2){
+      this.vx+=(Math.random()-.5)*high*2.5;
+      this.vy+=(Math.random()-.5)*high*2.5;
+    }
+
+    // Mouse repel
+    const mdx=this.x-mx,mdy=this.y-my;
+    const md=Math.sqrt(mdx*mdx+mdy*mdy)||1;
+    if(md<120){const f=(120-md)/120*4.5;this.vx+=mdx/md*f;this.vy+=mdy/md*f;}
+
+    const damp=playing?(.77+mid*.06):.81;
+    this.vx*=damp;this.vy*=damp;
+    this.trail.unshift({x:this.x,y:this.y});
+    if(this.trail.length>this.trailLen)this.trail.pop();
+    this.x+=this.vx;this.y+=this.vy;
+    if(d<2.5)this.gathered=true;
+    const tA=playing?(.5+avg*.5):.42;
+    this.alpha+=(tA-this.alpha)*.055;
+  }
+  draw(){
+    if(this.alpha<.01)return;
+    const twinkle=Math.sin(this.twinklePhase)*.25+.75;
+    const pulse=playing&&beatDetected?(1+bass*.95):1;
+    const sz=this.size*pulse*twinkle;
+
+    // Trail
+    if(this.trail.length>1){
+      for(let i=0;i<this.trail.length-1;i++){
+        const a=this.alpha*(1-i/this.trail.length)*.42;
+        ctx.beginPath();
+        ctx.moveTo(this.trail[i].x,this.trail[i].y);
+        ctx.lineTo(this.trail[i+1].x,this.trail[i+1].y);
+        ctx.strokeStyle=`rgba(${this.cr},${this.cg},${this.cb},${a})`;
+        ctx.lineWidth=sz*(1-i/this.trail.length)*.9;ctx.stroke();
+      }
+    }
+
+    ctx.beginPath();ctx.arc(this.x,this.y,sz,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${this.cr},${this.cg},${this.cb},${this.alpha*twinkle})`;ctx.fill();
+
+    // Glow
+    if(this.alpha>.35){
+      const gr=sz*(playing&&beatDetected?5.5+bass*6:3.2);
+      const grd=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,gr);
+      const ga=playing&&beatDetected?this.alpha*.5*bass:this.alpha*.16;
+      grd.addColorStop(0,`rgba(${this.cr},${this.cg},${this.cb},${ga})`);
+      grd.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();ctx.arc(this.x,this.y,gr,0,Math.PI*2);
+      ctx.fillStyle=grd;ctx.fill();
+    }
+  }
+}
+function syncTP(){
+  const need=targets.length;
+  while(textParticles.length<need)
+    textParticles.push(new TextParticle(targets[textParticles.length%targets.length]||targets[0]));
+  textParticles.length=need;
+  for(let i=0;i<need;i++){
+    textParticles[i].tx=targets[i].x;textParticles[i].ty=targets[i].y;
+    textParticles[i].cr=targets[i].r;textParticles[i].cg=targets[i].g;textParticles[i].cb=targets[i].b;
+  }
+}
+
+// ══════════════════════════════════════════════════
+// SPIRAL GALAXY ARMS
+// ══════════════════════════════════════════════════
+let starPool=[];
+const STAR_COUNT=1800;
+
+class GalaxyStar{
+  constructor(){this.reset(true);}
+  reset(init=false){
+    // Spiral arm placement
+    const arm=Math.floor(Math.random()*3);
+    const armAngle=(arm/3)*Math.PI*2;
+    this.armIndex=arm;
+    const t=Math.random();
+    const spiralAngle=armAngle+t*Math.PI*3.5+galaxyAngle;
+    const r=30+t*Math.min(W,H)*.46*(init?Math.random():1);
+    const spread=(Math.random()-.5)*30*(1+t*2);
+    this.x=cx+Math.cos(spiralAngle)*(r+spread);
+    this.y=cy+Math.sin(spiralAngle)*(r+spread)*.62;
+    this.baseX=this.x;this.baseY=this.y;
+    this.spiralT=t;
+    this.spiralArm=armAngle;
+    this.size=Math.random()*(1-t*.5)*2+.2;
+    this.brightness=Math.random()*.7+.3;
+    this.phase=Math.random()*Math.PI*2;
+    this.phaseSpeed=Math.random()*.03+.01;
+    // Color: inner hot blue-white, outer cool orange-red
+    const temp=1-t;
+    if(temp>.7){this.r=200;this.g=220;this.b=255;}      // blue-white hot
+    else if(temp>.4){this.r=255;this.g=240;this.b=180;} // yellow
+    else if(temp>.2){this.r=255;this.g=160;this.b=80;}  // orange
+    else{this.r=255;this.g=80;this.b=40;}                // red cool
+    this.vr=0;
+    this.life=0;this.maxLife=300+Math.random()*500;
+  }
+  update(){
+    this.life++;this.phase+=this.phaseSpeed;
+    const prog=this.life/this.maxLife;
+
+    // Rotate around center with audio-reactive speed
+    const rotSpeed=(.003+this.spiralT*.001)*(playing?1+mid*.5:1)*(1-this.spiralT*.3);
+    galaxyAngle+=rotSpeed/STAR_COUNT;
+
+    const spiralAngle=this.spiralArm+this.spiralT*Math.PI*3.5+galaxyAngle;
+    const r=30+this.spiralT*Math.min(W,H)*.46;
+    const spread=(Math.sin(this.phase)*20)*(1+this.spiralT);
+    const audioWarp=playing?Math.sin(this.spiralT*8+T*2)*avg*25:0;
+    const beatWarp=playing&&beatDetected?bass*40*(1-this.spiralT):0;
+
+    this.x=cx+Math.cos(spiralAngle)*(r+spread+audioWarp+beatWarp);
+    this.y=cy+Math.sin(spiralAngle)*(r+spread+audioWarp+beatWarp)*.62;
+
+    if(prog>.85)this.brightness*=.98;
+    if(this.life>=this.maxLife)this.reset();
+  }
+  draw(){
+    const twinkle=Math.sin(this.phase)*.3+.7;
+    const audioBoost=playing?avg*.4:0;
+    const a=this.brightness*twinkle*(playing?(.5+avg*.6):.4);
+    const sz=this.size*(1+audioBoost)*(playing&&beatDetected?1+bass*.4:1);
+
+    ctx.beginPath();ctx.arc(this.x,this.y,sz,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${this.r},${this.g},${this.b},${a})`;ctx.fill();
+
+    if(sz>1&&a>.4){
+      const grd=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,sz*3);
+      grd.addColorStop(0,`rgba(${this.r},${this.g},${this.b},${a*.4})`);
+      grd.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();ctx.arc(this.x,this.y,sz*3,0,Math.PI*2);
+      ctx.fillStyle=grd;ctx.fill();
+    }
+  }
+}
+for(let i=0;i<STAR_COUNT;i++)starPool.push(new GalaxyStar());
+
+// ══════════════════════════════════════════════════
+// PULSAR CORE
+// ══════════════════════════════════════════════════
+function drawPulsar(){
+  const baseR=Math.min(W,H)*.055;
+  const pR=baseR*(playing?1+bass*.9:1);
+  pulsarRadius=pR;
+
+  // Outer plasma corona
+  for(let g=0;g<7;g++){
+    const gr=pR*(4-g*.3);
+    const intensity=playing?(.04+bass*.1+avg*.06):.025;
+    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,gr);
+    const hue=playing?(100+bass*160+T*25)%360:110;
+    grd.addColorStop(0,`hsla(${hue},100%,80%,${intensity*(1-g/7)*2.5})`);
+    grd.addColorStop(.5,`hsla(${(hue+90)%360},100%,50%,${intensity*(1-g/7)})`);
+    grd.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath();ctx.arc(cx,cy,gr,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
+  }
+
+  // Spinning pulsar beam (sweeps around)
+  const beamAngle=T*(playing?2+mid*3:1.5);
+  const beamLen=Math.min(W,H)*.5;
+  const beamA=playing?.06+high*.08:.03;
+  for(let b=0;b<2;b++){
+    const ang=beamAngle+b*Math.PI;
+    const grd=ctx.createLinearGradient(cx,cy,cx+Math.cos(ang)*beamLen,cy+Math.sin(ang)*beamLen);
+    grd.addColorStop(0,`rgba(57,255,20,${beamA*4})`);
+    grd.addColorStop(.2,`rgba(57,255,20,${beamA*2})`);
+    grd.addColorStop(1,'rgba(57,255,20,0)');
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(ang)*beamLen,cy+Math.sin(ang)*beamLen);
+    ctx.strokeStyle=grd;ctx.lineWidth=playing?8+bass*20:6;ctx.stroke();
+  }
+
+  // Pulsar rings — concentric expanding
+  if(playing){
+    for(let ring=0;ring<4;ring++){
+      const rr=pR*(1.5+ring*.8)*(1+pulsarFlash*(.5-ring*.1));
+      const ra=pulsarFlash*(.4-ring*.08);
+      if(ra<.01)continue;
+      ctx.beginPath();ctx.arc(cx,cy,rr,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(57,255,20,${ra})`;
+      ctx.lineWidth=2-ring*.4;ctx.stroke();
+    }
+  }
+
+  // Solid core
+  const cGrd=ctx.createRadialGradient(cx,cy,0,cx,cy,pR);
+  cGrd.addColorStop(0,'rgba(255,255,255,.95)');
+  cGrd.addColorStop(.4,playing?`rgba(57,255,20,${.7+bass*.3})`:`rgba(57,255,20,.5)`);
+  cGrd.addColorStop(.8,`rgba(0,150,80,${playing?.3+bass*.2:.15})`);
+  cGrd.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.beginPath();ctx.arc(cx,cy,pR,0,Math.PI*2);ctx.fillStyle=cGrd;ctx.fill();
+}
+
+// ══════════════════════════════════════════════════
+// GALAXY DUST LANES
+// ══════════════════════════════════════════════════
+function drawDustLanes(){
+  const alpha=playing?(.02+avg*.025):.014;
+  ctx.save();
+  for(let arm=0;arm<3;arm++){
+    const armAng=(arm/3)*Math.PI*2+galaxyAngle;
+    for(let s=0;s<40;s++){
+      const t=s/40;
+      const ang=armAng+t*Math.PI*3.5;
+      const r=40+t*Math.min(W,H)*.44;
+      const x=cx+Math.cos(ang)*r;
+      const y=cy+Math.sin(ang)*r*.62;
+      const dustR=playing?(6+avg*15+bass*(1-t)*20):(5+t*3);
+      const hue=playing?(100+arm*60+T*15)%360:(100+arm*60);
+      const grd=ctx.createRadialGradient(x,y,0,x,y,dustR);
+      grd.addColorStop(0,`hsla(${hue},60%,40%,${alpha*2})`);
+      grd.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();ctx.arc(x,y,dustR,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+// ══════════════════════════════════════════════════
+// FREQUENCY RIPPLE RINGS (around galaxy)
+// ══════════════════════════════════════════════════
+function drawFreqRings(){
+  if(!freqData||!playing)return;
+  const R=Math.min(W,H)*.48;
+  const rings=3;
+  for(let ring=0;ring<rings;ring++){
+    ctx.beginPath();
+    const segments=120;
+    for(let i=0;i<=segments;i++){
+      const ang=(i/segments)*Math.PI*2;
+      const idx=Math.floor(i/segments*bufLen*.5);
+      const v=(freqData[idx]||0)/255;
+      const r=R*(1+ring*.12)+v*(25+mid*35)*(1-ring*.2);
+      const x=cx+Math.cos(ang)*r;
+      const y=cy+Math.sin(ang)*r*.65;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    const hue=(ring*120+T*35+bass*90)%360;
+    ctx.strokeStyle=`hsla(${hue},100%,60%,${.15+mid*.2-ring*.04})`;
+    ctx.lineWidth=1+avg;ctx.stroke();
+  }
+}
+
+// ══════════════════════════════════════════════════
+// WAVEFORM POLAR (time domain ring)
+// ══════════════════════════════════════════════════
+function drawWaveRing(){
+  if(!timeData||!playing)return;
+  const R=Math.min(W,H)*.38;
+  ctx.beginPath();
+  for(let i=0;i<bufLen;i++){
+    const ang=(i/bufLen)*Math.PI*2-Math.PI/2;
+    const v=(timeData[i]/128-1);
+    const r=R+v*(35+bass*55);
+    const x=cx+Math.cos(ang)*r;
+    const y=cy+Math.sin(ang)*r*.65;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  const hue=(T*40+bass*80)%360;
+  ctx.strokeStyle=`hsla(${hue},100%,65%,${.3+mid*.3})`;
+  ctx.lineWidth=1.2+avg*1.8;ctx.stroke();
+}
+
+// ══════════════════════════════════════════════════
+// GALACTIC CENTER GLOW
+// ══════════════════════════════════════════════════
+function drawGalacticGlow(){
+  const R=Math.min(W,H)*(.38+avg*.12);
+  const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,R);
+  const intensity=playing?(.05+bass*.1):.03;
+  grd.addColorStop(0,`rgba(57,255,20,${intensity*2})`);
+  grd.addColorStop(.15,`rgba(100,200,80,${intensity})`);
+  grd.addColorStop(.4,`rgba(40,80,20,${intensity*.4})`);
+  grd.addColorStop(1,'rgba(1,0,8,0)');
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
+
+  // Beat shockwave
+  if(beatDetected&&playing){
+    const sr=Math.min(W,H)*(.1+bass*.5);
+    const sg=ctx.createRadialGradient(cx,cy,sr*.3,cx,cy,sr);
+    sg.addColorStop(0,'rgba(57,255,20,0)');
+    sg.addColorStop(.5,`rgba(57,255,20,${bass*.35})`);
+    sg.addColorStop(1,'rgba(1,0,8,0)');
+    ctx.beginPath();ctx.arc(cx,cy,sr,0,Math.PI*2);ctx.fillStyle=sg;ctx.fill();
+  }
+}
+
+// ── BEAT FLASH ──────────────────────────────────────
+function drawBeatFlash(){
+  if(beatFlash<.01)return;
+  ctx.fillStyle=`rgba(57,255,20,${beatFlash*.05})`;
+  ctx.fillRect(0,0,W,H);
+}
+
+// ── STATS ───────────────────────────────────────────
+let frame=0;
+function updateStats(){
+  if(frame%6!==0)return;
+  document.getElementById('sp').textContent=(textParticles.length+STAR_COUNT).toLocaleString();
+  document.getElementById('sb').textContent=playing?bass.toFixed(3):'—';
+  document.getElementById('srpm').textContent=playing?Math.round(galaxyAngle*100)%999:'—';
+  document.getElementById('se').textContent=playing?avg.toFixed(3):'—';
+}
+
+// ── MAIN LOOP ───────────────────────────────────────
+// Si a los 120 fotogramas el lienzo sigue negro teniendo particulas,
+// el navegador no puede con esa resolucion: bajamos a 1x como el original.
+let vigOK=false;
+function vigilante(){
+  if(vigOK||frame<120)return;
+  vigOK=true;
+  try{
+    const d=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    let tinta=0;
+    for(let i=0;i<d.length;i+=844){ if(d[i]+d[i+1]+d[i+2]>40){ if(++tinta>3)return } }
+    if(DPR>1){
+      DPR=1; canvas.width=W; canvas.height=H;
+      canvas.style.width=W+'px'; canvas.style.height=H+'px';
+      ctx.setTransform(1,0,0,1,0,0); buildTargets();
+    }
+  }catch(e){}
+}
+
+let last=0;
+function loop(ts){
+  const dt=Math.min((ts-last)/16.67,2);last=ts;
+  frame++;T+=.016*dt;
+
+  if(!listo){requestAnimationFrame(loop);return}
+  if(playing)getAudio();
+  else{bass*=.92;mid*=.92;high*=.92;avg*=.92;beatDetected=false;beatFlash*=.9;pulsarFlash*=.9;}
+
+  // Background
+  ctx.fillStyle=`rgba(1,0,8,${playing?(.14+bass*.06):.18})`;
+  ctx.fillRect(0,0,W,H);
+
+  drawBeatFlash();
+  drawGalacticGlow();
+  drawDustLanes();
+  starPool.forEach(s=>{s.update();s.draw();});
+  drawFreqRings();
+  drawWaveRing();
+  drawPulsar();
+  textParticles.forEach(p=>{p.update();p.draw();});
+  updateEQ();
+  updateStats();
+  vigilante();
+
+  // Cursor
+  ringX+=(curX-ringX)*.09;ringY+=(curY-ringY)*.09;
+  curRing.style.left=ringX+'px';curRing.style.top=ringY+'px';
+
+  requestAnimationFrame(loop);
+}
+
+try{ resize() }catch(e){ clearTimeout(rsT); rsT=setTimeout(resize,100) }
+// si el contenedor cambia de tamaño despues (visores embebidos, iframes),
+// volvemos a dimensionar en cuanto ocurra
+if(window.ResizeObserver){
+  try{ new ResizeObserver(()=>{clearTimeout(rsT);rsT=setTimeout(resize,60)})
+        .observe(document.documentElement) }catch(e){}
+}
+// Teko llega por red: al cargar hay que rehacer la palabra
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(listo)buildTargets()});
+requestAnimationFrame(loop);      // el bucle arranca pase lo que pase
+</script>
+</body>
+</html>
